@@ -15,6 +15,7 @@ public class AppUser {
     private String password;
     private String firstName;
     private String lastName;
+    private String email;
     private Role role;
 
 
@@ -37,6 +38,22 @@ public class AppUser {
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+
+    public AppUser(String username, String password, String firstName, String lastName) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public AppUser(String username, String password, String firstName, String lastName, String email) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.role = Role.EMPLOYEE;
     }
 
 
@@ -81,6 +98,14 @@ public class AppUser {
         this.lastName = lastName;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public Role getRole() {
         return role;
     }
@@ -90,6 +115,7 @@ public class AppUser {
     }
 
     //AppUser Method overrides.
+
 
     @Override
     public boolean equals(Object o) {
@@ -101,12 +127,13 @@ public class AppUser {
                 Objects.equals(password, appUser.password) &&
                 Objects.equals(firstName, appUser.firstName) &&
                 Objects.equals(lastName, appUser.lastName) &&
+                Objects.equals(email, appUser.email) &&
                 role == appUser.role;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, firstName, lastName, role);
+        return Objects.hash(id, username, password, firstName, lastName, email, role);
     }
 
     @Override
@@ -117,6 +144,7 @@ public class AppUser {
                 ", password='" + password + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
                 ", role=" + role +
                 '}';
     }

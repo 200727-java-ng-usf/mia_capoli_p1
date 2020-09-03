@@ -33,11 +33,35 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>jdbc</groupId>
-            <artifactId>jdbc-stdext</artifactId>
-            <version>2.0</version>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.11.0</version>
+        </dependency>
+
     </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.tomcat.maven</groupId>
+                    <artifactId>tomcat7-maven-plugin</artifactId>
+                    <version>2.2</version>
+                    <configuration>
+                        <server>LocalTomcat</server>
+                        <url>http://localhost:8080/manager/text/</url>
+                        <path>/ExpenseReimbursementSystem</path>
+                        <update>true</update>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 
 
 </project>

@@ -7,15 +7,18 @@
     <link rel="stylesheet" type="text/css" href=""/>
 </head>
 <body>
-<div class="Login-container">
+<div class="Register-container">
     <!--        FRONT CONTROLLER EXAMPLE-->
-    <header class="h3">Login</header>
+    <header class="h3">Register</header>
 
-    <form method="post" action="/ExpenseReimbursementSystem/api/login">
-        <article>Please for the love of god log in</article>
+    <form method="post" action="/ExpenseReimbursementSystem/api/register">
+        <article>Please Register!</article>
+        <input placeholder="enter firstname" name="firstName"/><br>
+        <input placeholder="enter lastname" name="lastName"/><br>
         <input placeholder="enter username" name="username"/><br>
         <input placeholder="enter password" name="password"/><br>
-        <input type="submit" value="Login"/>
+        <input placeholder="enter email" name="email"/><br>
+        <input type="submit" value="Register"/>
     </form>
 </div>
 

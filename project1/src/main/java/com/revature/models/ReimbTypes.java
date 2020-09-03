@@ -12,4 +12,17 @@ public enum ReimbTypes {
     ReimbTypes(String name) {
         this.roleName = name;
     }
+
+    public static ReimbTypes getByName(String name) {
+
+        for (ReimbTypes reimbType : ReimbTypes.values()) {
+            if(reimbType.roleName.equals(name)) {
+                return reimbType;
+            }
+        }
+
+        return OTHER;
+
+    }
+
 }

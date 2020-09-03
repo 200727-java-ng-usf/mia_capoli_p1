@@ -3,17 +3,19 @@ package com.revature.services;
 import com.revature.exceptions.AuthenticatorException;
 import com.revature.exceptions.InvalidInputException;
 import com.revature.models.AppUser;
+import com.revature.models.Role;
 import com.revature.repos.AppUserRepo;
+
+import com.revature.util.AppState;
 
 import java.util.Optional;
 
-import static com.revature.AppDriver.app;
 
 /**
  * Service Classes for the users to check for errors in the inputs and communicate with the Repo class.
  */
 public class UserService {
-
+    public static AppState app = new AppState();
     private AppUserRepo userRepo;
 
     public UserService(AppUserRepo repo) {
@@ -63,8 +65,9 @@ public class UserService {
         }
 
         //save the current user in the persistence layer and set the current user
+        newUser.setRole(Role.EMPLOYEE);
         userRepo.save(newUser);
-        app.setCurrentUser(newUser);
+//        app.setCurrentUser(newUser);
     }
 
     /**
