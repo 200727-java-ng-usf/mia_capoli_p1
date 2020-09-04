@@ -1,13 +1,25 @@
 package com.revature.controllers;
 
+import com.revature.repos.AppUserRepo;
+import com.revature.services.UserService;
+
+
 import javax.servlet.http.HttpServletRequest;
+
+import static com.revature.services.UserService.app;
 
 /**
  * Controllers handle the business logic of an endpoint
  */
 public class LoginController {
 
-	public static String login(HttpServletRequest req){
+    private static AppUserRepo AppUserRepo = new AppUserRepo();
+    private static UserService userService = new UserService(AppUserRepo);
+
+
+    public static String login(HttpServletRequest req) {
+
+
 
 		/*
 		You may want to implement route guarding here for your endpoints
@@ -15,25 +27,28 @@ public class LoginController {
 
 		For example, you may want to make sure only ADMINS can access admin endpoints.
 		 */
-		//ensure that the method is a POST http method, else send them back to the login page.
-		if(!req.getMethod().equals("POST")){
-			return "/html/login.html";
-		}
+        //ensure that the method is a POST http method, else send them back to the login page.
 
-		System.out.println();
-		String username = req.getParameter("username");
-		String password = req.getParameter("password");
 
-		if(!(username.equals("cheese") && password.equals("louise"))){
-			return "ExpenseReimbursements/api/login.html";
-		} else{
-			/*
-			for YOUR project, you won't actually hardcore "cheese" and "louise" you'll go to
+        try {
+            if (!req.getMethod().equals("POST")) {
+                return  "/html/login.html";
+            }
 
-			 */
-			req.getSession().setAttribute("loggedUsername", username);
-			req.getSession().setAttribute("loggedPassword", password);
-			return "/html/home.html";
-		}
-	}
+            System.out.println();
+            String username = req.getParameter("username");
+            String password = req.getParameter("password");
+
+            userService.authenticate(username, password);
+
+
+            req.getSession().setAttribute("loggedUsername", username);
+            req.getSession().setAttribute("loggedPassword", password);
+            return "/html/home.html";
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return  "/html/login.html";
+    }
 }

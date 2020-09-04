@@ -1,5 +1,6 @@
 com\revature\repos\AppUserRepo.class
 com\revature\controllers\HomeController.class
+com\revature\util\SessionFact.class
 com\revature\models\AppUser.class
 com\revature\util\AppState.class
 com\revature\exceptions\InvalidInputException.class
@@ -9,6 +10,8 @@ com\revature\services\UserService.class
 com\revature\servlets\RequestHelper.class
 com\revature\servlets\ForwardingMasterServlet.class
 com\revature\models\Role.class
+com\revature\models\Reimb.class
 com\revature\controllers\LoginController.class
 com\revature\exceptions\AuthenticatorException.class
+com\revature\AppDriver.class
 com\revature\models\ReimbTypes.class

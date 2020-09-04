@@ -32,6 +32,7 @@ public class UserService {
     public AppUser authenticate(String username, String password) {
 
         Optional<AppUser> _authUser = (userRepo.findUser(username, password));
+        System.out.println(_authUser);
         //if the user isn't present in the persistence layer, throw an exception. Otherwise set the current user to the provided user credentials' user.
         if (!_authUser.isPresent()) {
             app.invalidateCurrentUser();
