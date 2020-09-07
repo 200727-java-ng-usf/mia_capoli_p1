@@ -21,12 +21,14 @@ public class RegisterController {
         }
 
         try {
+
             String username = req.getParameter("username");
             String password = req.getParameter("password");
             String firstName = req.getParameter("firstName");
             String lastName = req.getParameter("lastName");
             String email = req.getParameter("email");
             // TODO b sure the user is an admin
+            //todo move this logic to user service?
             AppUser employee;
             if (!(username.equals(null) || password.equals(""))) {
                 // this logic will trigger when the amount is null or the type is empty

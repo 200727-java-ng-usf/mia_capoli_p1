@@ -1,6 +1,6 @@
 package com.revature.servlets;
 
-import com.revature.controllers.HomeController;
+import com.revature.controllers.AdminHomeController;
 import com.revature.controllers.LoginController;
 import com.revature.controllers.RegisterController;
 
@@ -19,7 +19,7 @@ public class RequestHelper {
 				return LoginController.login(req);
 			case "/ExpenseReimbursementSystem/api/home":
 				System.out.println("in home case");
-				return HomeController.home(req);
+				return AdminHomeController.home(req);
 			case "/ExpenseReimbursementSystem/api/register":
 				System.out.println("in register case");
 				return RegisterController.registerNewUser(req);

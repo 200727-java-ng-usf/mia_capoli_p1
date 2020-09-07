@@ -173,16 +173,19 @@ public class AppUserRepo {
     }
 
 
-    public void createNewUser(AppUser emp, String firstName, String lastName) {
+    public void createNewUser(AppUser emp, String firstName, String lastName, String username, String password, String email, int userRole) {
         Session session = SessionFact.getSessionFactoryProgrammaticConfig().openSession();
 
         Transaction tx = null;
 
         try {
             tx = session.beginTransaction();
+            emp.setUsername(username);
+            emp.setPassword(password);
             emp.setFirstName(firstName);
             emp.setLastName(lastName);
-            //TODO ADD ALL FIELDS
+            emp.setEmail(email);
+            emp.setRole(Role.getByID(userRole));
             session.save(emp);
             tx.commit();
 
@@ -204,7 +207,7 @@ public class AppUserRepo {
             tx = session.beginTransaction();
             Query query = session.createQuery("Update Employee set firstName = :firstNameNew, lastName = :lastNameNew" +
                     "WHERE id = :empUpdateId");
-
+            //todo fix
             query.executeUpdate();
             tx.commit();
 
@@ -222,7 +225,7 @@ public class AppUserRepo {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            Query query = session.createQuery("Delete from Employee " +
+            Query query = session.createQuery("Delete from AppUser " +
                     "WHERE id = :empDeleteId").setParameter("empDeleteId", empDeleteId);
 
             query.executeUpdate();

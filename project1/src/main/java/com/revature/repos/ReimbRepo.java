@@ -29,7 +29,7 @@ public class ReimbRepo {
 
     public Set<Reimb> findReimbByType(String reimb_type) {
 
-            Set<Reimb> _reimb = new HashSet<>();
+        Set<Reimb> _reimb = new HashSet<>();
         try (Connection conn = ConnectionFactory.getConnFactory().getConnection()) {
             // select the user matching the username and password provided.
             String sql = "SELECT * FROM project1.ers_reimbursments WHERE reimb_type_id = ?";
@@ -53,7 +53,6 @@ public class ReimbRepo {
 
         return _reimb;
     }
-
 
 
     public Set<Reimb> findReimbByStatus(Integer reimb_status_id) {
@@ -105,7 +104,8 @@ public class ReimbRepo {
         return _reimbs;
 
     }
- //TODO
+    //TODO update to make them for reimbs
+
     /**
      * Save an Appuser in the repository after registration.
      *
@@ -179,14 +179,13 @@ public class ReimbRepo {
 
             List<Reimb> reimbs = session.createQuery("FROM Reimb", Reimb.class).list();
             for (Reimb r : reimbs) {
-                System.out.println("Entry: " + r.getFirstName() + " " +
-                        r.getLastName() + ", " + r.getEmail());
+                System.out.println("Reimbursement: " + r.toString());
             }
 
 
             tx.commit();
 
-            return users.toString();
+            return reimbs.toString();
 
         } catch (Exception e) {
             if (tx != null) tx.rollback();
@@ -196,8 +195,13 @@ public class ReimbRepo {
         return null;
     }
 
+    public void selectReimbursement(int reimb_id) {
 
-    public void createNewUser(AppUser emp, String firstName, String lastName) {
+        //TODO implement
+    }
+
+
+    public void createNewReimb(AppUser emp, String firstName, String lastName) {
         Session session = SessionFact.getSessionFactoryProgrammaticConfig().openSession();
 
         Transaction tx = null;
@@ -218,7 +222,7 @@ public class ReimbRepo {
 
     }
 
-    public void updateAppUser(String firstNameNew, String lastNameNew, int empUpdateId) {
+    public void updateReimb(String firstNameNew, String lastNameNew, int empUpdateId) {
 
         Session session = SessionFact.getSessionFactoryProgrammaticConfig().openSession();
 
@@ -240,7 +244,7 @@ public class ReimbRepo {
 
     }
 
-    public void deleteEmployee(int empDeleteId) {
+    public void deleteReimb(int empDeleteId) {
         Session session = SessionFact.getSessionFactoryProgrammaticConfig().openSession();
 
         Transaction tx = null;
@@ -261,4 +265,3 @@ public class ReimbRepo {
 
 }
 
-}

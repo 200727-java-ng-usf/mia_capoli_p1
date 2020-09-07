@@ -15,7 +15,7 @@ import java.util.Optional;
  * Service Classes for the users to check for errors in the inputs and communicate with the Repo class.
  */
 public class UserService {
-    public static AppState app = new AppState();
+    public static AppState app = new AppState(); //TODO fix this??
     private AppUserRepo userRepo;
 
     public UserService(AppUserRepo repo) {
@@ -56,6 +56,8 @@ public class UserService {
             throw new InvalidInputException("Invalid credentials given for registration.");
         }
 
+        //todo check if user is admin
+
         //attempt to get the user provided in the repo.
         Optional<AppUser> _existingUser = userRepo.findUserByUsername(newUser.getUsername());
 
@@ -70,6 +72,32 @@ public class UserService {
         userRepo.save(newUser);
 //        app.setCurrentUser(newUser);
     }
+
+
+    public void updateUser(int userId) {
+        //if the user isn't valid, invalidate them and throw an exception.
+        if (!isUserValid(newUser)) {
+            app.invalidateCurrentUser();
+            throw new InvalidInputException("Invalid credentials given for registration.");
+        }
+
+        //todo check if user is admin
+
+        //attempt to get the user provided in the repo.
+        Optional<AppUser> _existingUser = userRepo.findUserByUsername(newUser.getUsername());
+
+        //if the user already exists, invalidate the current user and throw an exception.
+        if (_existingUser.isPresent()) {
+            app.invalidateCurrentUser();
+            throw new AuthenticatorException("Provided username is already in use!");
+        }
+
+        //save the current user in the persistence layer and set the current user
+        newUser.setRole(Role.EMPLOYEE);
+        userRepo.save(newUser);
+//        app.setCurrentUser(newUser);
+    }
+
 
     /**
      * Check if the provided user is valid.
