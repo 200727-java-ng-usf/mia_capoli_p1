@@ -41,7 +41,7 @@ public class Reimb {
     private int reimb_status_id;
 
     @Column(name = "reimb_type_id")
-    private int reimb_type_id;
+    private ReimbTypes reimb_type;
 
     public Reimb(Integer reimb_id, double amount, Time submitted, Time resolved, String description, String receipt, int author_id, int resolver_id, int reimb_status_id, int reimb_type_id) {
         this.reimb_id = reimb_id;
@@ -53,7 +53,12 @@ public class Reimb {
         this.author_id = author_id;
         this.resolver_id = resolver_id;
         this.reimb_status_id = reimb_status_id;
-        this.reimb_type_id = reimb_type_id;
+        int reimb_int = reimb_type_id;
+        this.reimb_type = ReimbTypes.getByID(reimb_type_id);
+    }
+
+    public Reimb() {
+
     }
 
     public void setReimb_id(Integer reimb_id) {
@@ -92,8 +97,14 @@ public class Reimb {
         this.reimb_status_id = reimb_status_id;
     }
 
-    public void setReimb_type_id(int reimb_type_id) {
-        this.reimb_type_id = reimb_type_id;
+    public void setReimb_typeId(int reimb_type_id) {
+        int reimb_int = reimb_type_id;
+        this.reimb_type = ReimbTypes.getByID(reimb_type_id);
+    }
+
+    public void setReimb_type(ReimbTypes reimb_type) {
+
+        this.reimb_type = reimb_type;
     }
 
 
@@ -106,7 +117,7 @@ public class Reimb {
                 author_id == reimb.author_id &&
                 resolver_id == reimb.resolver_id &&
                 reimb_status_id == reimb.reimb_status_id &&
-                reimb_type_id == reimb.reimb_type_id &&
+                reimb_type == reimb.reimb_type &&
                 Objects.equals(reimb_id, reimb.reimb_id) &&
                 Objects.equals(submitted, reimb.submitted) &&
                 Objects.equals(resolved, reimb.resolved) &&
@@ -116,7 +127,7 @@ public class Reimb {
 
     @Override
     public int hashCode() {
-        return Objects.hash(reimb_id, amount, submitted, resolved, description, receipt, author_id, resolver_id, reimb_status_id, reimb_type_id);
+        return Objects.hash(reimb_id, amount, submitted, resolved, description, receipt, author_id, resolver_id, reimb_status_id, reimb_type);
     }
 
     @Override
@@ -131,7 +142,7 @@ public class Reimb {
                 ", author_id=" + author_id +
                 ", resolver_id=" + resolver_id +
                 ", reimb_status_id=" + reimb_status_id +
-                ", reimb_type_id=" + reimb_type_id +
+                ", reimb_type_id=" + reimb_type +
                 '}';
     }
 }

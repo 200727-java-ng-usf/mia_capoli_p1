@@ -1,6 +1,8 @@
 package com.revature.repos;
 
 import com.revature.models.AppUser;
+import com.revature.models.Reimb;
+import com.revature.models.ReimbTypes;
 import com.revature.models.Role;
 import com.revature.util.ConnectionFactory;
 import com.revature.util.SessionFact;
@@ -16,33 +18,32 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
- * The class that accesses the AppUser Repository and contains methods to easily access users.
+ * The class that accesses the Reimb Repository and contains methods to easily access users.
  */
-public class AppUserRepo {
-    /**
-     * Find a user in the Repo based on the Username and Password provided.
-     *
-     * @param username
-     * @param password
-     * @return
-     */
-    public Optional<AppUser> findUser(String username, String password) {
 
-        Optional<AppUser> _user = Optional.empty();
+public class ReimbRepo {
+
+
+    public Set<Reimb> findReimbByType(String reimb_type) {
+
+            Set<Reimb> _reimb = new HashSet<>();
         try (Connection conn = ConnectionFactory.getConnFactory().getConnection()) {
             // select the user matching the username and password provided.
-            String sql = "SELECT * FROM project1.ers_users WHERE username = ? AND PASSWORD = ?";
+            String sql = "SELECT * FROM project1.ers_reimbursments WHERE reimb_type_id = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, username);
-            pstmt.setString(2, password);
+
+            int reimbTypeId = ReimbTypes.getIDFromName(reimb_type);
+
+            pstmt.setInt(1, reimbTypeId);
             ResultSet rs = pstmt.executeQuery();
 
             //find the first user that matches the results
-            _user = mapResultSet(rs).stream().findFirst();
+            _reimb = mapResultSet(rs).stream().collect(Collectors.toSet());
 
-            return _user;
+            return _reimb;
 
 
         } catch (SQLException sqle) {
@@ -50,41 +51,61 @@ public class AppUserRepo {
             System.err.println("Database Error!");
         }
 
-        return _user;
+        return _reimb;
     }
 
-    /**
-     * Find the AppUser in the repository by their username only.
-     *
-     * @param username
-     * @return
-     */
-    public Optional<AppUser> findUserByUsername(String username) {
 
-        Optional<AppUser> _user = Optional.empty();
+
+    public Set<Reimb> findReimbByStatus(Integer reimb_status_id) {
+
+        Set<Reimb> _reimb = new HashSet<>();
+        try (Connection conn = ConnectionFactory.getConnFactory().getConnection()) {
+
+            String sql = "SELECT * FROM project1.ers_reimbursments WHERE reimb_status_id = ?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, reimb_status_id);
+            ResultSet rs = pstmt.executeQuery();
+
+            //find the first user that matches the results
+            _reimb = mapResultSet(rs).stream().collect(Collectors.toSet());
+
+            return _reimb;
+
+
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+            System.err.println("Database Error!");
+        }
+
+        return _reimb;
+    }
+
+    public Set<Reimb> findReimbsByUser(int appUser_id) {
+
+        Set<Reimb> _reimbs = new HashSet<>();
+        Optional<Reimb> _reimb = Optional.empty();
 
         try (Connection conn = ConnectionFactory.getConnFactory().getConnection()) {
 
-            String sql = "SELECT * FROM project1.ers_users";
+            String sql = "SELECT * FROM project1.ers_reimbursments WHERE author_id = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
-
+            pstmt.setInt(1, appUser_id);
             //if the returned user set contains a user that matches the username, return that user.
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                AppUser temp = new AppUser(rs.getString("username"), rs.getString("password"), rs.getString("first_name"), rs.getString("last_name"));
-                if (temp.getUsername().equals(username)) {
-                    _user = Optional.of(temp);
-                    return _user;
+                _reimb = mapResultSet(rs).stream().findAny();
+                if (_reimb.isPresent()) {
+                    _reimbs.add(_reimb.get());
                 }
             }
 
         } catch (SQLException sqle) {
             System.err.println("Database Error!");
         }
-        return _user;
+        return _reimbs;
 
     }
-
+ //TODO
     /**
      * Save an Appuser in the repository after registration.
      *
@@ -122,30 +143,33 @@ public class AppUserRepo {
      * @return
      * @throws SQLException
      */
-    private Set<AppUser> mapResultSet(ResultSet rs) throws SQLException {
+    private Set<Reimb> mapResultSet(ResultSet rs) throws SQLException {
 
-        Set<AppUser> users = new HashSet<>();
+        Set<Reimb> reimbs = new HashSet<>();
 
         //Add the returned users to a hashset so the program can interpret it.
         while (rs.next()) {
-            AppUser temp = new AppUser();
-            temp.setId(rs.getInt("ers_user_id"));
-            temp.setUsername(rs.getString("username"));
-            temp.setPassword(rs.getString("password"));
-            temp.setFirstName(rs.getString("first_name"));
-            temp.setLastName(rs.getString("last_name"));
-            temp.setLastName(rs.getString("email"));
+            Reimb temp = new Reimb();
+            temp.setReimb_id(rs.getInt("reimb_id"));
+            temp.setAmount(rs.getInt("amount"));
+            temp.setSubmitted(rs.getTime("submitted"));
+            temp.setResolved(rs.getTime("resolved"));
+            temp.setDescription(rs.getString("description"));
+            temp.setAuthor_id(rs.getInt("author_id"));
+            temp.setResolver_id(rs.getInt("resolver_id"));
+            temp.setReimb_status_id(rs.getInt("author_id"));
+
             int role_int = rs.getInt("user_role_id");
-            temp.setRole(Role.getByID(role_int));
-            users.add(temp);
+            temp.setReimb_type(ReimbTypes.getByID(role_int));
+            reimbs.add(temp);
         }
 
-        return users;
+        return reimbs;
 
     }
 
 
-    public String returnAllAppUsers() {
+    public String returnAllReimbs() {
         Session session = SessionFact.getSessionFactoryProgrammaticConfig().openSession();
 
         Transaction tx = null;
@@ -153,10 +177,10 @@ public class AppUserRepo {
         try {
             tx = session.beginTransaction();
 
-            List<AppUser> users = session.createQuery("FROM AppUser", AppUser.class).list();
-            for (AppUser u : users) {
-                System.out.println("Entry: " + u.getFirstName() + " " +
-                        u.getLastName() + ", " + u.getEmail());
+            List<Reimb> reimbs = session.createQuery("FROM Reimb", Reimb.class).list();
+            for (Reimb r : reimbs) {
+                System.out.println("Entry: " + r.getFirstName() + " " +
+                        r.getLastName() + ", " + r.getEmail());
             }
 
 
@@ -234,5 +258,7 @@ public class AppUserRepo {
         }
 
     }
+
+}
 
 }

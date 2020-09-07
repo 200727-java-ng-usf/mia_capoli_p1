@@ -16,21 +16,26 @@ public class RegisterController {
 
     public static String registerNewUser(HttpServletRequest req) throws IOException {
 
-        if(!req.getMethod().equals("POST")) {
+        if (!req.getMethod().equals("POST")) {
             return "/html/register.html";
         }
 
-        // TODO b sure the user is an admin
-
-        String username = req.getParameter("username");
-        String password = req.getParameter("password");
-        String firstName = req.getParameter("firstName");
-        String lastName = req.getParameter("lastName");
-        String email = req.getParameter("email");
-        AppUser employee = new AppUser(username, password, firstName, lastName, email);
-        System.out.println(employee);
-
         try {
+            String username = req.getParameter("username");
+            String password = req.getParameter("password");
+            String firstName = req.getParameter("firstName");
+            String lastName = req.getParameter("lastName");
+            String email = req.getParameter("email");
+            // TODO b sure the user is an admin
+            AppUser employee;
+            if (!(username.equals(null) || password.equals(""))) {
+                // this logic will trigger when the amount is null or the type is empty
+                return "/api/invalidinput";
+            } else {
+                employee = new AppUser(username, password, firstName, lastName, email);
+                System.out.println(employee);
+            }
+
 
             userService.registration(employee);
             System.out.println("register");
@@ -48,22 +53,6 @@ public class RegisterController {
             e.printStackTrace();
             return "/api/badlogin.html";
         }
-
-//        /**
-//         * Ensure not null values are submitted
-//         */
-//        if(!(username.equals(null) || password.equals(""))) {
-//            // this logic will trigger when the amount is null or the type is empty
-//            return"/api/invalidinput";
-//        } else {
-//            req.getSession().setAttribute("loggedUsername", username);
-//            req.getSession().setAttribute("loggedPassword", password);
-//            req.getSession().setAttribute("loggedFirstName", firstName);
-//            req.getSession().setAttribute("loggedLastName", lastName);
-//            req.getSession().setAttribute("loggedEmail", email);
-//            ErsUser employee = new ErsUser(username, password, firstName, lastName, email);
-//            userService.register(employee);
-//            return "/api/home";
-//        }
     }
+
 }
