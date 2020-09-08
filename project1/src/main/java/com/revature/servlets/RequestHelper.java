@@ -23,6 +23,9 @@ public class RequestHelper {
 			case "/ExpenseReimbursementSystem/api/register":
 				System.out.println("in register case");
 				return RegisterController.registerNewUser(req);
+			case "/ExpenseReimbursementSystem/api/updateuser":
+				System.out.println("in updateuser case");
+//				return AdminHomeController.registerNewUser(req);
 			default:
 				System.out.println("in default");
 				return "/html/badlogin.html";

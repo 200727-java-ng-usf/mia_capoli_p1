@@ -15,7 +15,7 @@ import java.util.Optional;
  * Service Classes for the users to check for errors in the inputs and communicate with the Repo class.
  */
 public class UserService {
-    public static AppState app = new AppState(); //TODO fix this??
+    public static AppState app = new AppState(); //TODO how do???
     private AppUserRepo userRepo;
 
     public UserService(AppUserRepo repo) {
@@ -55,8 +55,12 @@ public class UserService {
             app.invalidateCurrentUser();
             throw new InvalidInputException("Invalid credentials given for registration.");
         }
-
-        //todo check if user is admin
+        //TODO get currently logged in user
+//        if (user.get().getRole() != Role.ADMIN) {
+//            app.invalidateCurrentUser();
+//            throw new AuthenticatorException("You aren't allowed to update any users!");
+//            //to  do return home
+//        }
 
         //attempt to get the user provided in the repo.
         Optional<AppUser> _existingUser = userRepo.findUserByUsername(newUser.getUsername());
@@ -70,32 +74,28 @@ public class UserService {
         //save the current user in the persistence layer and set the current user
         newUser.setRole(Role.EMPLOYEE);
         userRepo.save(newUser);
-//        app.setCurrentUser(newUser);
+       app.setCurrentUser(newUser);
     }
 
 
-    public void updateUser(int userId) {
+    public void updateUser(AppUser employee) {
         //if the user isn't valid, invalidate them and throw an exception.
-        if (!isUserValid(newUser)) {
+
+        Optional<AppUser> user = userRepo.findUserByUsername(employee.getUsername());
+
+        if (!isUserValid(user.get())) {
             app.invalidateCurrentUser();
             throw new InvalidInputException("Invalid credentials given for registration.");
         }
+        //TODO get currently logged in user
+//        if (user.get().getRole() != Role.ADMIN) {
+//            app.invalidateCurrentUser();
+//            throw new AuthenticatorException("You aren't allowed to update any users!");
+//            //to  do return home
+//        }
 
-        //todo check if user is admin
+        userRepo.updateAppUser(employee);
 
-        //attempt to get the user provided in the repo.
-        Optional<AppUser> _existingUser = userRepo.findUserByUsername(newUser.getUsername());
-
-        //if the user already exists, invalidate the current user and throw an exception.
-        if (_existingUser.isPresent()) {
-            app.invalidateCurrentUser();
-            throw new AuthenticatorException("Provided username is already in use!");
-        }
-
-        //save the current user in the persistence layer and set the current user
-        newUser.setRole(Role.EMPLOYEE);
-        userRepo.save(newUser);
-//        app.setCurrentUser(newUser);
     }
 
 

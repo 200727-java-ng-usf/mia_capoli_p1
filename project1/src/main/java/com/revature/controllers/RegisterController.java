@@ -27,20 +27,12 @@ public class RegisterController {
             String firstName = req.getParameter("firstName");
             String lastName = req.getParameter("lastName");
             String email = req.getParameter("email");
-            // TODO b sure the user is an admin
-            //todo move this logic to user service?
-            AppUser employee;
-            if (!(username.equals(null) || password.equals(""))) {
-                // this logic will trigger when the amount is null or the type is empty
-                return "/api/invalidinput";
-            } else {
-                employee = new AppUser(username, password, firstName, lastName, email);
-                System.out.println(employee);
-            }
 
+            AppUser employee;
+            employee = new AppUser(username, password, firstName, lastName, email);
+            System.out.println(employee);
 
             userService.registration(employee);
-            System.out.println("register");
 
             req.getSession().setAttribute("loggedUsername", username);
             req.getSession().setAttribute("loggedPassword", password);
@@ -53,7 +45,7 @@ public class RegisterController {
 
         } catch (AuthenticatorException | InvalidInputException e) {
             e.printStackTrace();
-            return "/api/badlogin.html";
+            return "/api/invalidinput";
         }
     }
 

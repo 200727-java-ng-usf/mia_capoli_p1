@@ -61,6 +61,46 @@ public class Reimb {
 
     }
 
+    public Integer getReimb_id() {
+        return reimb_id;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public Time getSubmitted() {
+        return submitted;
+    }
+
+    public Time getResolved() {
+        return resolved;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getReceipt() {
+        return receipt;
+    }
+
+    public int getAuthor_id() {
+        return author_id;
+    }
+
+    public int getResolver_id() {
+        return resolver_id;
+    }
+
+    public int getReimb_status_id() {
+        return reimb_status_id;
+    }
+
+    public ReimbTypes getReimb_type() {
+        return reimb_type;
+    }
+
     public void setReimb_id(Integer reimb_id) {
         this.reimb_id = reimb_id;
     }

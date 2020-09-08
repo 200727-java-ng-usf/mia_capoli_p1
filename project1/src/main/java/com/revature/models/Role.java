@@ -25,6 +25,20 @@ public enum Role {
 
     }
 
+    public static int getIDFromName(String name) {
+
+        Role currentRole = Role.getByName(name);
+
+        if (currentRole.ordinal() == 1) {
+            return 1;
+        } else if (currentRole.ordinal() == 2) {
+            return 2;
+        } else {
+            return 3;
+        }
+
+    }
+
     public static Role getByID(int id) {
 
         for (Role role : Role.values()) {

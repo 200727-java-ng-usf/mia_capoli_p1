@@ -197,7 +197,7 @@ public class AppUserRepo {
 
     }
 
-    public void updateAppUser(String firstNameNew, String lastNameNew, int empUpdateId) {
+    public void updateAppUser(AppUser employee) {
 
         Session session = SessionFact.getSessionFactoryProgrammaticConfig().openSession();
 
@@ -205,9 +205,21 @@ public class AppUserRepo {
         try {
 
             tx = session.beginTransaction();
-            Query query = session.createQuery("Update Employee set firstName = :firstNameNew, lastName = :lastNameNew" +
-                    "WHERE id = :empUpdateId");
-            //todo fix
+
+            int ersUserId = employee.getId();
+            String username = employee.getUsername();
+            String password = employee.getPassword();
+            String first_name = employee.getFirstName();
+            String last_name = employee.getLastName();
+            String email = employee.getEmail();
+            Role role = employee.getRole();
+            int userRoleId = role.getIDFromName(role.toString());
+
+
+            Query query = session.createQuery("Update AppUser set firstName = :firstNameNew, lastName = :lastNameNew, username = :username, " +
+                    "password = :password, email = :email, role = :userRoleId"+
+                    "WHERE id = :ersUserId");
+
             query.executeUpdate();
             tx.commit();
 

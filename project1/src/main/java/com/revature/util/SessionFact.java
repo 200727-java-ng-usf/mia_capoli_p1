@@ -44,6 +44,7 @@ public class SessionFact {
      *   2. Get the Metadata from the Service Registry, which is used for configuring the class mappings
      *   3. Get the SessionFactoryBuilder from the Metadata, and the SessionFactory from the Builder
      */
+
     public static SessionFactory getSessionFactoryFileConfig() {
         if (sessionFactory != null)
             return sessionFactory;
