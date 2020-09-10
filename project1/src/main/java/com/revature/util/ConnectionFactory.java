@@ -56,8 +56,17 @@ public class ConnectionFactory {
             );
 
         } catch (ClassNotFoundException | SQLException e) {
-            System.out.println(e.getStackTrace());
-            System.err.println("Cannot find the proper schema referenced!");
+//            System.out.println(e.getStackTrace());
+//            System.err.println("Cannot find the proper schema referenced!");
+            try {
+                conn = DriverManager.getConnection(
+                        System.getenv("url"),
+                        System.getenv("username"),
+                        System.getenv("password")
+                );
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
         }
 
         if (conn == null) {
