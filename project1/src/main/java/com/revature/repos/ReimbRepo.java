@@ -1,5 +1,6 @@
 package com.revature.repos;
 
+import com.revature.exceptions.ResourceNotFoundException;
 import com.revature.models.AppUser;
 import com.revature.models.Reimb;
 import com.revature.models.ReimbTypes;
@@ -24,7 +25,7 @@ import java.util.stream.Collectors;
 public class ReimbRepo {
 
 
-    public Set<Reimb> findReimbByType(String reimb_type) {
+    public Set<Reimb> findReimbByType(ReimbTypes reimb_type) {
 
         Set<Reimb> _reimb = new HashSet<>();
         try (Connection conn = ConnectionFactory.getConnFactory().getConnection()) {
@@ -32,7 +33,7 @@ public class ReimbRepo {
             String sql = "SELECT * FROM project1.ers_reimbursments WHERE reimb_type_id = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
 
-            int reimbTypeId = ReimbTypes.getIDFromName(reimb_type);
+            int reimbTypeId = ReimbTypes.getIDFromName(reimb_type.toString());
 
             pstmt.setInt(1, reimbTypeId);
             ResultSet rs = pstmt.executeQuery();
@@ -112,8 +113,8 @@ public class ReimbRepo {
 
             pstmt.setInt(1, reimb.getReimb_id());
             pstmt.setDouble(2, reimb.getAmount());
-            pstmt.setTime(3, reimb.getSubmitted());
-            pstmt.setTime(4, reimb.getResolved());
+            pstmt.setTimestamp(3, reimb.getSubmitted());
+            pstmt.setTimestamp(4, reimb.getResolved());
             pstmt.setString(5, reimb.getDescription());
             pstmt.setString(6, reimb.getReceipt());
             pstmt.setDouble(7, reimb.getAuthor_id());
@@ -130,7 +131,7 @@ public class ReimbRepo {
             System.err.println("Database Error!");
         }
     }
-
+    
 
     private Set<Reimb> mapResultSet(ResultSet rs) throws SQLException {
 
@@ -141,8 +142,8 @@ public class ReimbRepo {
             Reimb temp = new Reimb();
             temp.setReimb_id(rs.getInt("reimb_id"));
             temp.setAmount(rs.getInt("amount"));
-            temp.setSubmitted(rs.getTime("submitted"));
-            temp.setResolved(rs.getTime("resolved"));
+            temp.setSubmitted(rs.getTimestamp("submitted"));
+            temp.setResolved(rs.getTimestamp("resolved"));
             temp.setDescription(rs.getString("description"));
             temp.setAuthor_id(rs.getInt("author_id"));
             temp.setResolver_id(rs.getInt("resolver_id"));
@@ -184,9 +185,29 @@ public class ReimbRepo {
         return null;
     }
 
-    //TODO implement?? make current active??
-    public void selectReimbursement(int reimb_id) {
+    public Reimb selectReimbursement(int reimb_id) {
+        Optional<Reimb> _reimb = Optional.empty();
+        try (Connection conn = ConnectionFactory.getConnFactory().getConnection()) {
+            // select the reimb matching the  id provided.
+            String sql = "SELECT * FROM project1.ers_reimbursments WHERE reimb_id = ?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
 
+
+            pstmt.setInt(1, reimb_id);
+            ResultSet rs = pstmt.executeQuery();
+
+            //find the first user that matches the results
+            _reimb = Optional.ofNullable(mapResultSet(rs).stream().findFirst().orElseThrow(ResourceNotFoundException::new));
+        //TODO set currently selected reimb
+            return _reimb.get();
+
+
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+            System.err.println("Database Error!");
+        }
+
+        return  _reimb.get();
 
     }
 
@@ -230,7 +251,7 @@ public class ReimbRepo {
 
         Transaction tx = null;
         try {
-
+        //todo update
             tx = session.beginTransaction();
             Query query = session.createQuery("Update Reimb set firstName = :firstNameNew, lastName = :lastNameNew" +
                     "WHERE id = :empUpdateId");
@@ -246,7 +267,6 @@ public class ReimbRepo {
 
     }
 
-    //TODO
     public void deleteReimb(int reimbDeleteId) {
         Session session = SessionFact.getSessionFactoryProgrammaticConfig().openSession();
 
@@ -264,6 +284,25 @@ public class ReimbRepo {
             e.printStackTrace();
         }
 
+    }
+
+
+    public Set<Reimb> findAllReimbs() {
+        Set<Reimb> reimbs = new HashSet<>();
+        try (Connection conn = ConnectionFactory.getConnFactory().getConnection()) {
+
+            String sql = "SELECT * FROM project1.ers_reimbursments ";
+            Statement stmt = conn.createStatement();
+            stmt.executeQuery(sql);
+
+            ResultSet rs = stmt.executeQuery(sql);
+            reimbs = mapResultSet(rs);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return reimbs;
     }
 
 }

@@ -6,15 +6,13 @@ import com.revature.services.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static com.revature.services.UserService.app;
 
 /**
  * Controllers handle the business logic of an endpoint
  */
 public class LoginController {
 
-    private static AppUserRepo AppUserRepo = new AppUserRepo();
-    private static UserService userService = new UserService(AppUserRepo);
+    private static UserService userService = new UserService();
 
 
     public static String login(HttpServletRequest req) {

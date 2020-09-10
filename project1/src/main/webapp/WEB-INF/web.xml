@@ -6,7 +6,7 @@
     <!--Deployment Descriptor-->
     <display-name>Project 1</display-name>
     <welcome-file-list>
-        <welcome-file>login.html</welcome-file>
+        <welcome-file>index.html</welcome-file>
     </welcome-file-list>
 
     <servlet>

@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
@@ -20,10 +21,10 @@ public class Reimb {
     private double amount;
 
     @Column(name = "submitted")
-    private Time submitted;
+    private Timestamp submitted;
 
     @Column(name = "first_name")
-    private Time resolved;
+    private Timestamp resolved;
 
     @Column(name = "description")
     private String description;
@@ -43,7 +44,7 @@ public class Reimb {
     @Column(name = "reimb_type_id")
     private ReimbTypes reimb_type;
 
-    public Reimb(Integer reimb_id, double amount, Time submitted, Time resolved, String description, String receipt, int author_id, int resolver_id, int reimb_status_id, int reimb_type_id) {
+    public Reimb(Integer reimb_id, double amount, Timestamp submitted, Timestamp resolved, String description, String receipt, int author_id, int resolver_id, int reimb_status_id, int reimb_type_id) {
         this.reimb_id = reimb_id;
         this.amount = amount;
         this.submitted = submitted;
@@ -61,6 +62,20 @@ public class Reimb {
 
     }
 
+    public Reimb(int amount, Timestamp submitted, Timestamp resolved, String description, String receipt, int author_id, int resolver_id, int reimb_status_id, int reimb_type_id) {
+        this.amount = amount;
+        this.submitted = submitted;
+        this.resolved = resolved;
+        this.description = description;
+        this.receipt = receipt;
+        this.author_id = author_id;
+        this.resolver_id = resolver_id;
+        this.reimb_status_id = reimb_status_id;
+        int reimb_int = reimb_type_id;
+        this.reimb_type = ReimbTypes.getByID(reimb_type_id);
+
+    }
+
     public Integer getReimb_id() {
         return reimb_id;
     }
@@ -69,11 +84,11 @@ public class Reimb {
         return amount;
     }
 
-    public Time getSubmitted() {
+    public Timestamp getSubmitted() {
         return submitted;
     }
 
-    public Time getResolved() {
+    public Timestamp getResolved() {
         return resolved;
     }
 
@@ -109,11 +124,11 @@ public class Reimb {
         this.amount = amount;
     }
 
-    public void setSubmitted(Time submitted) {
+    public void setSubmitted(Timestamp submitted) {
         this.submitted = submitted;
     }
 
-    public void setResolved(Time resolved) {
+    public void setResolved(Timestamp resolved) {
         this.resolved = resolved;
     }
 

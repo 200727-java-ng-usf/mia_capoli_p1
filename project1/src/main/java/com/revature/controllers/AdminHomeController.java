@@ -11,8 +11,7 @@ import java.io.IOException;
 
 public class AdminHomeController {
 
-	private static AppUserRepo userRepo = new AppUserRepo();
-	private static UserService userService = new UserService(userRepo);
+	private static UserService userService = new UserService();
 
 	public static String home(HttpServletRequest req){
 		return "/html/home.html";

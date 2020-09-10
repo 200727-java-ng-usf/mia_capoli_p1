@@ -11,8 +11,7 @@ import java.io.IOException;
 
 public class RegisterController {
 
-    private static AppUserRepo userRepo = new AppUserRepo();
-    private static UserService userService = new UserService(userRepo);
+    private static UserService userService = new UserService();
 
     public static String registerNewUser(HttpServletRequest req) throws IOException {
 

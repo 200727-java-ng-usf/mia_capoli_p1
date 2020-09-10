@@ -8,10 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +18,13 @@ import java.util.Set;
  * The class that accesses the AppUser Repository and contains methods to easily access users.
  */
 public class AppUserRepo {
+
+    private String baseQuery = "SELECT * FROM project1.ers_users au " +
+            "JOIN project1.ers_user_roles ur " +
+            "ON au.user_role_id = ur.role_id ";
+
+
+
     /**
      * Find a user in the Repo based on the Username and Password provided.
      *
@@ -33,7 +37,7 @@ public class AppUserRepo {
         Optional<AppUser> _user = Optional.empty();
         try (Connection conn = ConnectionFactory.getConnFactory().getConnection()) {
             // select the user matching the username and password provided.
-            String sql = "SELECT * FROM project1.ers_users WHERE username = ? AND PASSWORD = ?";
+            String sql = baseQuery + "WHERE username = ? AND PASSWORD = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, username);
             pstmt.setString(2, password);
@@ -134,9 +138,9 @@ public class AppUserRepo {
             temp.setPassword(rs.getString("password"));
             temp.setFirstName(rs.getString("first_name"));
             temp.setLastName(rs.getString("last_name"));
-            temp.setLastName(rs.getString("email"));
-            int role_int = rs.getInt("user_role_id");
-            temp.setRole(Role.getByID(role_int));
+            temp.setEmail(rs.getString("email"));
+            temp.setRole(Role.getByName(rs.getString("role_name")));
+            System.out.println(temp);
             users.add(temp);
         }
 
@@ -170,6 +174,30 @@ public class AppUserRepo {
         }
 
         return null;
+    }
+
+    public Optional<AppUser> findUserById(int id) {
+
+        Optional<AppUser> _user = Optional.empty();
+        try (Connection conn = ConnectionFactory.getConnFactory().getConnection()) {
+            String sql = (baseQuery + "WHERE au.id = ?");
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+
+            pstmt.setInt(1, id);
+
+            Set<AppUser> rs = mapResultSet(pstmt.executeQuery());
+            if (!rs.isEmpty()) {
+                _user = rs.stream().findFirst();
+            }
+
+
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
+
+
+        return _user;
+
     }
 
 
@@ -250,4 +278,21 @@ public class AppUserRepo {
 
     }
 
+    public Set<AppUser> findAllUsers() {
+        Set<AppUser> users = new HashSet<>();
+        try (Connection conn = ConnectionFactory.getConnFactory().getConnection()) {
+
+            String sql = "SELECT * FROM project1.ers_users";
+            Statement stmt = conn.createStatement();
+            stmt.executeQuery(sql);
+
+            ResultSet rs = stmt.executeQuery(sql);
+            users = mapResultSet(rs);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return users;
+    }
 }
