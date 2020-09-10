@@ -11,20 +11,21 @@ public class RequestViewHelper {
     public String process(HttpServletRequest req) throws IOException {
         switch (req.getRequestURI()) {
 
+            case "/login.view":
             case "/ExpenseReimbursementSystem/login.view":
                 return "partials/login.html";
+            case "/home.view":
             case "/ExpenseReimbursementSystem/home.view":
-                System.out.println("in home case");
-                return AdminHomeController.home(req);
-            case "/ExpenseReimbursementSystem/api/register":
-                System.out.println("in register case");
-                return RegisterController.registerNewUser(req);
-            case "/ExpenseReimbursementSystem/api/updateuser":
-                System.out.println("in updateuser case");
-//				return AdminHomeController.registerNewUser(req);
+                String principal = (String) req.getSession().getAttribute("principal");
+                if (principal == null || principal.equals("")) {
+                    return "partials/login.html";
+                }
+                return "partials/home.html";
+            case "/register.view":
+            case "/ExpenseReimbursementSystem/register.view":
+                return "partials/register.html";
             default:
-                System.out.println("in default");
-                return "/html/badlogin.html";
+                return null;
 
         }
 

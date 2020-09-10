@@ -120,9 +120,6 @@ public class ReimbRepo {
             pstmt.setDouble(7, reimb.getAuthor_id());
             pstmt.setInt(8, reimb.getResolver_id());
             pstmt.setInt(9, reimb.getReimb_status_id());
-//            ReimbTypes reimbType = reimb.getReimb_type();
-//            int reimbId = ReimbTypes.getIDFromName(reimbType.toString());
-//            pstmt.setInt(10, reimbId);
 
             pstmt.setInt(10, reimb.getReimb_type().ordinal() + 1);
 

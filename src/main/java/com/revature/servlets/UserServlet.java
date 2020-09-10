@@ -109,7 +109,7 @@ public class UserServlet extends HttpServlet {
             respWriter.write(newUserJSON);
             resp.setStatus(201); // 201 = CREATED
 
-        } catch (MismatchedInputException mie) {
+        } catch (MismatchedInputException | InvalidRequestException mie) {
             mie.printStackTrace();
             resp.setStatus(400);
 

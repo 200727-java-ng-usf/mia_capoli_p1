@@ -3,14 +3,13 @@ package com.revature.dtos;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.models.AppUser;
-import com.revature.models.AppUser;
 
 import java.util.Objects;
 
 public class Principal {
 
     private int id;
-    private String userame;
+    private String username;
     private String role;
 
     public Principal() {
@@ -19,7 +18,7 @@ public class Principal {
 
     public Principal(AppUser user) {
         this.id = user.getId();
-        this.userame = user.getUsername();
+        this.username = user.getUsername();
         this.role = user.getRole().toString();
 
     }
@@ -32,12 +31,12 @@ public class Principal {
         this.id = id;
     }
 
-    public String getUserame() {
-        return userame;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserame(String userame) {
-        this.userame = userame;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getRole() {
@@ -60,20 +59,20 @@ public class Principal {
         if (o == null || getClass() != o.getClass()) return false;
         Principal principal = (Principal) o;
         return id == principal.id &&
-                Objects.equals(userame, principal.userame) &&
+                Objects.equals(username, principal.username) &&
                 Objects.equals(role, principal.role);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userame, role);
+        return Objects.hash(id, username, role);
     }
 
     @Override
     public String toString() {
         return "Principal{" +
                 "id=" + id +
-                ", userame='" + userame + '\'' +
+                ", username='" + username + '\'' +
                 ", role='" + role + '\'' +
                 '}';
     }

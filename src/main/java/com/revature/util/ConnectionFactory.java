@@ -2,6 +2,7 @@ package com.revature.util;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -21,11 +22,13 @@ public class ConnectionFactory {
      */
     private ConnectionFactory() {
         try {
-
-            props.load(new FileReader("./src/main/resources/application.properties"));
-            if (props == null) {
-                props.load(new FileReader("./application.properties"));
-            }
+            ClassLoader loader = Thread.currentThread().getContextClassLoader();
+            InputStream propsInput = loader.getResourceAsStream("application.properties");
+            props.load(propsInput);
+//            props.load(new FileReader("./src/main/resources/application.properties"));
+//            if (props == null) {
+//                props.load(new FileReader("./application.properties"));
+//            }
         } catch (IOException e) {
             System.err.println("Could not get a connection!");
         }
@@ -56,8 +59,6 @@ public class ConnectionFactory {
             );
 
         } catch (ClassNotFoundException | SQLException e) {
-//            System.out.println(e.getStackTrace());
-//            System.err.println("Cannot find the proper schema referenced!");
             try {
                 conn = DriverManager.getConnection(
                         System.getenv("url"),

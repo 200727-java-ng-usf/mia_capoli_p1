@@ -1,9 +1,8 @@
-
 <div id="login-container">
     <div class="form" id="login-form">
-        <h2>Expense Reimbursements</h2>
+        <h2>Expense Reimbursement System</h2>
         <hr/>
-        <h3>Sign into your Expense Reimbursement Account :D</h3>
+        <h3>Sign in :D</h3>
 
         <div class="form-group">
             <label for="login-username">Username</label>
@@ -13,8 +12,9 @@
             <label for="login-password">password</label>
             <input type="password" class="form-control" id="login-password" placeholder="Please enter your password"/>
         </div>
-
-        <button onClick="loginButton()" type="submit" class="btn btn-primary" id="loginButton">Login</button>
+        <div id="login-button-container">
+            <button type="submit" class="btn btn-primary" id="login">Login</button>
+        </div>
         <br/>
         <br/>
         <div class="alert alert-danger" id="login-message"></div>

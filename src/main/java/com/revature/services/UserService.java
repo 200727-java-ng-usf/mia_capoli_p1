@@ -34,17 +34,11 @@ public class UserService {
 
         Optional<AppUser> _authUser = (userRepo.findUser(username, password));
         System.out.println(_authUser);
-        //if the user isn't present in the persistence layer, throw an exception. Otherwise set the current user to the provided user credentials' user.
+
         if (!_authUser.isPresent()) {
             //TODO set currently logged in user
 
-//            app.invalidateCurrentUser();
             throw new AuthenticatorException();
-        } else {
-            //TODO set currently logged in user
-//
-//            app.setCurrentUser(_authUser.get());
-
         }
 
         return _authUser.get();
@@ -57,31 +51,27 @@ public class UserService {
     public void registration(AppUser newUser) {
         //if the user isn't valid, invalidate them and throw an exception.
         if (!isUserValid(newUser)) {
-            //TODO set currently logged in user
-//            app.invalidateCurrentUser();
             throw new InvalidInputException("Invalid credentials given for registration.");
         }
-        //TODO get currently logged in user
-//        if (user.get().getRole() != Role.ADMIN) {
-//            app.invalidateCurrentUser();
-//            throw new AuthenticatorException("You aren't allowed to update any users!");
-//            //to  do return home
-//        }
 
-        //attempt to get the user provided in the repo.
         Optional<AppUser> _existingUser = userRepo.findUserByUsername(newUser.getUsername());
 
-        //if the user already exists, invalidate the current user and throw an exception.
         if (_existingUser.isPresent()) {
-            //TODO set currently logged in user
-//            app.invalidateCurrentUser();
             throw new AuthenticatorException("Provided username is already in use!");
         }
 
-        //save the current user in the persistence layer and set the current user
+
+        Optional<AppUser> existingUser_ = userRepo.findUserByEmail(newUser.getEmail());
+
+        if (existingUser_.isPresent()) {
+            System.out.println("in is present");
+            throw new InvalidRequestException("Provided email is already in use!");
+        }
+
+
         newUser.setRole(Role.EMPLOYEE);
         userRepo.save(newUser);
-//       app.setCurrentUser(newUser);
+
     }
 
 
@@ -139,6 +129,16 @@ public class UserService {
         if (user.getUsername() == null || user.getUsername().trim().equals("")) return false;
         if (user.getPassword() == null || user.getPassword().trim().equals("")) return false;
         return true;
+    }
+
+    public boolean isUsernameAvailable(String username) {
+        AppUser user = userRepo.findUserByUsername(username).orElse(null);
+        return user == null;
+    }
+
+    public boolean isEmailAvailable(String email) {
+        AppUser user = userRepo.findUserByEmail(email).orElse(null);
+        return user == null;
     }
 
 }

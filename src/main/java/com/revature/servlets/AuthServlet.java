@@ -10,7 +10,6 @@ import com.revature.exceptions.InvalidRequestException;
 import com.revature.models.AppUser;
 import com.revature.services.UserService;
 
-import javax.security.sasl.AuthenticationException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -42,14 +41,19 @@ public class AuthServlet extends HttpServlet {
 
 
             Credentials creds = mapper.readValue(req.getInputStream(), Credentials.class);
-            AppUser authUser = userService.authenticate(creds.getUsername(), creds.getPassword());
 
+            AppUser authUser = userService.authenticate(creds.getUsername(), creds.getPassword());
+            Principal principal = new Principal(authUser);
 
             HttpSession session = req.getSession();
-            Principal principal = new Principal(authUser);
             session.setAttribute("principal", principal.stringify());
 
-            resp.setStatus(204); //204 = no content
+
+            String principalJSON = mapper.writeValueAsString(principal);
+            System.out.println(principalJSON);
+            respWriter.write(principalJSON);
+
+            resp.setStatus(200); //204 = no content
 
 
         } catch (MismatchedInputException | InvalidRequestException e) {
@@ -59,7 +63,7 @@ public class AuthServlet extends HttpServlet {
             String errJSON = mapper.writeValueAsString(err);
             respWriter.write(errJSON);
 
-        } catch (AuthenticationException ae) {
+        } catch (AuthenticatorException ae) {
             ae.printStackTrace();
             resp.setStatus(401);
             ErrorResponse err = new ErrorResponse(401, ae.getMessage());

@@ -5,6 +5,7 @@ com\revature\repos\AppUserRepo.class
 com\revature\util\SessionFact.class
 com\revature\models\AppUser.class
 com\revature\dtos\Principal.class
+com\revature\util\ValidationHelper.class
 com\revature\exceptions\InvalidInputException.class
 com\revature\util\RequestViewHelper.class
 com\revature\servlets\AuthServlet.class
@@ -12,6 +13,7 @@ com\revature\models\Role.class
 com\revature\models\Reimb.class
 com\revature\controllers\LoginController.class
 com\revature\AppDriver.class
+com\revature\servlets\ValidationServlet.class
 com\revature\exceptions\InvalidRequestException.class
 com\revature\repos\ReimbRepo.class
 com\revature\servlets\ViewServlet.class
