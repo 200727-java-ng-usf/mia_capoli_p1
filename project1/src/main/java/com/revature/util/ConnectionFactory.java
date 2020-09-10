@@ -1,5 +1,7 @@
 package com.revature.util;
 
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -17,17 +19,17 @@ public class ConnectionFactory {
     /**
      * Connection Factory Constructor
      */
-//    private ConnectionFactory() {
-//        try {
-//
-//            props.load(new FileReader("./src/main/resources/application.properties"));
-//            if (props == null) {
-//                props.load(new FileReader("./application.properties"));
-//            }
-//        } catch (IOException e) {
-//            System.err.println("Could not get a connection!");
-//        }
-//    }
+    private ConnectionFactory() {
+        try {
+
+            props.load(new FileReader("./src/main/resources/application.properties"));
+            if (props == null) {
+                props.load(new FileReader("./application.properties"));
+            }
+        } catch (IOException e) {
+            System.err.println("Could not get a connection!");
+        }
+    }
 
     //Get the connection factory
     public static ConnectionFactory getConnFactory() {
@@ -47,16 +49,27 @@ public class ConnectionFactory {
 
             Class.forName("org.postgresql.Driver");
 
-            conn = DriverManager.getConnection("jdbc:postgresql://java-ng-usf-200727.cv76tnqmah34.us-east-2.rds.amazonaws.com:5432/postgres",
-                    "postgres",
-                    "capolimia");
+            conn = DriverManager.getConnection(
+                    props.getProperty("url"),
+                    props.getProperty("username"),
+                    props.getProperty("password")
+            );
+
         } catch (ClassNotFoundException | SQLException e) {
             System.out.println(e.getStackTrace());
             System.err.println("Cannot find the proper schema referenced!");
         }
 
         if (conn == null) {
-            throw new RuntimeException("Failed to establish connection.");
+            try {
+                conn = DriverManager.getConnection(
+                        System.getenv("url"),
+                        System.getenv("username"),
+                        System.getenv("password")
+                );
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
         return conn;
