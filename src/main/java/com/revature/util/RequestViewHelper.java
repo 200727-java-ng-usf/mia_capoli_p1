@@ -1,8 +1,5 @@
 package com.revature.util;
 
-import com.revature.controllers.AdminHomeController;
-import com.revature.controllers.RegisterController;
-
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
@@ -21,6 +18,20 @@ public class RequestViewHelper {
                     return "partials/login.html";
                 }
                 return "partials/home.html";
+            case "/adminhome.view":
+            case "/ExpenseReimbursementSystem/adminhome.view":
+                String principal_home = (String) req.getSession().getAttribute("principal");
+                if (principal_home == null || principal_home.equals("")) {
+                    return "partials/login.html";
+                }
+                return "partials/homeAdmin.html";
+            case "/delete.view":
+            case "/ExpenseReimbursementSystem/delete.view":
+                String principal_update = (String) req.getSession().getAttribute("principal");
+                if (principal_update == null || principal_update.equals("")) {
+                    return "partials/login.html";
+                }
+                return "partials/delete.html";
             case "/register.view":
             case "/ExpenseReimbursementSystem/register.view":
                 return "partials/register.html";

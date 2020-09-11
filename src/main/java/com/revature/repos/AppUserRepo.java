@@ -295,7 +295,7 @@ public class AppUserRepo {
         Set<AppUser> users = new HashSet<>();
         try (Connection conn = ConnectionFactory.getConnFactory().getConnection()) {
 
-            String sql = "SELECT * FROM project1.ers_users";
+            String sql = baseQuery + "ORDER by au.ers_user_id";
             Statement stmt = conn.createStatement();
             stmt.executeQuery(sql);
 

@@ -20,12 +20,12 @@ com\revature\servlets\ViewServlet.class
 com\revature\controllers\AdminHomeController.class
 com\revature\controllers\RegisterController.class
 com\revature\util\ConnectionFactory.class
+com\revature\servlets\DeleteUserServlet.class
 com\revature\services\UserService.class
-com\revature\servlets\RequestHelper.class
 com\revature\exceptions\ResourceNotFoundException.class
 com\revature\servlets\UserServlet.class
-com\revature\servlets\ForwardingMasterServlet.class
 com\revature\dtos\ErrorResponse.class
 com\revature\services\ReimbService.class
+com\revature\servlets\ReimbServlet.class
 com\revature\exceptions\AuthenticatorException.class
 com\revature\models\ReimbTypes.class

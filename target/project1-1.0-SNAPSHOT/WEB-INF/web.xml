@@ -9,13 +9,5 @@
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
 
-    <servlet>
-        <servlet-name>ForwardingMasterServlet</servlet-name>
-        <servlet-class>com.revature.servlets.ForwardingMasterServlet</servlet-class>
-    </servlet>
 
-    <servlet-mapping>
-        <servlet-name>ForwardingMasterServlet</servlet-name>
-        <url-pattern>/api/*</url-pattern>
-    </servlet-mapping>
 </web-app>

@@ -6,7 +6,32 @@ window.onload = function() {
     document.getElementById("toRegister").addEventListener('click', loadRegister);
     document.getElementById("toLogout").addEventListener('click', logout);
     document.getElementById("toHome").addEventListener('click', loadHome);
+    document.getElementById("toUpdate").addEventListener('click', loadUpdate);
+    document.getElementById("toDelete").addEventListener('click', loadDelete);
 }
+
+function loadButtons() {
+    if (document.getElementById("toLogin")) {
+        document.getElementById("toLogin").addEventListener('click', loadLogin);
+    }
+    if (document.getElementById("toRegister")) {
+        document.getElementById("toRegister").addEventListener('click', loadRegister);
+    }
+    if (document.getElementById("toLogout")) {
+        document.getElementById("toLogout").addEventListener('click', logout);
+    }
+    if (document.getElementById("toHome")) {
+        document.getElementById("toHome").addEventListener('click', loadHome);
+    }
+    if (document.getElementById("toUpdate")) {
+        document.getElementById("toUpdate").addEventListener('click', loadUpdate);
+    }
+    if (document.getElementById("toDelete")) {
+        document.getElementById("toDelete").addEventListener('click', loadDelete);
+    }
+    
+}
+
 
 function loadLogin() {
 
@@ -26,7 +51,6 @@ function loadLogin() {
 
 
 }
-
 
 function loadRegister() {
     console.log('in loadRegister()');
@@ -57,10 +81,14 @@ function loadHome() {
     }
 
     let xhr = new XMLHttpRequest();
-
-
-    xhr.open('GET', 'home.view', true);
-    xhr.send();
+    let authUser = JSON.parse(localStorage.getItem('authUser'));
+    if (authUser.role == 'Admin' || authUser.role == 'admin') {
+        xhr.open('GET', 'adminhome.view', true);
+        xhr.send();
+    } else {
+        xhr.open('GET', 'home.view', true);
+        xhr.send();
+    }
 
 
     xhr.onreadystatechange = function() {
@@ -73,9 +101,48 @@ function loadHome() {
 
 }
 
+function loadUpdate() {
+
+
+   
+
+}
+
+
+function loadDelete() {
+    if (!localStorage.getItem('authUser')) {
+        console.log("no user logged in, nav to login screen");
+        loadLogin();
+        return;
+    }
+
+    let xhr = new XMLHttpRequest();
+    let authUser = JSON.parse(localStorage.getItem('authUser'));
+    if (authUser.role == 'Admin' || authUser.role == 'admin') {
+        xhr.open('GET', 'delete.view', true);
+        xhr.send();
+
+        //TODO FIX LATER
+    } else {
+        xhr.open('GET', 'home.view', true);
+        xhr.send();
+    }
+
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            APP_VIEW.innerHTML = xhr.responseText;
+            configureDeleteView();
+         }
+
+    }
+
+}
+
 //---------------------------------------------------------------------------------
 
 function configureLoginView() {
+
     console.log('in configureLoginView()');
 
     document.getElementById('login-message').setAttribute('hidden', true);
@@ -84,6 +151,8 @@ function configureLoginView() {
 }
 
 function configureRegisterView() {
+    loadButtons();
+
     console.log('in configureRegisterView()');
 
     document.getElementById('reg-message').setAttribute('hidden', true);
@@ -97,11 +166,90 @@ function configureRegisterView() {
 }
 
 function configureHomeView() {
+    loadButtons();
     let authUser = JSON.parse(localStorage.getItem('authUser'));
     document.getElementById('loggedInUsername').innerText = authUser.username;
 
+    let xhrusers = new XMLHttpRequest();
 
+    xhrusers.open('GET', 'users', true);
+    xhrusers.send();
+
+
+    xhrusers.onreadystatechange = function() {
+        if (xhrusers.readyState == 4 && xhrusers.status == 200) {
+            var users = JSON.parse(xhrusers.responseText);
+         }
+
+    
+
+    let table = document.getElementById("adminTable");
+	table.removeChild(document.getElementById("list"));
+	let body = document.createElement("tbody");
+	body.setAttribute("id", "list");
+	table.appendChild(body);
+
+
+    for(let i = 0 ; i < users.length; i++){
+
+        let newRow = document.createElement("tr");
+
+        newRow.innerHTML = 
+        "<td>" + users[i].id + "</td>" +
+		"<td>" + users[i].username + "</td>" +
+		"<td>" + users[i].firstName + "</td>" +
+		"<td>" + users[i].lastName + "</td>" +
+		"<td>" + users[i].email + "</td>" ;
+
+        body.appendChild(newRow);
+    }
 }
+}
+
+function configureDeleteView() {
+    loadButtons();
+
+    document.getElementById("delete-button-container").addEventListener('mouseover', validateDeleteForm);
+    document.getElementById('deleteU').addEventListener('click', deleteUser)
+    let authUser = JSON.parse(localStorage.getItem('authUser'));
+
+    let xhrusers = new XMLHttpRequest();
+
+    xhrusers.open('GET', 'users', true);
+    xhrusers.send();
+
+
+    xhrusers.onreadystatechange = function() {
+        if (xhrusers.readyState == 4 && xhrusers.status == 200) {
+            var users = JSON.parse(xhrusers.responseText);
+         }
+
+    
+
+    let table = document.getElementById("adminTable");
+	table.removeChild(document.getElementById("list"));
+	let body = document.createElement("tbody");
+	body.setAttribute("id", "list");
+	table.appendChild(body);
+
+
+    for(let i = 0 ; i < users.length; i++){
+
+        let newRow = document.createElement("tr");
+
+        newRow.innerHTML = 
+        "<td>" + users[i].id + "</td>" +
+		"<td>" + users[i].username + "</td>" +
+		"<td>" + users[i].firstName + "</td>" +
+		"<td>" + users[i].lastName + "</td>" +
+		"<td>" + users[i].email + "</td>" ;
+
+        body.appendChild(newRow);
+    }
+}
+}
+
+
 
 
 
@@ -180,6 +328,36 @@ function register() {
 
 }
 
+
+function deleteUser() {
+
+    let id = document.getElementById('deleteU').value;
+    
+
+        let creds = {
+            id: id
+        }
+
+
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', './deleteuser');
+    xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.send(id);
+
+    xhr.onreadystatechange = function() {
+        if  (xhr.readyState == 4 && xhr.status == 201) {
+            document.getElementById('reg-message').setAttribute('hidden', true);
+            console.log('SUCCESS!')
+
+
+        } else if (xhr.readyState == 4 && xhr.status == 400) {
+            document.getElementById('reg-message').removeAttribute('hidden');
+
+            let err = JSON.parse(xhr.responseText);
+            document.getElementById('reg-message').innerText = err.message;
+        }
+    }
+}
 
 function isUsernameAvailable() {
 
@@ -297,6 +475,22 @@ function validateRegisterForm() {
         document.getElementById('register').setAttribute('disabled', true);
     } else {
         document.getElementById('register').removeAttribute('disabled');
+        document.getElementById('reg-message').setAttribute('hidden', true);
+    }
+}
+
+function validateDeleteForm() {
+
+    console.log('in validateDeleteForm()');
+
+    let id = document.getElementById('deleteU').value;
+
+    if (!id) {
+        document.getElementById('reg-message').removeAttribute('hidden');
+        document.getElementById('reg-message').innerText = 'You must provided an Id!'
+        document.getElementById('deleteU').setAttribute('disabled', true);
+    } else {
+        document.getElementById('deleteU').removeAttribute('disabled');
         document.getElementById('reg-message').setAttribute('hidden', true);
     }
 }

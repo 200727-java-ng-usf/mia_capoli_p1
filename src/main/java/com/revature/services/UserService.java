@@ -95,6 +95,19 @@ public class UserService {
 
     }
 
+    public void deleteUser(int id) {
+        //if the user isn't valid, invalidate them and throw an exception.
+
+        Optional<AppUser> user = userRepo.findUserById(id);
+
+        if (!isUserValid(user.get())) {
+            throw new InvalidInputException("Invalid credentials given for deletion.");
+        }
+
+        userRepo.deleteEmployee(id);
+
+    }
+
     public Set<AppUser> getAllUsers() {
 
         Set<AppUser> users = userRepo.findAllUsers();

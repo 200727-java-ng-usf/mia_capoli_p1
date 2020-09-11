@@ -61,3 +61,8 @@ create TABLE ERS_USER_ROLES (
 	ROLE_NAME varchar(10)
 
 )
+
+
+INSERT INTO ers_users app_users (username, password, first_name, last_name, email, user_role_id )
+values 
+	('aa', 'pa', 'Alice', 'Anderson', 'aa@revature.com', 1),
