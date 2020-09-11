@@ -23,7 +23,6 @@ import java.util.Set;
 
 @WebServlet("/reimbs/*")
 public class ReimbServlet extends HttpServlet {
-    private final UserService userService = new UserService();
     private final ReimbService reimbService = new ReimbService();
 
     @Override

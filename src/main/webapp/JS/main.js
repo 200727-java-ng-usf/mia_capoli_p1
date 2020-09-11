@@ -483,7 +483,7 @@ function validateDeleteForm() {
 
     console.log('in validateDeleteForm()');
 
-    let id = document.getElementById('deleteU').value;
+    let id = document.getElementById('deleteForm').value;
 
     if (!id) {
         document.getElementById('reg-message').removeAttribute('hidden');

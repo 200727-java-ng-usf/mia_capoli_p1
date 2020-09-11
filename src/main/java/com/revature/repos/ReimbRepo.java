@@ -1,10 +1,8 @@
 package com.revature.repos;
 
 import com.revature.exceptions.ResourceNotFoundException;
-import com.revature.models.AppUser;
 import com.revature.models.Reimb;
 import com.revature.models.ReimbTypes;
-import com.revature.models.Role;
 import com.revature.util.ConnectionFactory;
 import com.revature.util.SessionFact;
 import org.hibernate.Session;
@@ -13,7 +11,6 @@ import org.hibernate.query.Query;
 
 import java.sql.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -156,31 +153,31 @@ public class ReimbRepo {
     }
 
 
-    public String returnAllReimbs() {
-        Session session = SessionFact.getSessionFactoryProgrammaticConfig().openSession();
-
-        Transaction tx = null;
-
-        try {
-            tx = session.beginTransaction();
-
-            List<Reimb> reimbs = session.createQuery("FROM Reimb", Reimb.class).list();
-            for (Reimb r : reimbs) {
-                System.out.println("Reimbursement: " + r.toString());
-            }
-
-
-            tx.commit();
-
-            return reimbs.toString();
-
-        } catch (Exception e) {
-            if (tx != null) tx.rollback();
-            e.printStackTrace();
-        }
-
-        return null;
-    }
+//    public String returnAllReimbs() {
+//        Session session = SessionFact.getSessionFactoryProgrammaticConfig().openSession();
+//
+//        Transaction tx = null;
+//
+//        try {
+//            tx = session.beginTransaction();
+//
+//            List<Reimb> reimbs = session.createQuery("FROM Reimb", Reimb.class).list();
+//            for (Reimb r : reimbs) {
+//                System.out.println("Reimbursement: " + r.toString());
+//            }
+//
+//
+//            tx.commit();
+//
+//            return reimbs.toString();
+//
+//        } catch (Exception e) {
+//            if (tx != null) tx.rollback();
+//            e.printStackTrace();
+//        }
+//
+//        return null;
+//    }
 
     public Reimb selectReimbursement(int reimb_id) {
         Optional<Reimb> _reimb = Optional.empty();
@@ -241,7 +238,7 @@ public class ReimbRepo {
 //
 //}
 
-
+//todo
     public void updateReimb(Reimb reimb) {
 
         Session session = SessionFact.getSessionFactoryProgrammaticConfig().openSession();

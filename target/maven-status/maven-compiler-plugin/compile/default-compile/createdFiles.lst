@@ -7,7 +7,9 @@ com\revature\models\AppUser.class
 com\revature\dtos\Principal.class
 com\revature\util\ValidationHelper.class
 com\revature\exceptions\InvalidInputException.class
+com\revature\servlets\UpdateReimbServlet.class
 com\revature\util\RequestViewHelper.class
+com\revature\servlets\UpdateUserServlet.class
 com\revature\servlets\AuthServlet.class
 com\revature\models\Role.class
 com\revature\models\Reimb.class
@@ -23,6 +25,7 @@ com\revature\util\ConnectionFactory.class
 com\revature\servlets\DeleteUserServlet.class
 com\revature\services\UserService.class
 com\revature\exceptions\ResourceNotFoundException.class
+com\revature\servlets\DeleteReimbServlet.class
 com\revature\servlets\UserServlet.class
 com\revature\dtos\ErrorResponse.class
 com\revature\services\ReimbService.class

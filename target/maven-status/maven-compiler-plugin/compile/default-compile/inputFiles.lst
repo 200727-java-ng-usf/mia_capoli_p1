@@ -1,5 +1,6 @@
 C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\revature\exceptions\ResourceNotFoundException.java
 C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\revature\services\ReimbService.java
+C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\revature\servlets\DeleteReimbServlet.java
 C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\revature\repos\AppUserRepo.java
 C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\revature\util\ConnectionFactory.java
 C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\revature\dtos\ErrorResponse.java
@@ -9,6 +10,7 @@ C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\
 C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\revature\models\ReimbTypes.java
 C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\revature\models\AppUser.java
 C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\revature\controllers\FinanceManagerHomeController.java
+C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\revature\servlets\UpdateUserServlet.java
 C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\revature\servlets\ValidationServlet.java
 C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\revature\AppDriver.java
 C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\revature\servlets\AuthServlet.java
@@ -16,8 +18,10 @@ C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\
 C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\revature\exceptions\InvalidRequestException.java
 C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\revature\controllers\AdminHomeController.java
 C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\revature\models\Reimb.java
+C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\revature\servlets\ReimbServlet.java
 C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\revature\controllers\RegisterController.java
 C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\revature\util\SessionFact.java
+C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\revature\servlets\UpdateReimbServlet.java
 C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\revature\repos\ReimbRepo.java
 C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\revature\util\RequestViewHelper.java
 C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\revature\dtos\Principal.java

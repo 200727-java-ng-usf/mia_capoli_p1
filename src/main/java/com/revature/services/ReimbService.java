@@ -37,27 +37,23 @@ public class ReimbService {
 
 
 
-    public void updateReimb(int reimb_id, int amount, Timestamp submitted, Timestamp resolved,
-                            String description, String receipt, int author_id,
-                            int resolver_id, int reimb_status_id, int reimb_type_id) {
-        //if the user isn't valid, invalidate them and throw an exception.
+    public void updateReimb(Reimb reimbToUpdate) {
 
-        Reimb reimb = reimbRepo.selectReimbursement(reimb_id);
+//        int reimb_id, int amount, Timestamp submitted, Timestamp resolved,
+//                String description, String receipt, int author_id,
+//        int resolver_id, int reimb_status_id, int reimb_type_id
+
+        Reimb reimb = reimbRepo.selectReimbursement(reimbToUpdate.getReimb_id());
 
         if (!isReimbValid(reimb)) {
 
             throw new InvalidInputException("Invalid credentials given for registration.");
         }
-        //TODO get currently logged n user
-//        if (user.get().getRole() != Role.ADMIN) {
-//            app.invalidateCurrentUser();
-//            throw new AuthenticatorException("You aren't allowed to update any users!");
-//            //to  do return home
-//        }
 
-        reimb = new Reimb(amount, submitted, resolved,
-                description, receipt, author_id,
-        resolver_id, reimb_status_id, reimb_type_id);
+
+//        reimb = new Reimb(amount, submitted, resolved,
+//                description, receipt, author_id,
+//        resolver_id, reimb_status_id, reimb_type_id);
         reimbRepo.updateReimb(reimb);
 
     }

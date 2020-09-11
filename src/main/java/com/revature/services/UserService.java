@@ -74,21 +74,17 @@ public class UserService {
     }
 
 
-    public void updateUser(AppUser employee) {
+    public AppUser updateUser(AppUser employee) {
 
         Optional<AppUser> user = userRepo.findUserByUsername(employee.getUsername());
 
         if (!isUserValid(user.get())) {
-//            app.invalidateCurrentUser();
             throw new InvalidInputException("Invalid credentials given for registration.");
         }
-//        if (user.get().getRole() != Role.ADMIN) {
-//            app.invalidateCurrentUser();
-//            throw new AuthenticatorException("You aren't allowed to update any users!");
-//            //to  do return home
-//        }
 
         userRepo.updateAppUser(employee);
+
+        return userRepo.findUserByUsername(employee.getUsername()).get();
 
     }
 

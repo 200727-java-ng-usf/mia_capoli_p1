@@ -54,6 +54,7 @@ public class AppUser {
 
 
     public AppUser(int id, String firstName, String lastName, String username, String password) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.firstName = firstName;
@@ -76,6 +77,15 @@ public class AppUser {
         this.role = Role.EMPLOYEE;
     }
 
+    public AppUser(Integer id, String username, String password, String firstName, String lastName, String email, Role role) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.role = role;
+    }
 
     //AppUser getters and setters
     public Integer getId() {
