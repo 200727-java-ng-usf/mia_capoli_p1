@@ -10,12 +10,14 @@ import com.revature.services.ReimbService;
 import com.sun.org.apache.regexp.internal.RE;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+@WebServlet("/updatereimb")
 public class UpdateReimbServlet extends HttpServlet {
     private final ReimbService reimbService = new ReimbService();
 
@@ -25,10 +27,10 @@ public class UpdateReimbServlet extends HttpServlet {
         ObjectMapper mapper = new ObjectMapper();
         PrintWriter respWriter = resp.getWriter();
         try {
-            Reimb updatedReimb = mapper.readValue(req.getInputStream(), RE.class);
+            Reimb updatedReimb = mapper.readValue(req.getInputStream(), Reimb.class);
             Reimb finalizedReimb = reimbService.updateReimb(updatedReimb);
-            System.out.println(finalizedUser);
-            String updatedUserJSON = mapper.writeValueAsString(finalizedUser);
+            System.out.println(finalizedReimb);
+            String updatedUserJSON = mapper.writeValueAsString(finalizedReimb);
             respWriter.write(updatedUserJSON);
             resp.setStatus(201); // 201 = CREATED
 

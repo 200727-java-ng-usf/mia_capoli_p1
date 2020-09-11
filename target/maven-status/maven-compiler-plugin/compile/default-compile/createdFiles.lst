@@ -14,6 +14,7 @@ com\revature\servlets\AuthServlet.class
 com\revature\models\Role.class
 com\revature\models\Reimb.class
 com\revature\controllers\LoginController.class
+com\revature\models\ReimbStatusTypes.class
 com\revature\AppDriver.class
 com\revature\servlets\ValidationServlet.class
 com\revature\exceptions\InvalidRequestException.class

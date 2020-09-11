@@ -29,9 +29,6 @@ public class Reimb {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "receipt")
-    private String receipt;
-
     @Column(name = "author_id")
     private int author_id;
 
@@ -39,22 +36,20 @@ public class Reimb {
     private int resolver_id;
 
     @Column(name = "reimb_status_id")
-    private int reimb_status_id;
+    private ReimbStatusTypes reimb_status;
 
     @Column(name = "reimb_type_id")
     private ReimbTypes reimb_type;
 
-    public Reimb(Integer reimb_id, double amount, Timestamp submitted, Timestamp resolved, String description, String receipt, int author_id, int resolver_id, int reimb_status_id, int reimb_type_id) {
+    public Reimb(Integer reimb_id, double amount, Timestamp submitted, Timestamp resolved, String description, int author_id, int resolver_id, ReimbStatusTypes reimb_status, int reimb_type_id) {
         this.reimb_id = reimb_id;
         this.amount = amount;
         this.submitted = submitted;
         this.resolved = resolved;
         this.description = description;
-        this.receipt = receipt;
         this.author_id = author_id;
         this.resolver_id = resolver_id;
-        this.reimb_status_id = reimb_status_id;
-        int reimb_int = reimb_type_id;
+        this.reimb_status = reimb_status;
         this.reimb_type = ReimbTypes.getByID(reimb_type_id);
     }
 
@@ -62,16 +57,14 @@ public class Reimb {
 
     }
 
-    public Reimb(int amount, Timestamp submitted, Timestamp resolved, String description, String receipt, int author_id, int resolver_id, int reimb_status_id, int reimb_type_id) {
+    public Reimb(int amount, Timestamp submitted, Timestamp resolved, String description, int author_id, int resolver_id, ReimbStatusTypes reimb_status, int reimb_type_id) {
         this.amount = amount;
         this.submitted = submitted;
         this.resolved = resolved;
         this.description = description;
-        this.receipt = receipt;
         this.author_id = author_id;
         this.resolver_id = resolver_id;
-        this.reimb_status_id = reimb_status_id;
-        int reimb_int = reimb_type_id;
+        this.reimb_status = reimb_status;
         this.reimb_type = ReimbTypes.getByID(reimb_type_id);
 
     }
@@ -96,10 +89,6 @@ public class Reimb {
         return description;
     }
 
-    public String getReceipt() {
-        return receipt;
-    }
-
     public int getAuthor_id() {
         return author_id;
     }
@@ -108,8 +97,8 @@ public class Reimb {
         return resolver_id;
     }
 
-    public int getReimb_status_id() {
-        return reimb_status_id;
+    public ReimbStatusTypes getReimb_status() {
+        return reimb_status;
     }
 
     public ReimbTypes getReimb_type() {
@@ -136,10 +125,6 @@ public class Reimb {
         this.description = description;
     }
 
-    public void setReceipt(String receipt) {
-        this.receipt = receipt;
-    }
-
     public void setAuthor_id(int author_id) {
         this.author_id = author_id;
     }
@@ -148,8 +133,8 @@ public class Reimb {
         this.resolver_id = resolver_id;
     }
 
-    public void setReimb_status_id(int reimb_status_id) {
-        this.reimb_status_id = reimb_status_id;
+    public void setReimb_status_id(ReimbStatusTypes reimb_status) {
+        this.reimb_status = reimb_status;
     }
 
     public void setReimb_typeId(int reimb_type_id) {
@@ -171,18 +156,17 @@ public class Reimb {
         return Double.compare(reimb.amount, amount) == 0 &&
                 author_id == reimb.author_id &&
                 resolver_id == reimb.resolver_id &&
-                reimb_status_id == reimb.reimb_status_id &&
+                reimb_status == reimb.reimb_status &&
                 reimb_type == reimb.reimb_type &&
                 Objects.equals(reimb_id, reimb.reimb_id) &&
                 Objects.equals(submitted, reimb.submitted) &&
                 Objects.equals(resolved, reimb.resolved) &&
-                Objects.equals(description, reimb.description) &&
-                Objects.equals(receipt, reimb.receipt);
+                Objects.equals(description, reimb.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(reimb_id, amount, submitted, resolved, description, receipt, author_id, resolver_id, reimb_status_id, reimb_type);
+        return Objects.hash(reimb_id, amount, submitted, resolved, description, author_id, resolver_id, reimb_status, reimb_type);
     }
 
     @Override
@@ -193,10 +177,9 @@ public class Reimb {
                 ", submitted=" + submitted +
                 ", resolved=" + resolved +
                 ", description='" + description + '\'' +
-                ", receipt='" + receipt + '\'' +
                 ", author_id=" + author_id +
                 ", resolver_id=" + resolver_id +
-                ", reimb_status_id=" + reimb_status_id +
+                ", reimb_status=" + reimb_status +
                 ", reimb_type_id=" + reimb_type +
                 '}';
     }

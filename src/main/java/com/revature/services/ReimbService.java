@@ -4,6 +4,7 @@ import com.revature.exceptions.InvalidInputException;
 import com.revature.exceptions.InvalidRequestException;
 import com.revature.exceptions.ResourceNotFoundException;
 import com.revature.models.Reimb;
+import com.revature.models.ReimbStatusTypes;
 import com.revature.models.ReimbTypes;
 import com.revature.repos.ReimbRepo;
 
@@ -21,7 +22,7 @@ public class ReimbService {
 
 
     public void addNewReimbursement(Reimb reimb) {
-        //if the user isn't valid, invalidate them and throw an exception.
+
         if (!isReimbValid(reimb)) {
             throw new InvalidInputException("Invalid credentials given for reimbursement.");
         }
@@ -37,11 +38,8 @@ public class ReimbService {
 
 
 
-    public void updateReimb(Reimb reimbToUpdate) {
+    public Reimb updateReimb(Reimb reimbToUpdate) {
 
-//        int reimb_id, int amount, Timestamp submitted, Timestamp resolved,
-//                String description, String receipt, int author_id,
-//        int resolver_id, int reimb_status_id, int reimb_type_id
 
         Reimb reimb = reimbRepo.selectReimbursement(reimbToUpdate.getReimb_id());
 
@@ -55,6 +53,7 @@ public class ReimbService {
 //                description, receipt, author_id,
 //        resolver_id, reimb_status_id, reimb_type_id);
         reimbRepo.updateReimb(reimb);
+        return reimbRepo.selectReimbursement(reimb.getReimb_id());
 
     }
 
@@ -114,19 +113,14 @@ public class ReimbService {
         return reimbRepo.selectReimbursement(id);
     }
 
-    //todo check if times are valid??
     public boolean isReimbValid(Reimb reimb) {
         if (reimb == null) return false;
         if (reimb.getReimb_id() <= 0 ) return false;
         if (reimb.getAmount() <= 0) return false;
-//        if (reimb.getSubmitted() > Time.now) return false;
-//        if (reimb.getResolved() > Time.now) return false;
         if (reimb.getDescription() == null || reimb.getDescription().trim().equals("")) return false;
-        if (reimb.getReceipt() == null || reimb.getReceipt().trim().equals("")) return false;
         if (reimb.getAuthor_id() <= 0 ) return false;
-        if (reimb.getResolver_id() <= 0 ) return false;
-        if (reimb.getReimb_status_id() <= 0 ) return false;
-        if (reimb.getReimb_type() != ReimbTypes.FOOD || reimb.getReimb_type() != ReimbTypes.OTHER ||  reimb.getReimb_type() != ReimbTypes.LODGING || reimb.getReimb_type() != ReimbTypes.TRAVEL ) return false;
+        if (reimb.getReimb_status() == null) return false;
+        if (reimb.getReimb_type() == null ) return false;
         return true;
     }
 
