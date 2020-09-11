@@ -14,7 +14,7 @@ import java.util.Set;
 public class ReimbService {
 
     //todo select reimb
-    //todo update reimb - if approve / deny, check if finance manager, update if in pending state
+    //todo update reimb + give fields- if approve / deny, check if finance manager, update if in pending state
 
 
     private final ReimbRepo reimbRepo = new ReimbRepo();
@@ -23,8 +23,6 @@ public class ReimbService {
     public void addNewReimbursement(Reimb reimb) {
         //if the user isn't valid, invalidate them and throw an exception.
         if (!isReimbValid(reimb)) {
-            //TODO set current reimb
-//            app.invalidateCurrentUser();
             throw new InvalidInputException("Invalid credentials given for reimbursement.");
         }
         //TODO get currently logged in user
@@ -34,9 +32,7 @@ public class ReimbService {
 //            //to  do return home
 //        }
 
-        //save the current user in the persistence layer and set the current user
         reimbRepo.save(reimb);
-//       app.setCurrentUser(newUser);
     }
 
 
@@ -49,11 +45,10 @@ public class ReimbService {
         Reimb reimb = reimbRepo.selectReimbursement(reimb_id);
 
         if (!isReimbValid(reimb)) {
-            //TODO set current reimb
-//            app.invalidateCurrentUser();
+
             throw new InvalidInputException("Invalid credentials given for registration.");
         }
-        //TODO get curfrently logged n user
+        //TODO get currently logged n user
 //        if (user.get().getRole() != Role.ADMIN) {
 //            app.invalidateCurrentUser();
 //            throw new AuthenticatorException("You aren't allowed to update any users!");
@@ -85,11 +80,6 @@ public class ReimbService {
 
 
         //todo check if finance manager
-//        if (type != "Lodging" || type != "Travel" ||
-//                type != "Food" ||
-//                type != "Other") {
-//            throw new InvalidRequestException("The provided type does not exist!");
-//        }
 
         ReimbTypes reimbType = ReimbTypes.getByName(type);
 
@@ -128,7 +118,7 @@ public class ReimbService {
         return reimbRepo.selectReimbursement(id);
     }
 
-    //todo check if times are valid
+    //todo check if times are valid??
     public boolean isReimbValid(Reimb reimb) {
         if (reimb == null) return false;
         if (reimb.getReimb_id() <= 0 ) return false;

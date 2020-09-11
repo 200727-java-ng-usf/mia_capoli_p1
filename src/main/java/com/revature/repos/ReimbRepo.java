@@ -195,7 +195,7 @@ public class ReimbRepo {
 
             //find the first user that matches the results
             _reimb = Optional.ofNullable(mapResultSet(rs).stream().findFirst().orElseThrow(ResourceNotFoundException::new));
-        //TODO set currently selected reimb
+            //TODO set currently selected reimb
             return _reimb.get();
 
 
@@ -241,14 +241,14 @@ public class ReimbRepo {
 //
 //}
 
-    //TODO, implement w webpage as well
+
     public void updateReimb(Reimb reimb) {
 
         Session session = SessionFact.getSessionFactoryProgrammaticConfig().openSession();
 
         Transaction tx = null;
         try {
-        //todo update
+        //todo update to match fields
             tx = session.beginTransaction();
             Query query = session.createQuery("Update Reimb set firstName = :firstNameNew, lastName = :lastNameNew" +
                     "WHERE id = :empUpdateId");

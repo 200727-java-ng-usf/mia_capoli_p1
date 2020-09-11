@@ -36,7 +36,6 @@ public class UserService {
         System.out.println(_authUser);
 
         if (!_authUser.isPresent()) {
-            //TODO set currently logged in user
 
             throw new AuthenticatorException();
         }
@@ -76,7 +75,6 @@ public class UserService {
 
 
     public void updateUser(AppUser employee) {
-        //if the user isn't valid, invalidate them and throw an exception.
 
         Optional<AppUser> user = userRepo.findUserByUsername(employee.getUsername());
 
@@ -84,7 +82,6 @@ public class UserService {
 //            app.invalidateCurrentUser();
             throw new InvalidInputException("Invalid credentials given for registration.");
         }
-        //TODO get currently logged in user
 //        if (user.get().getRole() != Role.ADMIN) {
 //            app.invalidateCurrentUser();
 //            throw new AuthenticatorException("You aren't allowed to update any users!");

@@ -122,7 +122,7 @@ function loadDelete() {
         xhr.open('GET', 'delete.view', true);
         xhr.send();
 
-        //TODO FIX LATER
+        //TODO FIX to make it return bad things when trying to delete a user as a non admin
     } else {
         xhr.open('GET', 'home.view', true);
         xhr.send();
