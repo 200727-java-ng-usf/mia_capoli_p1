@@ -29,7 +29,7 @@ public class DeleteUserServlet extends HttpServlet {
         try {
 
 
-
+//TODO GET HELP
             int deletedUserId = mapper.readValue(req.getInputStream(), Integer.class);
             userService.deleteUser(deletedUserId);
 
