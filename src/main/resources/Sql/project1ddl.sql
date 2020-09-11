@@ -63,6 +63,18 @@ create TABLE ERS_USER_ROLES (
 )
 
 
-INSERT INTO ers_users app_users (username, password, first_name, last_name, email, user_role_id )
+INSERT INTO ers_users (username, password, first_name, last_name, email, user_role_id )
 values 
-	('aa', 'pa', 'Alice', 'Anderson', 'aa@revature.com', 1),
+	('aa', 'pa', 'Alice', 'Anderson', 'aa@revature.com', 1);
+	
+
+
+insert into ers_reimbursement_types values (1, 'Lodging'),
+    (2, 'Travel'),
+    (3, 'Food'),
+    (4, 'Other');
+   
+   
+  insert into ers_reimbursments (amount, submitted, description, author_id, reimb_status_id, reimb_type_id) values 
+  (100, '2004-10-19 10:23:00', 'help',  7, 1, 3);
+

@@ -24,11 +24,15 @@ public class ConnectionFactory {
         try {
             ClassLoader loader = Thread.currentThread().getContextClassLoader();
             InputStream propsInput = loader.getResourceAsStream("application.properties");
-            props.load(propsInput);
-//            props.load(new FileReader("./src/main/resources/application.properties"));
-//            if (props == null) {
-//                props.load(new FileReader("./application.properties"));
-//            }
+
+            if (propsInput == null) {
+                props.setProperty("url", System.getProperty("url"));
+                props.setProperty("username", System.getProperty("username"));
+                props.setProperty("password", System.getProperty("password"));
+            } else {
+                props.load(propsInput);
+            }
+
         } catch (IOException e) {
             System.err.println("Could not get a connection!");
         }
