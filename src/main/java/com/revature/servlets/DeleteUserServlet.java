@@ -27,15 +27,17 @@ public class DeleteUserServlet extends HttpServlet {
         ObjectMapper mapper = new ObjectMapper();
         PrintWriter respWriter = resp.getWriter();
         try {
+//todo test
+            String deletedUserId = req.getParameter("id");
+            if (deletedUserId != null) {
+                int id = Integer.parseInt(deletedUserId);
+                userService.deleteUser(id);
+            }
 
-
-//TODO GET HELP
-            int deletedUserId = mapper.readValue(req.getInputStream(), Integer.class);
-            userService.deleteUser(deletedUserId);
 
             resp.setStatus(204);
 
-        } catch (NumberFormatException | MismatchedInputException | InvalidRequestException mie) {
+        } catch (NumberFormatException | InvalidRequestException mie) {
             mie.printStackTrace();
             resp.setStatus(400);
 

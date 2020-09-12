@@ -49,11 +49,8 @@ public class ReimbService {
         }
 
 
-//        reimb = new Reimb(amount, submitted, resolved,
-//                description, receipt, author_id,
-//        resolver_id, reimb_status_id, reimb_type_id);
-        reimbRepo.updateReimb(reimb);
-        return reimbRepo.selectReimbursement(reimb.getReimb_id());
+        reimbRepo.updateReimb(reimbToUpdate);
+        return reimbRepo.selectReimbursement(reimbToUpdate.getReimb_id());
 
     }
 

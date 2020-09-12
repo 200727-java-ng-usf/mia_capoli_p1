@@ -35,11 +35,17 @@ public class RequestViewHelper {
             case "/register.view":
             case "/ExpenseReimbursementSystem/register.view":
                 return "partials/register.html";
+            case "/financehome.view":
+            case "/ExpenseReimbursementSystem/financehome.view":
+                return "partials/financehome.html";
+            case "/update.view":
+            case "/ExpenseReimbursementSystem/update.view":
+                return "partials/update.html";
+
             default:
                 return null;
 
         }
-
 
 
     }

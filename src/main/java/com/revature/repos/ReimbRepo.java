@@ -1,6 +1,7 @@
 package com.revature.repos;
 
 import com.revature.exceptions.ResourceNotFoundException;
+import com.revature.models.AppUser;
 import com.revature.models.Reimb;
 import com.revature.models.ReimbStatusTypes;
 import com.revature.models.ReimbTypes;
@@ -211,27 +212,33 @@ public class ReimbRepo {
 //
 //}
 
-//TODO!!!!!!!!!!
     public void updateReimb(Reimb reimb) {
 
-        Session session = SessionFact.getSessionFactoryProgrammaticConfig().openSession();
+        try (Connection conn = ConnectionFactory.getConnFactory().getConnection()) {
 
-        Transaction tx = null;
-        try {
-        //todo update to match fields
-            tx = session.beginTransaction();
-            Query query = session.createQuery("Update Reimb set firstName = :firstNameNew, lastName = :lastNameNew" +
-                    "WHERE id = :empUpdateId");
+            String sql = "update project1.ers_reimbursments set amount = ?, submitted = ?, resolved = ?, description = ?, author_id = ?, " +
+                    "resolver_id = ?, reimb_status_id = ?, reimb_type_id = ? where reimb_id = ?";
 
-            query.executeUpdate();
-            tx.commit();
+            PreparedStatement pstmt = conn.prepareStatement(sql);
 
 
-        } catch (Exception e) {
-            if (tx != null) tx.rollback();
-            e.printStackTrace();
+            pstmt.setDouble(1, reimb.getAmount());
+            pstmt.setTimestamp(2, reimb.getSubmitted());
+            pstmt.setTimestamp(3, reimb.getResolved());
+            pstmt.setString(4, reimb.getDescription());
+            pstmt.setInt(5, reimb.getAuthor_id());
+            pstmt.setInt(6, reimb.getResolver_id());
+            pstmt.setInt(7, ReimbStatusTypes.getIDFromName(reimb.getReimb_status().toString()));
+            pstmt.setInt(8, ReimbTypes.getIDFromName(reimb.getReimb_type().toString()));
+            pstmt.setInt(9, reimb.getReimb_id());
+
+            pstmt.executeUpdate();
+
+
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+            System.err.println("Database Error!");
         }
-
     }
 
     public void deleteReimb(int reimbDeleteId) {

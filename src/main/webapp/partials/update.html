@@ -21,6 +21,24 @@
     <h2>Expense Reimbursement</h2>
     <hr>
     <h3>Update a User</h3>
+        <table id="adminTable" class="table">
+            <thead class="thead-dark">
+            <tr>
+                <th>Id</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>User Name</th>
+                <th>Email</th>
+    
+            </tr>
+            </thead>
+            <tbody id="list">
+    
+            </tbody>
+        </table>
+
+
+
     <div class="form-group">
         <label for="reg-username">Existing username to be updated</label> <input type="text" class="form-control" id="reg-username" placeholder="Enter the username of the user to be updated">
     </div>
@@ -37,7 +55,7 @@
     </div>
     
     <div class="form-group">
-        <label for="updated-password">Password</label> <input type="password" class="form-control" id="reg-password" placeholder="Enter your password">
+        <label for="pw">Password</label> <input type="password" class="form-control" id="reg-password" placeholder="Enter your password">
     </div>
     <div id="update-button-container">
         <button type="submit" class="btn btn-primary" id="updateButton">Update</button>

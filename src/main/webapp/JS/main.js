@@ -82,6 +82,48 @@ function loadHome() {
 
     let xhr = new XMLHttpRequest();
     let authUser = JSON.parse(localStorage.getItem('authUser'));
+
+    if (authUser.role == 'Admin' || authUser.role == 'admin') {
+        xhr.open('GET', 'adminhome.view', true);
+        xhr.send();
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                APP_VIEW.innerHTML = xhr.responseText;
+                configureHomeView();
+             }
+        }
+    } else if (authUser.role == 'FinanceMan' || authUser.role == 'financeman') {
+        xhr.open('GET', 'financehome.view', true);
+        xhr.send();
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                APP_VIEW.innerHTML = xhr.responseText;
+                configureFinanceHomeView();
+             }
+    
+        }
+    } else {
+        xhr.open('GET', 'home.view', true);
+        xhr.send();
+    }
+
+
+    }
+
+
+function loadEmployeeHome() {
+    console.log('in loadHome()');
+
+    if (!localStorage.getItem('authUser')) {
+        console.log("no user logged in, nav to login screen");
+        loadLogin();
+        return;
+    }
+
+    let xhr = new XMLHttpRequest();
+    let authUser = JSON.parse(localStorage.getItem('authUser'));
     if (authUser.role == 'Admin' || authUser.role == 'admin') {
         xhr.open('GET', 'adminhome.view', true);
         xhr.send();
@@ -102,10 +144,32 @@ function loadHome() {
 }
 
 function loadUpdate() {
+    if (!localStorage.getItem('authUser')) {
+        console.log("no user logged in, nav to login screen");
+        loadLogin();
+        return;
+    }
+
+    let xhr = new XMLHttpRequest();
+    let authUser = JSON.parse(localStorage.getItem('authUser'));
+    if (authUser.role == 'Admin' || authUser.role == 'admin') {
+        xhr.open('GET', 'update.view', true);
+        xhr.send();
+
+        //TODO FIX to make it return bad things when trying to delete a user as a non admin
+    } else {
+        xhr.open('GET', 'home.view', true);
+        xhr.send();
+    }
 
 
-   
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            APP_VIEW.innerHTML = xhr.responseText;
+            configureUpdateView();
+         }
 
+    }
 }
 
 
@@ -249,9 +313,100 @@ function configureDeleteView() {
 }
 }
 
+function configureUpdateView() {
+    loadButtons();
+
+    document.getElementById("update-button-container").addEventListener('mouseover', validateUpdateForm);
+    document.getElementById('updateButton').addEventListener('click', updateUser)
+    let authUser = JSON.parse(localStorage.getItem('authUser'));
+
+    let xhrusers = new XMLHttpRequest();
+
+    xhrusers.open('GET', 'users', true);
+    xhrusers.send();
 
 
+    xhrusers.onreadystatechange = function() {
+        if (xhrusers.readyState == 4 && xhrusers.status == 200) {
+            var users = JSON.parse(xhrusers.responseText);
+         }
 
+    
+
+    let table = document.getElementById("adminTable");
+	table.removeChild(document.getElementById("list"));
+	let body = document.createElement("tbody");
+	body.setAttribute("id", "list");
+	table.appendChild(body);
+
+
+    for(let i = 0 ; i < users.length; i++){
+
+        let newRow = document.createElement("tr");
+
+        newRow.innerHTML = 
+        "<td>" + users[i].id + "</td>" +
+		"<td>" + users[i].firstName + "</td>" +
+        "<td>" + users[i].lastName + "</td>" +
+        "<td>" + users[i].username + "</td>" +
+		"<td>" + users[i].email + "</td>" ;
+
+        body.appendChild(newRow);
+    }
+}
+}
+
+function configureFinanceHomeView() {
+    loadButtons();
+    let authUser = JSON.parse(localStorage.getItem('authUser'));
+    document.getElementById('loggedInUsername').innerText = authUser.username;
+
+    let xhr = new XMLHttpRequest();
+
+    xhr.open('GET', 'reimbs', true);
+    xhr.send();
+
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var reimbs = JSON.parse(xhr.responseText);
+         }
+
+    
+
+    let table = document.getElementById("financeTable");
+	table.removeChild(document.getElementById("list"));
+	let body = document.createElement("tbody");
+	body.setAttribute("id", "list");
+	table.appendChild(body);
+
+
+    for(let i = 0 ; i < reimbs.length; i++){
+
+        let newRow = document.createElement("tr");
+
+        newRow.innerHTML = 
+        "<td>" + reimbs[i].reimb_id + "</td>" +
+		"<td>" + USD.format(reimbs[i].amount) + "</td>" +
+		"<td>" + new Date(parseInt(reimbs[i].submitted)).toLocaleDateString() + "</td>" +
+		"<td>" + new Date(parseInt(reimbs[i].resolved)).toLocaleDateString() + "</td>" +
+        "<td>" + reimbs[i].description + "</td>" + 
+        "<td>" + reimbs[i].author_id + "</td>" +
+        "<td>" + reimbs[i].resolver_id + "</td>" +
+        "<td>" + reimbs[i].reimb_status + "</td>" +
+		"<td>" + reimbs[i].reimb_type + "</td>";
+
+        body.appendChild(newRow);
+    }
+}
+}
+
+
+const USD = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 2
+  })
 
 //--------------------------------------------------------------
 
@@ -358,6 +513,51 @@ function deleteUser() {
         }
     }
 }
+
+
+
+function updateUser() {
+    
+        let fn = document.getElementById('fn').value;
+        let ln = document.getElementById('ln').value;
+        let email = document.getElementById('email').value;
+        let un = document.getElementById('reg-username').value;
+        let pw = document.getElementById('reg-password').value;
+    
+            let creds = {
+                username: un,
+                password: pw,
+                firstName: fn,
+                lastName: ln,
+                email: email
+            };
+    
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', './updateuser');
+        xhr.setRequestHeader('Content-type', 'application/json');
+        xhr.send(JSON.stringify(creds));
+    
+        xhr.onreadystatechange = function() {
+            if  (xhr.readyState == 4 && xhr.status == 201) {
+                document.getElementById('reg-message').setAttribute('hidden', true);
+                console.log('SUCCESS!')
+    
+    
+            } else if (xhr.readyState == 4 && xhr.status == 400) {
+                document.getElementById('reg-message').removeAttribute('hidden');
+    
+                let err = JSON.parse(xhr.responseText);
+                document.getElementById('reg-message').innerText = err.message;
+            }
+        }
+    
+}
+
+
+
+
+
+
 
 function isUsernameAvailable() {
 
@@ -487,7 +687,7 @@ function validateDeleteForm() {
 
     if (!id) {
         document.getElementById('reg-message').removeAttribute('hidden');
-        document.getElementById('reg-message').innerText = 'You must provided an Id!'
+        document.getElementById('reg-message').innerText = 'You must provide an Id!'
         document.getElementById('deleteU').setAttribute('disabled', true);
     } else {
         document.getElementById('deleteU').removeAttribute('disabled');
@@ -495,5 +695,24 @@ function validateDeleteForm() {
     }
 }
 
+function validateUpdateForm() {
 
+    console.log('in validateUpdateForm()');
+
+    let fn = document.getElementById('fn').value;
+    let ln = document.getElementById('ln').value;
+    let email = document.getElementById('email').value;
+    let un = document.getElementById('reg-username').value;
+    let pw = document.getElementById('reg-password').value;
+
+
+    if (!fn || !ln || !email || !un || !pw) {
+        document.getElementById('reg-message').removeAttribute('hidden');
+        document.getElementById('reg-message').innerText = 'You must provide all values!'
+        document.getElementById('updateButton').setAttribute('disabled', true);
+    } else {
+        document.getElementById('updateButton').removeAttribute('disabled');
+        document.getElementById('reg-message').setAttribute('hidden', true);
+    }
+}
 

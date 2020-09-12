@@ -45,8 +45,7 @@ public class ReimbServlet extends HttpServlet {
 
         Principal principal = mapper.readValue(principalJSON, Principal.class);
 
-        //todo change to finance manager
-        if (!principal.getRole().equalsIgnoreCase("Admin")) {
+        if (!principal.getRole().equalsIgnoreCase("FinanceMan")) {
             ErrorResponse err = new ErrorResponse(403, "Forbidden: your role does not permit you to access this endpoint.");
             respWriter.write(mapper.writeValueAsString(err));
             resp.setStatus(403);
