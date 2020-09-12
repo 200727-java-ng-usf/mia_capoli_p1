@@ -20,6 +20,31 @@
 </div>
 
 <h1>Welcome, <span id="loggedInUsername"></span></h1>
+
+<div class="bd-example">
+    <div class="btn-group">
+      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter By Type</button>
+      <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">
+        <a class="dropdown-item" onclick="sortByLodging()">Lodging Reimbursements</a>
+        <a class="dropdown-item" onclick="sortByTravel()">Travel Reimbursements</a>
+        <a class="dropdown-item" onclick="sortByLodging()">Food Reimbursements</a>
+        <a class="dropdown-item" onclick="sortByLodging()">Other Reimbursements</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="#">All Reimbursements</a>
+      </div>
+    </div>
+    <div class="btn-group">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter By Status</button>
+        <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">
+            <a class="dropdown-item" href="#">Pending Reimbursements</a>
+            <a class="dropdown-item" href="#">Approved Reimbursements</a>
+            <a class="dropdown-item" href="#">Denied Reimbursements</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">All Reimbursements</a>
+        </div>
+    </div>
+</div>
+
 <div id="home-finance-container">
     <table id="financeTable" class="table">
         <thead class="thead-dark">

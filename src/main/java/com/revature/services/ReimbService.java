@@ -70,9 +70,6 @@ public class ReimbService {
 
     public Set<Reimb> getReimbsByType(String type) {
 
-
-        //todo check if finance manager
-
         ReimbTypes reimbType = ReimbTypes.getByName(type);
 
         Set<Reimb> reimbs =  reimbRepo.findReimbByType(reimbType);

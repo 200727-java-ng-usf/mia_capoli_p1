@@ -29,10 +29,13 @@ public class ReimbRepo {
         Set<Reimb> _reimb = new HashSet<>();
         try (Connection conn = ConnectionFactory.getConnFactory().getConnection()) {
             // select the user matching the username and password provided.
-            String sql = "SELECT * FROM project1.ers_reimbursments WHERE reimb_type_id = ?";
+            String sql = "SELECT * FROM project1.ers_reimbursments er JOIN project1.ers_reimbursement_types rt ON er.reimb_type_id = rt.reimb_type_id " +
+                    "JOIN project1.ers_reimbursement_statuses rs ON er.reimb_status_id = rs.reimb_status_id WHERE er.reimb_type_id = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
 
             int reimbTypeId = ReimbTypes.getIDFromName(reimb_type.toString());
+
+            System.out.println(reimbTypeId);
 
             pstmt.setInt(1, reimbTypeId);
             ResultSet rs = pstmt.executeQuery();
@@ -56,7 +59,8 @@ public class ReimbRepo {
         Set<Reimb> _reimb = new HashSet<>();
         try (Connection conn = ConnectionFactory.getConnFactory().getConnection()) {
 
-            String sql = "SELECT * FROM project1.ers_reimbursments WHERE reimb_status_id = ?";
+            String sql = "\"SELECT * FROM project1.ers_reimbursments er JOIN project1.ers_reimbursement_types rt ON er.reimb_type_id = rt.reimb_type_id " +
+                    "JOIN project1.ers_reimbursement_statuses rs ON er.reimb_status_id = rs.reimb_status_id WHERE er.reimb_status_id = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, reimb_status_id);
             ResultSet rs = pstmt.executeQuery();
@@ -82,7 +86,8 @@ public class ReimbRepo {
 
         try (Connection conn = ConnectionFactory.getConnFactory().getConnection()) {
 
-            String sql = "SELECT * FROM project1.ers_reimbursments WHERE author_id = ?";
+            String sql = "SELECT * FROM project1.ers_reimbursments er JOIN project1.ers_reimbursement_types rt ON er.reimb_type_id = rt.reimb_type_id " +
+                    "JOIN project1.ers_reimbursement_statuses rs ON er.reimb_status_id = rs.reimb_status_id WHERE author_id = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, appUser_id);
             //if the returned user set contains a user that matches the username, return that user.
@@ -179,38 +184,6 @@ public class ReimbRepo {
 
     }
 
-//    public void createNewReimb(int amount, Time submitted, Time resolved, String description, int author_id, int resolver_id, int reimb_status_id, String reimbType) {
-//
-//    Session session = SessionFact.getSessionFactoryProgrammaticConfig().openSession();
-//
-//    Transaction tx = null;
-//
-//        try
-//
-//    {
-//        tx = session.beginTransaction();
-//        Reimb reimb = new Reimb();
-//
-//
-//        reimb.setAmount(amount);
-//        reimb.setSubmitted(submitted);
-//        reimb.setResolved(resolved);
-//        reimb.setDescription(description);
-//        reimb.setAuthor_id(author_id);
-//        reimb.setResolver_id(resolver_id);
-//        reimb.setReimb_status_id(reimb_status_id);
-//        reimb.setReimb_type(ReimbTypes.getByName(reimbType));
-//
-//        session.save(reimb);
-//        tx.commit();
-//
-//
-//    } catch(Exception e) {
-//        if (tx != null) tx.rollback();
-//        e.printStackTrace();
-//    }
-//
-//}
 
     public void updateReimb(Reimb reimb) {
 
@@ -241,31 +214,13 @@ public class ReimbRepo {
         }
     }
 
-    public void deleteReimb(int reimbDeleteId) {
-        Session session = SessionFact.getSessionFactoryProgrammaticConfig().openSession();
-
-        Transaction tx = null;
-        try {
-            tx = session.beginTransaction();
-            Query query = session.createQuery("Delete from Reimb " +
-                    "WHERE id = :reimbDeleteId").setParameter("empDeleteId", reimbDeleteId);
-
-            query.executeUpdate();
-            tx.commit();
-
-        } catch (Exception e) {
-            if (tx != null) tx.rollback();
-            e.printStackTrace();
-        }
-
-    }
-
 
     public Set<Reimb> findAllReimbs() {
         Set<Reimb> reimbs = new HashSet<>();
         try (Connection conn = ConnectionFactory.getConnFactory().getConnection()) {
 
-            String sql = "SELECT * FROM project1.ers_reimbursments er JOIN project1.ers_reimbursement_types rt ON er.reimb_type_id = rt.reimb_type_id JOIN project1.ers_reimbursement_statuses rs ON er.reimb_status_id = rs.reimb_status_id";
+            String sql = "SELECT * FROM project1.ers_reimbursments er JOIN project1.ers_reimbursement_types rt ON er.reimb_type_id = rt.reimb_type_id " +
+                    "JOIN project1.ers_reimbursement_statuses rs ON er.reimb_status_id = rs.reimb_status_id";
             Statement stmt = conn.createStatement();
             stmt.executeQuery(sql);
 

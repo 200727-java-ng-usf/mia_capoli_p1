@@ -55,15 +55,6 @@ public class ReimbServlet extends HttpServlet {
 
 
         try {
-//            String idPAram = req.getParameter("id");
-//            if (idPAram != null) {
-//                int id = Integer.parseInt(idPAram);
-//                AppUser user = userService.getUserById(id);
-//                String userJSON = mapper.writeValueAsString(user);
-//                respWriter.write(userJSON);
-//
-//
-//            } else {
                 Set<Reimb> reimbs = reimbService.getAllReimbs();
                 String usersJSON = mapper.writeValueAsString(reimbs);
                 respWriter.write(usersJSON);

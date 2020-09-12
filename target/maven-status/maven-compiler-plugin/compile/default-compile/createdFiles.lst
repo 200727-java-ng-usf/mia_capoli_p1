@@ -11,6 +11,8 @@ com\revature\servlets\UpdateReimbServlet.class
 com\revature\util\RequestViewHelper.class
 com\revature\servlets\UpdateUserServlet.class
 com\revature\servlets\AuthServlet.class
+com\revature\servlets\ReimbPendingServlet.class
+com\revature\servlets\ReimbOtherServlet.class
 com\revature\models\Role.class
 com\revature\models\Reimb.class
 com\revature\controllers\LoginController.class
@@ -20,7 +22,9 @@ com\revature\servlets\ValidationServlet.class
 com\revature\exceptions\InvalidRequestException.class
 com\revature\repos\ReimbRepo.class
 com\revature\servlets\ViewServlet.class
+com\revature\servlets\ReimbLodgingServlet.class
 com\revature\controllers\AdminHomeController.class
+com\revature\servlets\ReimbTravelServlet.class
 com\revature\controllers\RegisterController.class
 com\revature\util\ConnectionFactory.class
 com\revature\servlets\DeleteUserServlet.class
@@ -28,8 +32,12 @@ com\revature\services\UserService.class
 com\revature\exceptions\ResourceNotFoundException.class
 com\revature\servlets\DeleteReimbServlet.class
 com\revature\servlets\UserServlet.class
+com\revature\servlets\ReimbDeniedServlet.class
 com\revature\dtos\ErrorResponse.class
+com\revature\servlets\ReimbApprovedServlet.class
 com\revature\services\ReimbService.class
+com\revature\servlets\ReimbUserServlet.class
 com\revature\servlets\ReimbServlet.class
 com\revature\exceptions\AuthenticatorException.class
+com\revature\servlets\ReimbFoodServlet.class
 com\revature\models\ReimbTypes.class

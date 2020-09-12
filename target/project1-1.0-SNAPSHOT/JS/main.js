@@ -346,9 +346,9 @@ function configureUpdateView() {
 
         newRow.innerHTML = 
         "<td>" + users[i].id + "</td>" +
-		"<td>" + users[i].username + "</td>" +
 		"<td>" + users[i].firstName + "</td>" +
-		"<td>" + users[i].lastName + "</td>" +
+        "<td>" + users[i].lastName + "</td>" +
+        "<td>" + users[i].username + "</td>" +
 		"<td>" + users[i].email + "</td>" ;
 
         body.appendChild(newRow);
@@ -375,10 +375,10 @@ function configureFinanceHomeView() {
     
 
     let table = document.getElementById("financeTable");
-	table.removeChild(document.getElementById("list"));
-	let body = document.createElement("tbody");
-	body.setAttribute("id", "list");
-	table.appendChild(body);
+    table.removeChild(document.getElementById("list"));
+    let body = document.createElement("tbody");
+    body.setAttribute("id", "list");
+    table.appendChild(body);
 
 
     for(let i = 0 ; i < reimbs.length; i++){
@@ -387,19 +387,339 @@ function configureFinanceHomeView() {
 
         newRow.innerHTML = 
         "<td>" + reimbs[i].reimb_id + "</td>" +
-		"<td>" + USD.format(reimbs[i].amount) + "</td>" +
-		"<td>" + new Date(parseInt(reimbs[i].submitted)).toLocaleDateString() + "</td>" +
-		"<td>" + new Date(parseInt(reimbs[i].resolved)).toLocaleDateString() + "</td>" +
+        "<td>" + USD.format(reimbs[i].amount) + "</td>" +
+        "<td>" + new Date(parseInt(reimbs[i].submitted)).toLocaleDateString() + "</td>" +
+        "<td>" + new Date(parseInt(reimbs[i].resolved)).toLocaleDateString() + "</td>" +
         "<td>" + reimbs[i].description + "</td>" + 
         "<td>" + reimbs[i].author_id + "</td>" +
         "<td>" + reimbs[i].resolver_id + "</td>" +
         "<td>" + reimbs[i].reimb_status + "</td>" +
-		"<td>" + reimbs[i].reimb_type + "</td>";
+        "<td>" + reimbs[i].reimb_type + "</td>";
 
         body.appendChild(newRow);
     }
 }
 }
+
+
+
+function sortByLodging() {
+
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', 'reimbslodging', true);
+    xhr.send();
+
+
+     xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                var reimbs = JSON.parse(xhr.responseText);
+             }
+    
+        
+    
+        let table = document.getElementById("financeTable");
+        table.removeChild(document.getElementById("list"));
+        let body = document.createElement("tbody");
+        body.setAttribute("id", "list");
+        table.appendChild(body);
+    
+    
+        for(let i = 0 ; i < reimbs.length; i++){
+    
+            let newRow = document.createElement("tr");
+    
+            newRow.innerHTML = 
+            "<td>" + reimbs[i].reimb_id + "</td>" +
+            "<td>" + USD.format(reimbs[i].amount) + "</td>" +
+            "<td>" + new Date(parseInt(reimbs[i].submitted)).toLocaleDateString() + "</td>" +
+            "<td>" + new Date(parseInt(reimbs[i].resolved)).toLocaleDateString() + "</td>" +
+            "<td>" + reimbs[i].description + "</td>" + 
+            "<td>" + reimbs[i].author_id + "</td>" +
+            "<td>" + reimbs[i].resolver_id + "</td>" +
+            "<td>" + reimbs[i].reimb_status + "</td>" +
+            "<td>" + reimbs[i].reimb_type + "</td>";
+    
+            body.appendChild(newRow);
+        }
+    }
+}
+
+function sortByTravel() {
+
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', 'reimbstravel', true);
+    xhr.send();
+
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var reimbs = JSON.parse(xhr.responseText);
+         }
+
+    
+
+    let table = document.getElementById("financeTable");
+    table.removeChild(document.getElementById("list"));
+    let body = document.createElement("tbody");
+    body.setAttribute("id", "list");
+    table.appendChild(body);
+
+
+    for(let i = 0 ; i < reimbs.length; i++){
+
+        let newRow = document.createElement("tr");
+
+        newRow.innerHTML = 
+        "<td>" + reimbs[i].reimb_id + "</td>" +
+        "<td>" + USD.format(reimbs[i].amount) + "</td>" +
+        "<td>" + new Date(parseInt(reimbs[i].submitted)).toLocaleDateString() + "</td>" +
+        "<td>" + new Date(parseInt(reimbs[i].resolved)).toLocaleDateString() + "</td>" +
+        "<td>" + reimbs[i].description + "</td>" + 
+        "<td>" + reimbs[i].author_id + "</td>" +
+        "<td>" + reimbs[i].resolver_id + "</td>" +
+        "<td>" + reimbs[i].reimb_status + "</td>" +
+        "<td>" + reimbs[i].reimb_type + "</td>";
+
+        body.appendChild(newRow);
+    }
+}
+}
+
+function sortByFood() {
+    xhr.open('GET', 'reimbslodging', true);
+    xhr.send();
+
+
+     xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                var reimbs = JSON.parse(xhr.responseText);
+             }
+    
+        
+    
+        let table = document.getElementById("financeTable");
+        table.removeChild(document.getElementById("list"));
+        let body = document.createElement("tbody");
+        body.setAttribute("id", "list");
+        table.appendChild(body);
+    
+    
+        for(let i = 0 ; i < reimbs.length; i++){
+    
+            let newRow = document.createElement("tr");
+    
+            newRow.innerHTML = 
+            "<td>" + reimbs[i].reimb_id + "</td>" +
+            "<td>" + USD.format(reimbs[i].amount) + "</td>" +
+            "<td>" + new Date(parseInt(reimbs[i].submitted)).toLocaleDateString() + "</td>" +
+            "<td>" + new Date(parseInt(reimbs[i].resolved)).toLocaleDateString() + "</td>" +
+            "<td>" + reimbs[i].description + "</td>" + 
+            "<td>" + reimbs[i].author_id + "</td>" +
+            "<td>" + reimbs[i].resolver_id + "</td>" +
+            "<td>" + reimbs[i].reimb_status + "</td>" +
+            "<td>" + reimbs[i].reimb_type + "</td>";
+    
+            body.appendChild(newRow);
+        }
+    }
+}
+
+function sortByOther() {
+    xhr.open('GET', 'reimbstravel', true);
+    xhr.send();
+
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var reimbs = JSON.parse(xhr.responseText);
+         }
+
+    
+
+    let table = document.getElementById("financeTable");
+    table.removeChild(document.getElementById("list"));
+    let body = document.createElement("tbody");
+    body.setAttribute("id", "list");
+    table.appendChild(body);
+
+
+    for(let i = 0 ; i < reimbs.length; i++){
+
+        let newRow = document.createElement("tr");
+
+        newRow.innerHTML = 
+        "<td>" + reimbs[i].reimb_id + "</td>" +
+        "<td>" + USD.format(reimbs[i].amount) + "</td>" +
+        "<td>" + new Date(parseInt(reimbs[i].submitted)).toLocaleDateString() + "</td>" +
+        "<td>" + new Date(parseInt(reimbs[i].resolved)).toLocaleDateString() + "</td>" +
+        "<td>" + reimbs[i].description + "</td>" + 
+        "<td>" + reimbs[i].author_id + "</td>" +
+        "<td>" + reimbs[i].resolver_id + "</td>" +
+        "<td>" + reimbs[i].reimb_status + "</td>" +
+        "<td>" + reimbs[i].reimb_type + "</td>";
+
+        body.appendChild(newRow);
+    }
+}
+}
+
+function sortByPending() {
+    xhr.open('GET', 'reimbstravel', true);
+    xhr.send();
+
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var reimbs = JSON.parse(xhr.responseText);
+         }
+
+    
+
+    let table = document.getElementById("financeTable");
+    table.removeChild(document.getElementById("list"));
+    let body = document.createElement("tbody");
+    body.setAttribute("id", "list");
+    table.appendChild(body);
+
+
+    for(let i = 0 ; i < reimbs.length; i++){
+
+        let newRow = document.createElement("tr");
+
+        newRow.innerHTML = 
+        "<td>" + reimbs[i].reimb_id + "</td>" +
+        "<td>" + USD.format(reimbs[i].amount) + "</td>" +
+        "<td>" + new Date(parseInt(reimbs[i].submitted)).toLocaleDateString() + "</td>" +
+        "<td>" + new Date(parseInt(reimbs[i].resolved)).toLocaleDateString() + "</td>" +
+        "<td>" + reimbs[i].description + "</td>" + 
+        "<td>" + reimbs[i].author_id + "</td>" +
+        "<td>" + reimbs[i].resolver_id + "</td>" +
+        "<td>" + reimbs[i].reimb_status + "</td>" +
+        "<td>" + reimbs[i].reimb_type + "</td>";
+
+        body.appendChild(newRow);
+    }
+}
+}
+
+function sortByApproved() {
+    xhr.open('GET', 'reimbslodging', true);
+    xhr.send();
+
+
+     xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                var reimbs = JSON.parse(xhr.responseText);
+             }
+    
+        
+    
+        let table = document.getElementById("financeTable");
+        table.removeChild(document.getElementById("list"));
+        let body = document.createElement("tbody");
+        body.setAttribute("id", "list");
+        table.appendChild(body);
+    
+    
+        for(let i = 0 ; i < reimbs.length; i++){
+    
+            let newRow = document.createElement("tr");
+    
+            newRow.innerHTML = 
+            "<td>" + reimbs[i].reimb_id + "</td>" +
+            "<td>" + USD.format(reimbs[i].amount) + "</td>" +
+            "<td>" + new Date(parseInt(reimbs[i].submitted)).toLocaleDateString() + "</td>" +
+            "<td>" + new Date(parseInt(reimbs[i].resolved)).toLocaleDateString() + "</td>" +
+            "<td>" + reimbs[i].description + "</td>" + 
+            "<td>" + reimbs[i].author_id + "</td>" +
+            "<td>" + reimbs[i].resolver_id + "</td>" +
+            "<td>" + reimbs[i].reimb_status + "</td>" +
+            "<td>" + reimbs[i].reimb_type + "</td>";
+    
+            body.appendChild(newRow);
+        }
+    }
+}
+
+function sortByDenied() {
+    xhr.open('GET', 'reimbstravel', true);
+    xhr.send();
+
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var reimbs = JSON.parse(xhr.responseText);
+         }
+
+    
+
+    let table = document.getElementById("financeTable");
+    table.removeChild(document.getElementById("list"));
+    let body = document.createElement("tbody");
+    body.setAttribute("id", "list");
+    table.appendChild(body);
+
+
+    for(let i = 0 ; i < reimbs.length; i++){
+
+        let newRow = document.createElement("tr");
+
+        newRow.innerHTML = 
+        "<td>" + reimbs[i].reimb_id + "</td>" +
+        "<td>" + USD.format(reimbs[i].amount) + "</td>" +
+        "<td>" + new Date(parseInt(reimbs[i].submitted)).toLocaleDateString() + "</td>" +
+        "<td>" + new Date(parseInt(reimbs[i].resolved)).toLocaleDateString() + "</td>" +
+        "<td>" + reimbs[i].description + "</td>" + 
+        "<td>" + reimbs[i].author_id + "</td>" +
+        "<td>" + reimbs[i].resolver_id + "</td>" +
+        "<td>" + reimbs[i].reimb_status + "</td>" +
+        "<td>" + reimbs[i].reimb_type + "</td>";
+
+        body.appendChild(newRow);
+    }
+}
+}
+
+
+function sortByAll() {
+    xhr.open('GET', 'reimbs', true);
+    xhr.send();
+
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var reimbs = JSON.parse(xhr.responseText);
+         }
+
+    
+
+    let table = document.getElementById("financeTable");
+    table.removeChild(document.getElementById("list"));
+    let body = document.createElement("tbody");
+    body.setAttribute("id", "list");
+    table.appendChild(body);
+
+
+    for(let i = 0 ; i < reimbs.length; i++){
+
+        let newRow = document.createElement("tr");
+
+        newRow.innerHTML = 
+        "<td>" + reimbs[i].reimb_id + "</td>" +
+        "<td>" + USD.format(reimbs[i].amount) + "</td>" +
+        "<td>" + new Date(parseInt(reimbs[i].submitted)).toLocaleDateString() + "</td>" +
+        "<td>" + new Date(parseInt(reimbs[i].resolved)).toLocaleDateString() + "</td>" +
+        "<td>" + reimbs[i].description + "</td>" + 
+        "<td>" + reimbs[i].author_id + "</td>" +
+        "<td>" + reimbs[i].resolver_id + "</td>" +
+        "<td>" + reimbs[i].reimb_status + "</td>" +
+        "<td>" + reimbs[i].reimb_type + "</td>";
+
+        body.appendChild(newRow);
+    }
+}
+}
+
 
 
 const USD = new Intl.NumberFormat('en-US', {
@@ -515,7 +835,6 @@ function deleteUser() {
 }
 
 
-
 function updateUser() {
     
         let fn = document.getElementById('fn').value;
@@ -552,10 +871,6 @@ function updateUser() {
         }
     
 }
-
-
-
-
 
 
 
