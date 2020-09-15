@@ -67,7 +67,10 @@ INSERT INTO ers_users (username, password, first_name, last_name, email, user_ro
 values 
 	('aa', 'pa', 'Alice', 'Anderson', 'aa@revature.com', 1);
 	
-
+INSERT INTO ers_users (username, password, first_name, last_name, email, user_role_id )
+values 
+	('fin', 'pa', 'Fine', 'Man', 'manager@revature.com', 3);
+	
 
 insert into ers_reimbursement_types values (1, 'Lodging'),
     (2, 'Travel'),
@@ -76,5 +79,16 @@ insert into ers_reimbursement_types values (1, 'Lodging'),
    
    
   insert into ers_reimbursments (amount, submitted, description, author_id, reimb_status_id, reimb_type_id) values 
-  (100, '2004-10-19 10:23:00', 'help',  7, 1, 3);
+  (100, '2004-10-19 10:23:00', 'Dinner for a Client',  6, 1, 3),
+  (100, '2004-10-19 10:23:00', 'Hotel Stay',  1, 1, 2),
+  (2000, '2019-10-19 10:23:00', 'Moving expenses',  3, 1, 2);
+ 
+
+ 
+ alter table ers_users
+add column is_active boolean;
+
+update ers_users set is_active = true;
+
+update ers_users set username = ? password = ? first_name = ? last_name = ? email = ? user_role_id = ? where username = ?;
 

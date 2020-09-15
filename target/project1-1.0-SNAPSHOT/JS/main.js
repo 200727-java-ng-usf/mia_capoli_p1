@@ -26,6 +26,9 @@ function loadButtons() {
     if (document.getElementById("toUpdate")) {
         document.getElementById("toUpdate").addEventListener('click', loadUpdate);
     }
+    if (document.getElementById("toUpdateReimb")) {
+        document.getElementById("toUpdateReimb").addEventListener('click', loadUpdateReimb);
+    }
     if (document.getElementById("toDelete")) {
         document.getElementById("toDelete").addEventListener('click', loadDelete);
     }
@@ -167,6 +170,64 @@ function loadUpdate() {
         if (xhr.readyState == 4 && xhr.status == 200) {
             APP_VIEW.innerHTML = xhr.responseText;
             configureUpdateView();
+         }
+
+    }
+}
+
+function loadUpdate() {
+    if (!localStorage.getItem('authUser')) {
+        console.log("no user logged in, nav to login screen");
+        loadLogin();
+        return;
+    }
+
+    let xhr = new XMLHttpRequest();
+    let authUser = JSON.parse(localStorage.getItem('authUser'));
+    if (authUser.role == 'FinanceMan' || authUser.role == 'admin') {
+        xhr.open('GET', 'update.view', true);
+        xhr.send();
+
+        //TODO FIX to make it return bad things when trying to delete a user as a non admin
+    } else {
+        xhr.open('GET', 'home.view', true);
+        xhr.send();
+    }
+
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            APP_VIEW.innerHTML = xhr.responseText;
+            configureUpdateView();
+         }
+
+    }
+}
+
+function loadUpdateReimb() {
+    if (!localStorage.getItem('authUser')) {
+        console.log("no user logged in, nav to login screen");
+        loadLogin();
+        return;
+    }
+
+    let xhr = new XMLHttpRequest();
+    let authUser = JSON.parse(localStorage.getItem('authUser'));
+    if (authUser.role == 'FinanceMan' || authUser.role == 'admin') {
+        xhr.open('GET', 'updatereimb.view', true);
+        xhr.send();
+
+        //TODO FIX to make it return bad things when trying to delete a user as a non admin
+    } else {
+        xhr.open('GET', 'home.view', true);
+        xhr.send();
+    }
+
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            APP_VIEW.innerHTML = xhr.responseText;
+            configureUpdateReimbView();
          }
 
     }
@@ -356,6 +417,54 @@ function configureUpdateView() {
 }
 }
 
+
+function configureUpdateReimbView() {
+    loadButtons();
+
+    document.getElementById("update-reimb-button-container").addEventListener('mouseover', validateReimbUpdateForm);
+    document.getElementById('updateReimbButton').addEventListener('click', approveReimb)
+    let authUser = JSON.parse(localStorage.getItem('authUser'));
+
+    let xhr = new XMLHttpRequest();
+
+    xhr.open('GET', 'reimbs', true);
+    xhr.send();
+
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var reimbs = JSON.parse(xhr.responseText);
+         }
+
+    
+
+    let table = document.getElementById("financeTable");
+    table.removeChild(document.getElementById("list"));
+    let body = document.createElement("tbody");
+    body.setAttribute("id", "list");
+    table.appendChild(body);
+
+
+    for(let i = 0 ; i < reimbs.length; i++){
+
+        let newRow = document.createElement("tr");
+
+        newRow.innerHTML = 
+        "<td>" + reimbs[i].reimb_id + "</td>" +
+        "<td>" + USD.format(reimbs[i].amount) + "</td>" +
+        "<td>" + new Date(parseInt(reimbs[i].submitted)).toLocaleDateString() + "</td>" +
+        "<td>" + new Date(parseInt(reimbs[i].resolved)).toLocaleDateString() + "</td>" +
+        "<td>" + reimbs[i].description + "</td>" + 
+        "<td>" + reimbs[i].author_id + "</td>" +
+        "<td>" + reimbs[i].resolver_id + "</td>" +
+        "<td>" + reimbs[i].reimb_status + "</td>" +
+        "<td>" + reimbs[i].reimb_type + "</td>";
+
+        body.appendChild(newRow);
+    }
+}
+}
+
 function configureFinanceHomeView() {
     loadButtons();
     let authUser = JSON.parse(localStorage.getItem('authUser'));
@@ -404,7 +513,7 @@ function configureFinanceHomeView() {
 
 
 function sortByLodging() {
-
+    
     let xhr = new XMLHttpRequest();
     xhr.open('GET', 'reimbslodging', true);
     xhr.send();
@@ -418,7 +527,9 @@ function sortByLodging() {
         
     
         let table = document.getElementById("financeTable");
-        table.removeChild(document.getElementById("list"));
+        if (table.childElementCount != 0) {
+            table.removeChild(document.getElementById("list"));
+        } 
         let body = document.createElement("tbody");
         body.setAttribute("id", "list");
         table.appendChild(body);
@@ -446,6 +557,7 @@ function sortByLodging() {
 
 function sortByTravel() {
 
+    
     let xhr = new XMLHttpRequest();
     xhr.open('GET', 'reimbstravel', true);
     xhr.send();
@@ -459,7 +571,9 @@ function sortByTravel() {
     
 
     let table = document.getElementById("financeTable");
-    table.removeChild(document.getElementById("list"));
+    if (table.childElementCount != 0) {
+        table.removeChild(document.getElementById("list"));
+    } 
     let body = document.createElement("tbody");
     body.setAttribute("id", "list");
     table.appendChild(body);
@@ -486,7 +600,8 @@ function sortByTravel() {
 }
 
 function sortByFood() {
-    xhr.open('GET', 'reimbslodging', true);
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', 'reimbsfood', true);
     xhr.send();
 
 
@@ -498,34 +613,40 @@ function sortByFood() {
         
     
         let table = document.getElementById("financeTable");
-        table.removeChild(document.getElementById("list"));
+        if (table.childElementCount != 0) {
+            table.removeChild(document.getElementById("list"));
+        } 
         let body = document.createElement("tbody");
         body.setAttribute("id", "list");
         table.appendChild(body);
     
+        reimbs.forEach(foods)
     
-        for(let i = 0 ; i < reimbs.length; i++){
+        function foods(reimb) {
+        // for(let i = 0 ; i < reimbs.length; i++){
     
             let newRow = document.createElement("tr");
     
             newRow.innerHTML = 
-            "<td>" + reimbs[i].reimb_id + "</td>" +
-            "<td>" + USD.format(reimbs[i].amount) + "</td>" +
-            "<td>" + new Date(parseInt(reimbs[i].submitted)).toLocaleDateString() + "</td>" +
-            "<td>" + new Date(parseInt(reimbs[i].resolved)).toLocaleDateString() + "</td>" +
-            "<td>" + reimbs[i].description + "</td>" + 
-            "<td>" + reimbs[i].author_id + "</td>" +
-            "<td>" + reimbs[i].resolver_id + "</td>" +
-            "<td>" + reimbs[i].reimb_status + "</td>" +
-            "<td>" + reimbs[i].reimb_type + "</td>";
+            "<td>" + reimb.reimb_id + "</td>" +
+            "<td>" + USD.format(reimb.amount) + "</td>" +
+            "<td>" + new Date(parseInt(reimb.submitted)).toLocaleDateString() + "</td>" +
+            "<td>" + new Date(parseInt(reimb.resolved)).toLocaleDateString() + "</td>" +
+            "<td>" + reimb.description + "</td>" + 
+            "<td>" + reimb.author_id + "</td>" +
+            "<td>" + reimb.resolver_id + "</td>" +
+            "<td>" + reimb.reimb_status + "</td>" +
+            "<td>" + reimb.reimb_type + "</td>";
     
             body.appendChild(newRow);
         }
     }
 }
 
+
 function sortByOther() {
-    xhr.open('GET', 'reimbstravel', true);
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', 'reimbsother', true);
     xhr.send();
 
 
@@ -537,7 +658,9 @@ function sortByOther() {
     
 
     let table = document.getElementById("financeTable");
-    table.removeChild(document.getElementById("list"));
+    if (table.childElementCount != 0) {
+        table.removeChild(document.getElementById("list"));
+    } 
     let body = document.createElement("tbody");
     body.setAttribute("id", "list");
     table.appendChild(body);
@@ -564,7 +687,8 @@ function sortByOther() {
 }
 
 function sortByPending() {
-    xhr.open('GET', 'reimbstravel', true);
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', 'reimbspending', true);
     xhr.send();
 
 
@@ -576,7 +700,9 @@ function sortByPending() {
     
 
     let table = document.getElementById("financeTable");
-    table.removeChild(document.getElementById("list"));
+    if (table.childElementCount != 0) {
+        table.removeChild(document.getElementById("list"));
+    } 
     let body = document.createElement("tbody");
     body.setAttribute("id", "list");
     table.appendChild(body);
@@ -603,7 +729,8 @@ function sortByPending() {
 }
 
 function sortByApproved() {
-    xhr.open('GET', 'reimbslodging', true);
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', 'reimbsapproved', true);
     xhr.send();
 
 
@@ -615,7 +742,9 @@ function sortByApproved() {
         
     
         let table = document.getElementById("financeTable");
-        table.removeChild(document.getElementById("list"));
+        if (table.childElementCount != 0) {
+            table.removeChild(document.getElementById("list"));
+        } 
         let body = document.createElement("tbody");
         body.setAttribute("id", "list");
         table.appendChild(body);
@@ -642,7 +771,8 @@ function sortByApproved() {
 }
 
 function sortByDenied() {
-    xhr.open('GET', 'reimbstravel', true);
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', 'reimbsdenied', true);
     xhr.send();
 
 
@@ -654,7 +784,9 @@ function sortByDenied() {
     
 
     let table = document.getElementById("financeTable");
-    table.removeChild(document.getElementById("list"));
+    if (table.childElementCount != 0) {
+        table.removeChild(document.getElementById("list"));
+    } 
     let body = document.createElement("tbody");
     body.setAttribute("id", "list");
     table.appendChild(body);
@@ -682,6 +814,7 @@ function sortByDenied() {
 
 
 function sortByAll() {
+    let xhr = new XMLHttpRequest();
     xhr.open('GET', 'reimbs', true);
     xhr.send();
 
@@ -694,7 +827,9 @@ function sortByAll() {
     
 
     let table = document.getElementById("financeTable");
-    table.removeChild(document.getElementById("list"));
+    if (table.childElementCount != 0) {
+        table.removeChild(document.getElementById("list"));
+    } 
     let body = document.createElement("tbody");
     body.setAttribute("id", "list");
     table.appendChild(body);
@@ -873,6 +1008,39 @@ function updateUser() {
 }
 
 
+function approveReimb() {
+    
+    let approve = document.getElementById('approve');
+    let denied = document.getElementById('deny');
+    let reimbId = document.getElementById('id').value;
+
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', './updatereimb');
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    
+    if (approve.checked) {
+        xhr.send(`id=${reimbId}&status=approved`);
+    } else if (denied.checked) {
+        xhr.send(`id=${reimbId}&status=denied`);
+    }
+
+    xhr.onreadystatechange = function() {
+        if  (xhr.readyState == 4 && xhr.status == 201) {
+            document.getElementById('reg-message').setAttribute('hidden', true);
+            console.log('SUCCESS!')
+
+
+        } else if (xhr.readyState == 4 && xhr.status == 400) {
+            document.getElementById('reg-message').removeAttribute('hidden');
+
+            let err = JSON.parse(xhr.responseText);
+            document.getElementById('reg-message').innerText = err.message;
+        }
+    }
+
+}
+
+
 
 function isUsernameAvailable() {
 
@@ -1027,6 +1195,24 @@ function validateUpdateForm() {
         document.getElementById('updateButton').setAttribute('disabled', true);
     } else {
         document.getElementById('updateButton').removeAttribute('disabled');
+        document.getElementById('reg-message').setAttribute('hidden', true);
+    }
+}
+
+function validateReimbUpdateForm() {
+
+    console.log('in validateUpdateForm()');
+
+    let id1 = document.getElementById('approve').checked;
+    let id2 = document.getElementById('deny').checked;
+
+
+    if (!id1 && !id2) {
+        document.getElementById('reg-message').removeAttribute('hidden');
+        document.getElementById('reg-message').innerText = 'You must check a status!'
+        document.getElementById('updateReimbButton').setAttribute('disabled', true);
+    } else {
+        document.getElementById('updateReimbButton').removeAttribute('disabled');
         document.getElementById('reg-message').setAttribute('hidden', true);
     }
 }

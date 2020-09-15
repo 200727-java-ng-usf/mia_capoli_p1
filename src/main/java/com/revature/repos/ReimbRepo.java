@@ -1,5 +1,6 @@
 package com.revature.repos;
 
+import com.revature.dtos.Principal;
 import com.revature.exceptions.ResourceNotFoundException;
 import com.revature.models.AppUser;
 import com.revature.models.Reimb;
@@ -59,7 +60,7 @@ public class ReimbRepo {
         Set<Reimb> _reimb = new HashSet<>();
         try (Connection conn = ConnectionFactory.getConnFactory().getConnection()) {
 
-            String sql = "\"SELECT * FROM project1.ers_reimbursments er JOIN project1.ers_reimbursement_types rt ON er.reimb_type_id = rt.reimb_type_id " +
+            String sql = "SELECT * FROM project1.ers_reimbursments er JOIN project1.ers_reimbursement_types rt ON er.reimb_type_id = rt.reimb_type_id " +
                     "JOIN project1.ers_reimbursement_statuses rs ON er.reimb_status_id = rs.reimb_status_id WHERE er.reimb_status_id = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, reimb_status_id);
@@ -189,21 +190,38 @@ public class ReimbRepo {
 
         try (Connection conn = ConnectionFactory.getConnFactory().getConnection()) {
 
-            String sql = "update project1.ers_reimbursments set amount = ?, submitted = ?, resolved = ?, description = ?, author_id = ?, " +
-                    "resolver_id = ?, reimb_status_id = ?, reimb_type_id = ? where reimb_id = ?";
+            String sql = "update project1.ers_reimbursments set amount = ?, description = ?," +
+                    "reimb_type_id = ? where reimb_id = ?";
 
             PreparedStatement pstmt = conn.prepareStatement(sql);
 
 
             pstmt.setDouble(1, reimb.getAmount());
-            pstmt.setTimestamp(2, reimb.getSubmitted());
-            pstmt.setTimestamp(3, reimb.getResolved());
-            pstmt.setString(4, reimb.getDescription());
-            pstmt.setInt(5, reimb.getAuthor_id());
-            pstmt.setInt(6, reimb.getResolver_id());
-            pstmt.setInt(7, ReimbStatusTypes.getIDFromName(reimb.getReimb_status().toString()));
-            pstmt.setInt(8, ReimbTypes.getIDFromName(reimb.getReimb_type().toString()));
-            pstmt.setInt(9, reimb.getReimb_id());
+            pstmt.setString(2, reimb.getDescription());
+            pstmt.setInt(3, ReimbTypes.getIDFromName(reimb.getReimb_type().toString()));
+            pstmt.setInt(4, reimb.getReimb_id());
+
+            pstmt.executeUpdate();
+
+
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+            System.err.println("Database Error!");
+        }
+    }
+
+    public void updateReimbStatus(Reimb reimb, String status, Principal currentFinMan) {
+
+        try (Connection conn = ConnectionFactory.getConnFactory().getConnection()) {
+
+            String sql = "update project1.ers_reimbursments set reimb_status_id = ?, resolved = NOW()::timestamp, resolver_id = ? where reimb_id = ?";
+
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+
+
+            pstmt.setInt(1, ReimbStatusTypes.getIDFromName(status));
+            pstmt.setInt(2, currentFinMan.getId());
+            pstmt.setInt(3, reimb.getReimb_id());
 
             pstmt.executeUpdate();
 

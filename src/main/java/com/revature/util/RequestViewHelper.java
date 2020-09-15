@@ -41,7 +41,9 @@ public class RequestViewHelper {
             case "/update.view":
             case "/ExpenseReimbursementSystem/update.view":
                 return "partials/update.html";
-
+            case "/updatereimb.view":
+            case "/ExpenseReimbursementSystem/updatereimb.view":
+                return "partials/updatereimb.html";
             default:
                 return null;
 

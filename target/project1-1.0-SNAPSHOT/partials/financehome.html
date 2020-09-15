@@ -9,10 +9,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <!-- <a class="nav-item nav-link" id="toRegister">Register</a>
-                <a class="nav-item nav-link" id="toUpdate">Update User</a>
-                <a class="nav-item nav-link" id="toDelete">Delete User</a> -->
-                <a class="nav-item nav-link" id="toUpdateReimb">Update Reimbursement</a>
+                <a class="nav-item nav-link" id="toUpdateReimb">Approve/Deny Reimbursements</a>
                 <a class="nav-item nav-link" id="toLogout">Logout</a>
             </div>
         </div>
@@ -23,49 +20,51 @@
 
 <div class="bd-example">
     <div class="btn-group">
-      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter By Type</button>
-      <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">
-        <a class="dropdown-item" onclick="sortByLodging()">Lodging Reimbursements</a>
-        <a class="dropdown-item" onclick="sortByTravel()">Travel Reimbursements</a>
-        <a class="dropdown-item" onclick="sortByLodging()">Food Reimbursements</a>
-        <a class="dropdown-item" onclick="sortByLodging()">Other Reimbursements</a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="#">All Reimbursements</a>
-      </div>
+        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter By Type</button>
+            <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">
+                <a class="dropdown-item" onmousedown="sortByLodging()">Lodging Reimbursements</a>
+                <a class="dropdown-item" onmousedown="sortByTravel()">Travel Reimbursements</a>
+                <a class="dropdown-item" onmousedown="sortByFood()">Food Reimbursements</a>
+                <a class="dropdown-item" onmousedown="sortByOther()">Other Reimbursements</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" onmousedown="sortByAll()">All Reimbursements</a>
+        </div>
     </div>
     <div class="btn-group">
         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter By Status</button>
-        <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">
-            <a class="dropdown-item" href="#">Pending Reimbursements</a>
-            <a class="dropdown-item" href="#">Approved Reimbursements</a>
-            <a class="dropdown-item" href="#">Denied Reimbursements</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">All Reimbursements</a>
-        </div>
+            <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 38px, 0px); top: 0px; left: 0px; will-change: transform;">
+                <a class="dropdown-item" onmousedown="sortByPending()">Pending Reimbursements</a>
+                <a class="dropdown-item" onmousedown="sortByApproved()">Approved Reimbursements</a>
+                <a class="dropdown-item" onmousedown="sortByDenied()">Denied Reimbursements</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" onmousedown="sortByAll()">All Reimbursements</a>
+            </div>
     </div>
 </div>
 
 <div id="home-finance-container">
-    <table id="financeTable" class="table">
-        <thead class="thead-dark">
-        <tr>
-            <th>Id</th>
-            <th>Amount</th>
-            <th>Date Submitted</th>
-            <th>Date Resolved</th>
-            <th>Description</th>
-            <th>Author Id</th>
-            <th>Resolver Id</th>
-            <th>Status</th>
-            <th>Type</th>
+    <div class="table-responsive-lg">
+        <table id="financeTable" class="table">
+            <thead class="thead-dark">
+            <tr>
+                <th>Id</th>
+                <th>Amount</th>
+                <th>Date Submitted</th>
+                <th>Date Resolved</th>
+                <th>Description</th>
+                <th>Author Id</th>
+                <th>Resolver Id</th>
+                <th>Status</th>
+                <th>Type</th>
 
 
-        </tr>
-        </thead>
-        <tbody id="list">
+            </tr>
+            </thead>
+            <tbody id="list">
 
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
 
     <div>
     

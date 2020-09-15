@@ -53,7 +53,7 @@ public class ReimbOtherServlet extends HttpServlet {
 
 
         try {
-                Set<Reimb> reimbs = reimbService.getAllReimbs();
+                Set<Reimb> reimbs = reimbService.getReimbsByType("Other");
                 String usersJSON = mapper.writeValueAsString(reimbs);
                 respWriter.write(usersJSON);
                 resp.setStatus(200); //not req, 200 by default if no exceptions /errors are thrown

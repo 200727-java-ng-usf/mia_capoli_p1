@@ -1,5 +1,6 @@
 package com.revature.services;
 
+import com.revature.dtos.Principal;
 import com.revature.exceptions.InvalidInputException;
 import com.revature.exceptions.InvalidRequestException;
 import com.revature.exceptions.ResourceNotFoundException;
@@ -53,6 +54,21 @@ public class ReimbService {
         return reimbRepo.selectReimbursement(reimbToUpdate.getReimb_id());
 
     }
+    public Reimb updateReimbStatus(String status, int id, Principal currentFinMan) {
+
+
+        Reimb reimb = reimbRepo.selectReimbursement(id);
+
+        if (!isReimbValid(reimb)) {
+
+            throw new InvalidInputException("Invalid credentials given for registration.");
+        }
+
+
+        reimbRepo.updateReimbStatus(reimb, status, currentFinMan);
+        return reimbRepo.selectReimbursement(reimb.getReimb_id());
+
+    }
 
     public Set<Reimb> getAllReimbs() {
 
@@ -72,6 +88,8 @@ public class ReimbService {
 
         ReimbTypes reimbType = ReimbTypes.getByName(type);
 
+        System.out.println(reimbType);
+
         Set<Reimb> reimbs =  reimbRepo.findReimbByType(reimbType);
 
         if (reimbs == null) {
@@ -85,7 +103,6 @@ public class ReimbService {
     public Set<Reimb> getReimbByStatus(int id) {
 
 
-        //todo check if finance manager
         if (id <= 0) {
             throw new InvalidRequestException("The provided Id cannot be less than or equal to 0!");
         }

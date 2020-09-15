@@ -15,7 +15,7 @@ public enum ReimbStatusTypes {
     public static ReimbStatusTypes getByName(String name) {
 
         for (ReimbStatusTypes reimbSType : ReimbStatusTypes.values()) {
-            if (reimbSType.roleName.equals(name)) {
+            if (reimbSType.roleName.equalsIgnoreCase(name)) {
                 return reimbSType;
             }
         }
@@ -39,11 +39,9 @@ public enum ReimbStatusTypes {
 
     public static int getIDFromName(String name) {
 
-        ReimbStatusTypes currentReimb = ReimbStatusTypes.getByName(name);
-
-        if (currentReimb.ordinal() == 1) {
+        if (name.equalsIgnoreCase("Pending")) {
             return 1;
-        } else if (currentReimb.ordinal() == 2) {
+        } else if (name.equalsIgnoreCase("Approved")) {
             return 2;
         } else {
             return 3;

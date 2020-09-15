@@ -16,13 +16,12 @@ public enum ReimbTypes {
     public static ReimbTypes getByName(String name) {
 
         for (ReimbTypes reimbType : ReimbTypes.values()) {
-            if (reimbType.roleName.equals(name)) {
+            if (reimbType.roleName.equalsIgnoreCase(name)) {
+                System.out.println("get by name=" + reimbType);
                 return reimbType;
             }
         }
-
         return OTHER;
-
     }
 
     public static ReimbTypes getByID(int id) {
@@ -40,19 +39,19 @@ public enum ReimbTypes {
 
     public static int getIDFromName(String name) {
 
-        ReimbTypes currentReimb = ReimbTypes.getByName(name);
-
-        if (currentReimb.ordinal() == 1) {
+        if (name.equalsIgnoreCase("Lodging")) {
             return 1;
-        } else if (currentReimb.ordinal() == 2) {
+        } else if (name.equalsIgnoreCase("Travel")) {
             return 2;
-        } else if (currentReimb.ordinal() == 3) {
+        } else if (name.equalsIgnoreCase("Food")) {
             return 3;
         } else {
             return 4;
         }
 
     }
+
+
 
 
 }
