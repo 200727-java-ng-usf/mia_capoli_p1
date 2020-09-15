@@ -27,7 +27,7 @@ public class DeleteUserServlet extends HttpServlet {
         ObjectMapper mapper = new ObjectMapper();
         PrintWriter respWriter = resp.getWriter();
         try {
-//todo test
+
             String deletedUserId = req.getParameter("id");
             if (deletedUserId != null) {
                 int id = Integer.parseInt(deletedUserId);

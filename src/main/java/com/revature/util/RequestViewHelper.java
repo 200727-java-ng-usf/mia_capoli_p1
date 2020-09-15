@@ -17,6 +17,7 @@ public class RequestViewHelper {
                 if (principal == null || principal.equals("")) {
                     return "partials/login.html";
                 }
+                System.out.println("IN HOME");
                 return "partials/home.html";
             case "/adminhome.view":
             case "/ExpenseReimbursementSystem/adminhome.view":

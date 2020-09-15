@@ -1,12 +1,5 @@
 package com.revature;
 
-import java.util.List;
-
-import com.revature.models.AppUser;
-import com.revature.util.SessionFact;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-
 public class AppDriver {
 
 

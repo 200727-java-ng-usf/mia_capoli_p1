@@ -3,11 +3,6 @@ const APP_VIEW = document.getElementById('app-view');
 window.onload = function() {
     loadLogin();
     document.getElementById("toLogin").addEventListener('click', loadLogin);
-    document.getElementById("toRegister").addEventListener('click', loadRegister);
-    document.getElementById("toLogout").addEventListener('click', logout);
-    document.getElementById("toHome").addEventListener('click', loadHome);
-    document.getElementById("toUpdate").addEventListener('click', loadUpdate);
-    document.getElementById("toDelete").addEventListener('click', loadDelete);
 }
 
 function loadButtons() {
@@ -110,41 +105,18 @@ function loadHome() {
     } else {
         xhr.open('GET', 'home.view', true);
         xhr.send();
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                APP_VIEW.innerHTML = xhr.responseText;
+                configureEmployeeHomeView();
+             }
+    
+        }
     }
 
 
     }
-
-
-function loadEmployeeHome() {
-    console.log('in loadHome()');
-
-    if (!localStorage.getItem('authUser')) {
-        console.log("no user logged in, nav to login screen");
-        loadLogin();
-        return;
-    }
-
-    let xhr = new XMLHttpRequest();
-    let authUser = JSON.parse(localStorage.getItem('authUser'));
-    if (authUser.role == 'Admin' || authUser.role == 'admin') {
-        xhr.open('GET', 'adminhome.view', true);
-        xhr.send();
-    } else {
-        xhr.open('GET', 'home.view', true);
-        xhr.send();
-    }
-
-
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            APP_VIEW.innerHTML = xhr.responseText;
-            configureHomeView();
-         }
-
-    }
-
-}
 
 function loadUpdate() {
     if (!localStorage.getItem('authUser')) {
@@ -508,6 +480,57 @@ function configureFinanceHomeView() {
         body.appendChild(newRow);
     }
 }
+}
+
+function configureEmployeeHomeView() {
+    console.log("in configureEmployeeHome()")
+    loadButtons();
+    let authUser = JSON.parse(localStorage.getItem('authUser'));
+    document.getElementById('loggedInUsername').innerText = authUser.username;
+
+    let xhr = new XMLHttpRequest();
+
+    xhr.open('GET', 'reimbs', true);
+    xhr.send();
+
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var reimbs = JSON.parse(xhr.responseText);
+         }
+
+    
+        let table = document.getElementById("reimbTable");
+        table.removeChild(document.getElementById("list"));
+        let body = document.createElement("tbody");
+        body.setAttribute("id", "list");
+        table.appendChild(body);
+
+
+        for(let i = 0 ; i < reimbs.length; i++){
+
+            let newRow = document.createElement("tr");
+            
+            if ((new Date(parseInt(reimbs[i].resolved)).toLocaleDateString()) == "Invalid Date") {
+                var DateResolved = "Not Resolved";
+            } else {
+                var DateResolved = new Date(parseInt(reimbs[i].resolved)).toLocaleDateString();
+            }
+
+            newRow.innerHTML = 
+            "<td>" + reimbs[i].reimb_id + "</td>" +
+            "<td>" + USD.format(reimbs[i].amount) + "</td>" +
+            "<td>" + new Date(parseInt(reimbs[i].submitted)).toLocaleDateString() + "</td>" +
+            "<td>" + DateResolved + "</td>" +
+            "<td>" + reimbs[i].description + "</td>" + 
+            "<td>" + reimbs[i].author_id + "</td>" +
+            "<td>" + reimbs[i].resolver_id + "</td>" +
+            "<td>" + reimbs[i].reimb_status + "</td>" +
+            "<td>" + reimbs[i].reimb_type + "</td>";
+
+            body.appendChild(newRow);
+        }
+    }
 }
 
 

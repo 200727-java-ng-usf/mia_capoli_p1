@@ -2,15 +2,10 @@ package com.revature.repos;
 
 import com.revature.dtos.Principal;
 import com.revature.exceptions.ResourceNotFoundException;
-import com.revature.models.AppUser;
 import com.revature.models.Reimb;
 import com.revature.models.ReimbStatusTypes;
 import com.revature.models.ReimbTypes;
 import com.revature.util.ConnectionFactory;
-import com.revature.util.SessionFact;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 
 import java.sql.*;
 import java.util.HashSet;
@@ -83,8 +78,7 @@ public class ReimbRepo {
     public Set<Reimb> findReimbsByUser(int appUser_id) {
 
         Set<Reimb> _reimbs = new HashSet<>();
-        Optional<Reimb> _reimb = Optional.empty();
-
+        System.out.println(appUser_id);
         try (Connection conn = ConnectionFactory.getConnFactory().getConnection()) {
 
             String sql = "SELECT * FROM project1.ers_reimbursments er JOIN project1.ers_reimbursement_types rt ON er.reimb_type_id = rt.reimb_type_id " +
@@ -93,12 +87,7 @@ public class ReimbRepo {
             pstmt.setInt(1, appUser_id);
             //if the returned user set contains a user that matches the username, return that user.
             ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                _reimb = mapResultSet(rs).stream().findAny();
-                if (_reimb.isPresent()) {
-                    _reimbs.add(_reimb.get());
-                }
-            }
+            _reimbs = new HashSet<>(mapResultSet(rs));
 
         } catch (SQLException sqle) {
             System.err.println("Database Error!");
@@ -149,6 +138,7 @@ public class ReimbRepo {
             temp.setResolver_id(rs.getInt("resolver_id"));
             temp.setReimb_status_id(ReimbStatusTypes.getByName(rs.getString("reimb_status")));
             temp.setReimb_type(ReimbTypes.getByName(rs.getString("reimb_type")));
+            System.out.println(temp);
             reimbs.add(temp);
         }
 
@@ -186,7 +176,7 @@ public class ReimbRepo {
     }
 
 
-    public void updateReimb(Reimb reimb) {
+    public void updateReimb(int amount, String description, int reimb_type_id, int reimb_id) {
 
         try (Connection conn = ConnectionFactory.getConnFactory().getConnection()) {
 
@@ -196,10 +186,10 @@ public class ReimbRepo {
             PreparedStatement pstmt = conn.prepareStatement(sql);
 
 
-            pstmt.setDouble(1, reimb.getAmount());
-            pstmt.setString(2, reimb.getDescription());
-            pstmt.setInt(3, ReimbTypes.getIDFromName(reimb.getReimb_type().toString()));
-            pstmt.setInt(4, reimb.getReimb_id());
+            pstmt.setDouble(1, amount);
+            pstmt.setString(2, description);
+            pstmt.setInt(3, reimb_type_id);
+            pstmt.setInt(4, reimb_id);
 
             pstmt.executeUpdate();
 

@@ -45,21 +45,30 @@ public class ReimbServlet extends HttpServlet {
 
         Principal principal = mapper.readValue(principalJSON, Principal.class);
 
-        if (!principal.getRole().equalsIgnoreCase("FinanceMan")) {
-            ErrorResponse err = new ErrorResponse(403, "Forbidden: your role does not permit you to access this endpoint.");
-            respWriter.write(mapper.writeValueAsString(err));
-            resp.setStatus(403);
-            return;
-        }
+
 
 
 
         try {
+            System.out.println(principal.getRole().toLowerCase());
+            if (principal.getRole().equalsIgnoreCase("employee")) {
+                int id = principal.getId();
+                Set<Reimb> reimbs = reimbService.getReimbsByUserId(id);
+                respWriter.write(mapper.writeValueAsString(reimbs));
+
+            } else {
+                if (!principal.getRole().equalsIgnoreCase("FinanceMan")) {
+                    ErrorResponse err = new ErrorResponse(403, "Forbidden: your role does not permit you to access this method.");
+                    respWriter.write(mapper.writeValueAsString(err));
+                    resp.setStatus(403);
+                    return;
+                }
+
                 Set<Reimb> reimbs = reimbService.getAllReimbs();
-                String usersJSON = mapper.writeValueAsString(reimbs);
-                respWriter.write(usersJSON);
-                resp.setStatus(200); //not req, 200 by default if no exceptions /errors are thrown
-//            }
+                String reimbsJSON = mapper.writeValueAsString(reimbs);
+                respWriter.write(reimbsJSON);
+            }
+            resp.setStatus(200);
         } catch (ResourceNotFoundException rnfe) {
 
             resp.setStatus(404); //not found!!!

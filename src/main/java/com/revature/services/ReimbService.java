@@ -27,33 +27,28 @@ public class ReimbService {
         if (!isReimbValid(reimb)) {
             throw new InvalidInputException("Invalid credentials given for reimbursement.");
         }
-        //TODO get currently logged in user
-//        if (user.get().getRole() != Role.ADMIN) {
-//            app.invalidateCurrentUser();
-//            throw new AuthenticatorException("You aren't allowed to update any users!");
-//            //to  do return home
-//        }
 
         reimbRepo.save(reimb);
     }
 
 
 
-    public Reimb updateReimb(Reimb reimbToUpdate) {
+    public Reimb updateReimb(int amount, String description, String reimb_type, int reimb_id) {
 
 
-        Reimb reimb = reimbRepo.selectReimbursement(reimbToUpdate.getReimb_id());
+        Reimb reimb = reimbRepo.selectReimbursement(reimb_id);
 
         if (!isReimbValid(reimb)) {
 
             throw new InvalidInputException("Invalid credentials given for registration.");
         }
 
-
-        reimbRepo.updateReimb(reimbToUpdate);
-        return reimbRepo.selectReimbursement(reimbToUpdate.getReimb_id());
+        int reimb_type_id = ReimbTypes.getIDFromName(reimb_type);
+        reimbRepo.updateReimb(amount, description, reimb_type_id, reimb_id);
+        return reimbRepo.selectReimbursement(reimb_id);
 
     }
+
     public Reimb updateReimbStatus(String status, int id, Principal currentFinMan) {
 
 
@@ -115,13 +110,13 @@ public class ReimbService {
         return reimbs;
     }
 
-    public Reimb getReimbByUserId(int id) {
+    public Set<Reimb> getReimbsByUserId(int id) {
 
         if (id <= 0) {
             throw new InvalidRequestException("The provided Id cannot be less than or equal to 0!");
         }
 
-        return reimbRepo.selectReimbursement(id);
+        return reimbRepo.findReimbsByUser(id);
     }
 
     public boolean isReimbValid(Reimb reimb) {

@@ -2,7 +2,6 @@ com\revature\dtos\Credentials.class
 com\revature\controllers\EmployeeHomeController.class
 com\revature\controllers\FinanceManagerHomeController.class
 com\revature\repos\AppUserRepo.class
-com\revature\util\SessionFact.class
 com\revature\models\AppUser.class
 com\revature\dtos\Principal.class
 com\revature\util\ValidationHelper.class
@@ -36,7 +35,6 @@ com\revature\servlets\ReimbDeniedServlet.class
 com\revature\dtos\ErrorResponse.class
 com\revature\servlets\ReimbApprovedServlet.class
 com\revature\services\ReimbService.class
-com\revature\servlets\ReimbUserServlet.class
 com\revature\servlets\ReimbServlet.class
 com\revature\exceptions\AuthenticatorException.class
 com\revature\servlets\ReimbFoodServlet.class

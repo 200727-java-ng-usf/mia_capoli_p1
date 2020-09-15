@@ -34,32 +34,30 @@ public class UpdateReimbServlet extends HttpServlet {
 
             Principal principal = mapper.readValue(principalJSON, Principal.class);
 
-            if (!principal.getRole().equalsIgnoreCase("FinanceMan")) {
-                ErrorResponse err = new ErrorResponse(403, "Forbidden: your role does not permit you to access this endpoint.");
-                respWriter.write(mapper.writeValueAsString(err));
-                resp.setStatus(403);
-                return;
+            if (principal.getRole().equalsIgnoreCase("FinanceMan")) {
+                if (req.getParameter("status") != null) {
+                    String status = req.getParameter("status");
+                    String idString = req.getParameter("id");
+                    System.out.println(idString);
+                    int id = Integer.parseInt(idString);
+
+                    Reimb reimb = reimbService.updateReimbStatus(status, id, principal);
+                    String reimbJSON = mapper.writeValueAsString(reimb);
+                    respWriter.write(reimbJSON);
+                }
             }
 
-            if (req.getParameter("status") != null) {
-                String status = req.getParameter("status");
-                String idString = req.getParameter("id");
-                System.out.println(idString);
-                int id = Integer.parseInt(idString);
+            if (principal.getRole().equalsIgnoreCase("Employee")) {
+                int selectedReimbID = Integer.parseInt(req.getParameter("id"));
+                int amount = Integer.parseInt(req.getParameter("amount"));
+                String reimbType = req.getParameter("type");
+                String description = req.getParameter("description");
 
-                Reimb reimb = reimbService.updateReimbStatus(status, id, principal);
-                String reimbJSON = mapper.writeValueAsString(reimb);
-                respWriter.write(reimbJSON);
-
-            } else {
-                Reimb updatedReimb = mapper.readValue(req.getInputStream(), Reimb.class);
-                Reimb finalizedReimb = reimbService.updateReimb(updatedReimb);
-                System.out.println(finalizedReimb);
+                Reimb finalizedReimb = reimbService.updateReimb(amount, description, reimbType, selectedReimbID);
                 String updatedUserJSON = mapper.writeValueAsString(finalizedReimb);
                 respWriter.write(updatedUserJSON);
                 resp.setStatus(201); // 201 = CREATED
             }
-
         } catch (MismatchedInputException | InvalidRequestException mie) {
             mie.printStackTrace();
             resp.setStatus(400);

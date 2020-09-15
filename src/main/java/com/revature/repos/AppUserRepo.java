@@ -3,14 +3,9 @@ package com.revature.repos;
 import com.revature.models.AppUser;
 import com.revature.models.Role;
 import com.revature.util.ConnectionFactory;
-import com.revature.util.SessionFact;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 
 import java.sql.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
