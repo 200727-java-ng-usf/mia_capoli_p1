@@ -1,0 +1,69 @@
+<div id="navbar">
+    <nav class="navbar navbar-expand-lg bg-dark">
+        <a class="navbar-brand" href="#">Expense Reimbursement System</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse"
+                data-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span id="nav-dropdown" class="navbar-toggler-icon">Show</span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link" id="toHome">Home</a>
+                <a class="nav-item nav-link" id="toRegister">Register</a>
+                <a class="nav-item nav-link" id="toDelete">Delete User</a>
+                <a class="nav-item nav-link" id="toLogout">Logout</a>
+            </div>
+        </div>
+    </nav>
+</div>
+<div id="update-container">
+    <div class="table-responsive-lg">
+    <h2>Expense Reimbursement</h2>
+    <hr>
+    
+        <table id="adminTable" class="table">
+            <thead class="thead-dark">
+            <tr>
+                <th>Id</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>User Name</th>
+                <th>Email</th>
+    
+            </tr>
+            </thead>
+            <tbody id="list">
+    
+            </tbody>
+        </table>
+    </div>
+
+    <h3>Update a User</h3>
+    <br>
+    <div class="form-group">
+        <label for="reg-username">Existing username to be updated</label> <input type="text" class="form-control" id="reg-username" placeholder="Enter the username of the user to be updated">
+    </div>
+    <div class="form-group">
+        <label for="fn">First name</label> 
+        <input type="text" class="form-control" id="fn" placeholder="Enter the first name">
+    </div>
+    <div class="form-group">
+        <label for="ln">Last name</label> <input type="text"
+            class="form-control" id="ln" placeholder="Enter the last name">
+    </div>
+    <div class="form-group">
+        <label for="email">Email Address</label> <input type="email" class="form-control" id="email" placeholder="Enter the email address">
+    </div>
+    
+    <div class="form-group">
+        <label for="pw">Password</label> <input type="password" class="form-control" id="reg-password" placeholder="Enter the password">
+    </div>
+    <div id="update-button-container">
+        <button type="submit" class="btn btn-primary" id="updateButton">Update</button>
+    </div>
+    <br> 
+    <br>
+    <div class="alert alert-danger" id="update-warn"></div>
+    <div class="alert alert-success" id="update-success"></div>
+</div>

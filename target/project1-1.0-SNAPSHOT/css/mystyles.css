@@ -1,0 +1,16 @@
+html, body {
+    height: 100%;
+    background-color: slategrey;
+}
+
+.container {
+    background-color: slategrey;
+    /* padding-top: 2.5rem; */
+    padding-bottom: 2.5rem;
+    align-items: center;
+}
+
+.table {
+    align-items: center;
+}
+
