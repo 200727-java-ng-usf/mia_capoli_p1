@@ -58,11 +58,19 @@ public class UpdateReimbServlet extends HttpServlet {
                 respWriter.write(updatedUserJSON);
                 resp.setStatus(201); // 201 = CREATED
             }
-        } catch (MismatchedInputException | InvalidRequestException mie) {
+        } catch (MismatchedInputException mie) {
             mie.printStackTrace();
             resp.setStatus(400);
 
             ErrorResponse err = new ErrorResponse(400, "Bad Req: Malform reimb object found in request body");
+            String errJSON = mapper.writeValueAsString(err);
+            respWriter.write(errJSON);
+
+        } catch (InvalidRequestException ire) {
+            ire.printStackTrace();
+            resp.setStatus(400);
+
+            ErrorResponse err = new ErrorResponse(403, "Bad Req: This reimbursement is not pending and can no longer be updated. ");
             String errJSON = mapper.writeValueAsString(err);
             respWriter.write(errJSON);
 

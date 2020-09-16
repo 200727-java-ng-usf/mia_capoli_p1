@@ -17,10 +17,12 @@ com\revature\models\Reimb.class
 com\revature\controllers\LoginController.class
 com\revature\models\ReimbStatusTypes.class
 com\revature\AppDriver.class
+com\revature\util\AppUserComparator.class
 com\revature\servlets\ValidationServlet.class
 com\revature\exceptions\InvalidRequestException.class
 com\revature\repos\ReimbRepo.class
 com\revature\servlets\ViewServlet.class
+com\revature\util\ReimbComparator.class
 com\revature\servlets\ReimbLodgingServlet.class
 com\revature\controllers\AdminHomeController.class
 com\revature\servlets\ReimbTravelServlet.class
@@ -29,7 +31,6 @@ com\revature\util\ConnectionFactory.class
 com\revature\servlets\DeleteUserServlet.class
 com\revature\services\UserService.class
 com\revature\exceptions\ResourceNotFoundException.class
-com\revature\servlets\DeleteReimbServlet.class
 com\revature\servlets\UserServlet.class
 com\revature\servlets\ReimbDeniedServlet.class
 com\revature\dtos\ErrorResponse.class

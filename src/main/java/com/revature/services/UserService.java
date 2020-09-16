@@ -7,9 +7,9 @@ import com.revature.exceptions.ResourceNotFoundException;
 import com.revature.models.AppUser;
 import com.revature.models.Role;
 import com.revature.repos.AppUserRepo;
+import com.revature.util.AppUserComparator;
 
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 
 /**
@@ -73,7 +73,6 @@ public class UserService {
 
     }
 
-
     public AppUser updateUser(AppUser employee) {
 
         Optional<AppUser> user = userRepo.findUserByUsername(employee.getUsername());
@@ -101,7 +100,7 @@ public class UserService {
 
     }
 
-    public Set<AppUser> getAllUsers() {
+    public ArrayList<AppUser> getAllUsers() {
 
         Set<AppUser> users = userRepo.findAllUsers();
 
@@ -109,9 +108,11 @@ public class UserService {
             throw new ResourceNotFoundException();
         }
 
-        return users;
-    }
+        ArrayList<AppUser> list = new ArrayList<>(users);
+        list.sort(new AppUserComparator());
 
+        return list;
+    }
 
     public AppUser getUserById(int id) {
 

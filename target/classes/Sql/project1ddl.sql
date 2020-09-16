@@ -70,7 +70,15 @@ values
 INSERT INTO ers_users (username, password, first_name, last_name, email, user_role_id )
 values 
 	('fin', 'pa', 'Fine', 'Man', 'manager@revature.com', 3);
+
+INSERT INTO ers_users (username, password, first_name, last_name, email, user_role_id )
+values 
+	('who', 'pa', 'Mr.', 'Man', 'man@revature.com', 3);
 	
+SELECT * FROM project1.ers_users au
+            JOIN project1.ers_user_roles ur
+            ON au.user_role_id = ur.role_id Where au.is_active = true ORDER by au.ers_user_id;
+
 
 insert into ers_reimbursement_types values (1, 'Lodging'),
     (2, 'Travel'),
@@ -83,7 +91,7 @@ insert into ers_reimbursement_types values (1, 'Lodging'),
   (100, '2004-10-19 10:23:00', 'Hotel Stay',  1, 1, 2),
   (2000, '2019-10-19 10:23:00', 'Moving expenses',  3, 1, 2);
  
-
+SELECT * FROM project1.ers_reimbursments er JOIN project1.ers_reimbursement_types rt ON er.reimb_type_id = rt.reimb_type_id JOIN project1.ers_reimbursement_statuses rs ON er.reimb_status_id = rs.reimb_status_id WHERE author_id = 7
  
  alter table ers_users
 add column is_active boolean;

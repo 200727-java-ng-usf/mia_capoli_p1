@@ -27,9 +27,13 @@ function loadButtons() {
     if (document.getElementById("toDelete")) {
         document.getElementById("toDelete").addEventListener('click', loadDelete);
     }
+    if (document.getElementById("toCreateReimb")) {
+        document.getElementById("toCreateReimb").addEventListener('click', loadCreate);
+    }
     
 }
 
+//---------------------------------------------------------------------------------
 
 function loadLogin() {
 
@@ -116,7 +120,7 @@ function loadHome() {
     }
 
 
-    }
+}
 
 function loadUpdate() {
     if (!localStorage.getItem('authUser')) {
@@ -130,37 +134,9 @@ function loadUpdate() {
     if (authUser.role == 'Admin' || authUser.role == 'admin') {
         xhr.open('GET', 'update.view', true);
         xhr.send();
-
-        //TODO FIX to make it return bad things when trying to delete a user as a non admin
-    } else {
-        xhr.open('GET', 'home.view', true);
+    } else if (authUser.role == 'FinanceMan' || authUser.role == 'admin') {
+        xhr.open('GET', 'updatereimb.view', true);
         xhr.send();
-    }
-
-
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            APP_VIEW.innerHTML = xhr.responseText;
-            configureUpdateView();
-         }
-
-    }
-}
-
-function loadUpdate() {
-    if (!localStorage.getItem('authUser')) {
-        console.log("no user logged in, nav to login screen");
-        loadLogin();
-        return;
-    }
-
-    let xhr = new XMLHttpRequest();
-    let authUser = JSON.parse(localStorage.getItem('authUser'));
-    if (authUser.role == 'FinanceMan' || authUser.role == 'admin') {
-        xhr.open('GET', 'update.view', true);
-        xhr.send();
-
-        //TODO FIX to make it return bad things when trying to delete a user as a non admin
     } else {
         xhr.open('GET', 'home.view', true);
         xhr.send();
@@ -188,23 +164,29 @@ function loadUpdateReimb() {
     if (authUser.role == 'FinanceMan' || authUser.role == 'admin') {
         xhr.open('GET', 'updatereimb.view', true);
         xhr.send();
-
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                APP_VIEW.innerHTML = xhr.responseText;
+                configureUpdateReimbView();
+             }
+    
+        }
         //TODO FIX to make it return bad things when trying to delete a user as a non admin
     } else {
-        xhr.open('GET', 'home.view', true);
+        xhr.open('GET', 'updatereimbuser.view', true);
         xhr.send();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                APP_VIEW.innerHTML = xhr.responseText;
+                configureUpdateReimbUserView();
+             }
+    
+        }
     }
 
 
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            APP_VIEW.innerHTML = xhr.responseText;
-            configureUpdateReimbView();
-         }
-
-    }
+    
 }
-
 
 function loadDelete() {
     if (!localStorage.getItem('authUser')) {
@@ -236,6 +218,25 @@ function loadDelete() {
 
 }
 
+function loadCreate() {
+
+    let xhr = new XMLHttpRequest();
+
+
+    xhr.open('GET', 'create.view', true)
+    xhr.send();
+
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            APP_VIEW.innerHTML = xhr.responseText;
+            configureCreateView();
+         }
+
+    }
+
+}
+
 //---------------------------------------------------------------------------------
 
 function configureLoginView() {
@@ -253,6 +254,7 @@ function configureRegisterView() {
     console.log('in configureRegisterView()');
 
     document.getElementById('reg-message').setAttribute('hidden', true);
+    document.getElementById('reg-success').setAttribute('hidden', true);
 
     document.getElementById('reg-username').addEventListener('blur', isUsernameAvailable);
     document.getElementById('email').addEventListener('blur', isEmailAvailable);
@@ -260,6 +262,17 @@ function configureRegisterView() {
     document.getElementById('register').setAttribute('disabled', true);
     document.getElementById('reg-button-container').addEventListener('mouseover', validateRegisterForm);
     document.getElementById('register').addEventListener('click', register);
+}
+
+function configureCreateView() {
+    loadButtons();
+
+    document.getElementById('create-reimb-success').setAttribute('hidden', true);
+    document.getElementById('create-reimb-warn').setAttribute('hidden', true);
+
+    document.getElementById('createReimbButton').setAttribute('disabled', true);
+    document.getElementById('update-reimb-button-container').addEventListener('mouseover', validateCreateReimbForm);
+    document.getElementById('createReimbButton').addEventListener('click', createReimb);
 }
 
 function configureHomeView() {
@@ -305,6 +318,8 @@ function configureHomeView() {
 
 function configureDeleteView() {
     loadButtons();
+    document.getElementById('delete-message').setAttribute('hidden', true);
+    document.getElementById('delete-success').setAttribute('hidden', true);
 
     document.getElementById("delete-button-container").addEventListener('mouseover', validateDeleteForm);
     document.getElementById('deleteU').addEventListener('click', deleteUser)
@@ -348,6 +363,9 @@ function configureDeleteView() {
 
 function configureUpdateView() {
     loadButtons();
+    document.getElementById('update-warn').setAttribute('hidden', true);
+    document.getElementById('update-success').setAttribute('hidden', true);
+
 
     document.getElementById("update-button-container").addEventListener('mouseover', validateUpdateForm);
     document.getElementById('updateButton').addEventListener('click', updateUser)
@@ -389,9 +407,11 @@ function configureUpdateView() {
 }
 }
 
-
 function configureUpdateReimbView() {
     loadButtons();
+    document.getElementById('approve-warn').setAttribute('hidden', true);
+    document.getElementById('approve-success').setAttribute('hidden', true);
+
 
     document.getElementById("update-reimb-button-container").addEventListener('mouseover', validateReimbUpdateForm);
     document.getElementById('updateReimbButton').addEventListener('click', approveReimb)
@@ -420,15 +440,89 @@ function configureUpdateReimbView() {
     for(let i = 0 ; i < reimbs.length; i++){
 
         let newRow = document.createElement("tr");
+        
+        if ((new Date(parseInt(reimbs[i].resolved)).toLocaleDateString()) == "Invalid Date") {
+            var DateResolved = "Not Resolved";
+        } else {
+            var DateResolved = new Date(parseInt(reimbs[i].resolved)).toLocaleDateString();
+        }
+
+        if (reimbs[i].resolver_id = 0) {
+            var resolver = "Not Resolved";
+        } else {
+            var resolver = reimbs[i].resolver_id;
+        }
 
         newRow.innerHTML = 
         "<td>" + reimbs[i].reimb_id + "</td>" +
         "<td>" + USD.format(reimbs[i].amount) + "</td>" +
         "<td>" + new Date(parseInt(reimbs[i].submitted)).toLocaleDateString() + "</td>" +
-        "<td>" + new Date(parseInt(reimbs[i].resolved)).toLocaleDateString() + "</td>" +
+        "<td>" + DateResolved + "</td>" +
         "<td>" + reimbs[i].description + "</td>" + 
         "<td>" + reimbs[i].author_id + "</td>" +
-        "<td>" + reimbs[i].resolver_id + "</td>" +
+        "<td>" + resolver + "</td>" +
+        "<td>" + reimbs[i].reimb_status + "</td>" +
+        "<td>" + reimbs[i].reimb_type + "</td>";
+
+        body.appendChild(newRow);
+    }
+}
+}
+
+function configureUpdateReimbUserView() {
+    loadButtons();
+    document.getElementById('update-reimb-warn').setAttribute('hidden', true);
+    document.getElementById('update-reimb-success').setAttribute('hidden', true);
+
+    document.getElementById("update-reimb-button-container").addEventListener('mouseover', validateReimbUpdateForm);
+    document.getElementById('updateReimbButton').addEventListener('click', updateReimb)
+    let authUser = JSON.parse(localStorage.getItem('authUser'));
+
+    let xhr = new XMLHttpRequest();
+
+    xhr.open('GET', 'reimbs', true);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.send('status=pending');
+
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var reimbs = JSON.parse(xhr.responseText);
+         }
+
+    
+
+    let table = document.getElementById("financeTable");
+    table.removeChild(document.getElementById("list"));
+    let body = document.createElement("tbody");
+    body.setAttribute("id", "list");
+    table.appendChild(body);
+
+
+    for(let i = 0 ; i < reimbs.length; i++){
+
+        let newRow = document.createElement("tr");
+        
+        if ((new Date(parseInt(reimbs[i].resolved)).toLocaleDateString()) == "Invalid Date") {
+            var DateResolved = "Not Resolved";
+        } else {
+            var DateResolved = new Date(parseInt(reimbs[i].resolved)).toLocaleDateString();
+        }
+
+        if (reimbs[i].resolver_id = 0) {
+            var resolver = "Not Resolved";
+        } else {
+            var resolver = reimbs[i].resolver_id;
+        }
+
+        newRow.innerHTML = 
+        "<td>" + reimbs[i].reimb_id + "</td>" +
+        "<td>" + USD.format(reimbs[i].amount) + "</td>" +
+        "<td>" + new Date(parseInt(reimbs[i].submitted)).toLocaleDateString() + "</td>" +
+        "<td>" + DateResolved + "</td>" +
+        "<td>" + reimbs[i].description + "</td>" + 
+        "<td>" + reimbs[i].author_id + "</td>" +
+        "<td>" + resolver + "</td>" +
         "<td>" + reimbs[i].reimb_status + "</td>" +
         "<td>" + reimbs[i].reimb_type + "</td>";
 
@@ -465,15 +559,27 @@ function configureFinanceHomeView() {
     for(let i = 0 ; i < reimbs.length; i++){
 
         let newRow = document.createElement("tr");
+        
+        if ((new Date(parseInt(reimbs[i].resolved)).toLocaleDateString()) == "Invalid Date") {
+            var DateResolved = "Not Resolved";
+        } else {
+            var DateResolved = new Date(parseInt(reimbs[i].resolved)).toLocaleDateString();
+        }
+
+        if (reimbs[i].resolver_id = 0) {
+            var resolver = "Not Resolved";
+        } else {
+            var resolver = reimbs[i].resolver_id;
+        }
 
         newRow.innerHTML = 
         "<td>" + reimbs[i].reimb_id + "</td>" +
         "<td>" + USD.format(reimbs[i].amount) + "</td>" +
         "<td>" + new Date(parseInt(reimbs[i].submitted)).toLocaleDateString() + "</td>" +
-        "<td>" + new Date(parseInt(reimbs[i].resolved)).toLocaleDateString() + "</td>" +
+        "<td>" + DateResolved + "</td>" +
         "<td>" + reimbs[i].description + "</td>" + 
         "<td>" + reimbs[i].author_id + "</td>" +
-        "<td>" + reimbs[i].resolver_id + "</td>" +
+        "<td>" + resolver + "</td>" +
         "<td>" + reimbs[i].reimb_status + "</td>" +
         "<td>" + reimbs[i].reimb_type + "</td>";
 
@@ -517,6 +623,12 @@ function configureEmployeeHomeView() {
                 var DateResolved = new Date(parseInt(reimbs[i].resolved)).toLocaleDateString();
             }
 
+            if (reimbs[i].resolver_id = 0) {
+                var resolver = "Not Resolved";
+            } else {
+                var resolver = reimbs[i].resolver_id;
+            }
+
             newRow.innerHTML = 
             "<td>" + reimbs[i].reimb_id + "</td>" +
             "<td>" + USD.format(reimbs[i].amount) + "</td>" +
@@ -524,7 +636,7 @@ function configureEmployeeHomeView() {
             "<td>" + DateResolved + "</td>" +
             "<td>" + reimbs[i].description + "</td>" + 
             "<td>" + reimbs[i].author_id + "</td>" +
-            "<td>" + reimbs[i].resolver_id + "</td>" +
+            "<td>" + resolver + "</td>" +
             "<td>" + reimbs[i].reimb_status + "</td>" +
             "<td>" + reimbs[i].reimb_type + "</td>";
 
@@ -533,7 +645,7 @@ function configureEmployeeHomeView() {
     }
 }
 
-
+//---------------------------------------------------------------------------------
 
 function sortByLodging() {
     
@@ -665,7 +777,6 @@ function sortByFood() {
         }
     }
 }
-
 
 function sortByOther() {
     let xhr = new XMLHttpRequest();
@@ -835,7 +946,6 @@ function sortByDenied() {
 }
 }
 
-
 function sortByAll() {
     let xhr = new XMLHttpRequest();
     xhr.open('GET', 'reimbs', true);
@@ -878,7 +988,7 @@ function sortByAll() {
 }
 }
 
-
+//---------------------------------------------------------------------------------
 
 const USD = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -886,7 +996,7 @@ const USD = new Intl.NumberFormat('en-US', {
     minimumFractionDigits: 2
   })
 
-//--------------------------------------------------------------
+//---------------------------------------------------------------------------------
 
 
 function login() {
@@ -922,7 +1032,6 @@ function login() {
 
 }
 
-
 function register() {
     console.log('in register()');
 
@@ -948,10 +1057,12 @@ function register() {
     xhr.onreadystatechange = function() {
         if  (xhr.readyState == 4 && xhr.status == 201) {
             document.getElementById('reg-message').setAttribute('hidden', true);
-            console.log('SUCCESS!')
+            document.getElementById('reg-success').removeAttribute('hidden');
+            document.getElementById('reg-success').innerText = "SUCCESS! User registered.";
 
 
         } else if (xhr.readyState == 4 && xhr.status == 400) {
+            document.getElementById('reg-success').setAttribute('hidden', true);
             document.getElementById('reg-message').removeAttribute('hidden');
 
             let err = JSON.parse(xhr.responseText);
@@ -961,37 +1072,74 @@ function register() {
 
 }
 
+function createReimb() {
 
-function deleteUser() {
+    let amount = document.getElementById('amount').value;
+    let description = document.getElementById('description').value;
+    let lodging = document.getElementById('lodging');
+    let food = document.getElementById('food');
+    let travel = document.getElementById('travel');
+    let other = document.getElementById('other');
 
-    let id = document.getElementById('deleteU').value;
-    
-
-        let creds = {
-            id: id
-        }
-
-
+    console.log(amount);
     let xhr = new XMLHttpRequest();
-    xhr.open('POST', './deleteuser');
-    xhr.setRequestHeader('Content-type', 'application/json');
-    xhr.send(id);
+    xhr.open('POST', './reimbs');
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+    if (lodging.checked) {
+        xhr.send(`amount=${amount}&description=${description}&type="lodging"`);
+    } else if (food.checked) {
+        xhr.send(`amount=${amount}&description=${description}&type="food"`);
+    } else if (travel.checked) {
+        xhr.send(`amount=${amount}&description=${description}&type="travel"`);
+    } else if (other.checked) {
+        xhr.send(`amount=${amount}&description=${description}&type="other"`);
+    }
 
     xhr.onreadystatechange = function() {
         if  (xhr.readyState == 4 && xhr.status == 201) {
-            document.getElementById('reg-message').setAttribute('hidden', true);
-            console.log('SUCCESS!')
+            document.getElementById('create-reimb-warn').setAttribute('hidden', true);
+            document.getElementById('create-reimb-success').removeAttribute('hidden');
+            document.getElementById('create-reimb-success').innerText = 'SUCCESS! Reimbursement created.';
 
 
         } else if (xhr.readyState == 4 && xhr.status == 400) {
-            document.getElementById('reg-message').removeAttribute('hidden');
+            document.getElementById('create-reimb-success').setAttribute('hidden', true);
+            document.getElementById('create-reimb-warn').removeAttribute('hidden');
 
             let err = JSON.parse(xhr.responseText);
-            document.getElementById('reg-message').innerText = err.message;
+            document.getElementById('create-reimb-warn').innerText = err.message;
+        }
+    }
+
+}
+
+function deleteUser() {
+
+    let id = document.getElementById('id').value;
+    console.log(id);
+
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', './deleteuser');
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.send(`id=${id}`);
+
+    xhr.onreadystatechange = function() {
+        if  (xhr.readyState == 4 && xhr.status == 204) {
+            document.getElementById('delete-message').setAttribute('hidden', true);
+            document.getElementById('delete-success').removeAttribute('hidden');
+            document.getElementById('delete-success').innerText = 'SUCCESS! User deleted.';
+
+
+        } else if (xhr.readyState == 4 && xhr.status == 400) {
+            document.getElementById('delete-success').setAttribute('hidden', true);
+            document.getElementById('delete-message').removeAttribute('hidden');
+
+            let err = JSON.parse(xhr.responseText);
+            document.getElementById('delete-message').innerText = err.message;
         }
     }
 }
-
 
 function updateUser() {
     
@@ -1016,20 +1164,21 @@ function updateUser() {
     
         xhr.onreadystatechange = function() {
             if  (xhr.readyState == 4 && xhr.status == 201) {
-                document.getElementById('reg-message').setAttribute('hidden', true);
-                console.log('SUCCESS!')
+                document.getElementById('update-warn').setAttribute('hidden', true);
+                document.getElementById('update-success').removeAttribute('hidden');
+                document.getElementById('update-success').innerText = "SUCCESS! User updated.";
     
     
             } else if (xhr.readyState == 4 && xhr.status == 400) {
-                document.getElementById('reg-message').removeAttribute('hidden');
+                document.getElementById('update-success').setAttribute('hidden', true);
+                document.getElementById('update-warn').removeAttribute('hidden');
     
                 let err = JSON.parse(xhr.responseText);
-                document.getElementById('reg-message').innerText = err.message;
+                document.getElementById('update-warn').innerText = err.message;
             }
         }
     
 }
-
 
 function approveReimb() {
     
@@ -1043,52 +1192,66 @@ function approveReimb() {
     
     if (approve.checked) {
         xhr.send(`id=${reimbId}&status=approved`);
+        text = "SUCCESS! Reimbursement approved.";
     } else if (denied.checked) {
         xhr.send(`id=${reimbId}&status=denied`);
+        text = "SUCCESS! Reimbursement denied.";
     }
 
     xhr.onreadystatechange = function() {
-        if  (xhr.readyState == 4 && xhr.status == 201) {
-            document.getElementById('reg-message').setAttribute('hidden', true);
-            console.log('SUCCESS!')
+        if  (xhr.readyState == 4 && xhr.status == 200) {
+            document.getElementById('approve-warn').setAttribute('hidden', true);
+            document.getElementById('approve-success').removeAttribute('hidden');
+            document.getElementById('approve-success').innerText = text;
 
 
         } else if (xhr.readyState == 4 && xhr.status == 400) {
-            document.getElementById('reg-message').removeAttribute('hidden');
-
+            document.getElementById('approve-warn').removeAttribute('hidden');
+            document.getElementById('approve-success').setAttribute('hidden', true);
             let err = JSON.parse(xhr.responseText);
-            document.getElementById('reg-message').innerText = err.message;
+            document.getElementById('approve-warn').innerText = err.message;
         }
     }
 
 }
 
+function updateReimb() {
+    
+    let id = document.getElementById('id').value;
+    let amount = document.getElementById('amount').value;
+    let description = document.getElementById('description').value;
+    let lodging = document.getElementById('lodging');
+    let food = document.getElementById('food');
+    let travel = document.getElementById('travel');
+    let other = document.getElementById('other');
 
-
-function isUsernameAvailable() {
-
-    console.log('in isUsernameAvailable()');
-
-    let username = document.getElementById('reg-username').value;
-
-    if(!username) {
-        return;
-    }
 
     let xhr = new XMLHttpRequest();
-
-    xhr.open('POST', 'username.validate');
-    xhr.setRequestHeader('Content-type', 'application/json');
-    xhr.send(JSON.stringify(username));
+    xhr.open('POST', './updatereimb');
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    
+    if (lodging.checked) {
+        xhr.send(`id=${id}&amount=${amount}&description=${description}&type=${lodging}`);
+    } else if (food.checked) {
+        xhr.send(`id=${id}&amount=${amount}&description=${description}&type=${food}`);
+    } else if (travel.checked) {
+        xhr.send(`id=${id}&amount=${amount}&description=${description}&type=${travel}`);
+    } else if (other.checked) {
+        xhr.send(`id=${id}&amount=${amount}&description=${description}&type=${other}`);
+    }
 
     xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && xhr.status == 204) {
-            console.log('Provided username is available!');
-            document.getElementById('reg-message').setAttribute('hidden', true);
-        } else if (xhr.readyState == 4 && xhr.status == 409 ) {
-            document.getElementById('reg-message').removeAttribute('hidden')
-            document.getElementById('reg-message').innerText = 'The provided username is already taken!';
-            document.getElementById('register').setAttribute('disabled', true);
+        if  (xhr.readyState == 4 && xhr.status == 201) {
+            document.getElementById('update-reimb-warn').setAttribute('hidden', true);
+            document.getElementById('update-reimb-success').removeAttribute('hidden');
+            document.getElementById('update-reimb-success').innerText = "SUCCESS! Reimbursement updated.";
+
+
+        } else if (xhr.readyState == 4 && xhr.status == 400) {
+            document.getElementById('update-reimb-warn').removeAttribute('hidden');
+
+            let err = JSON.parse(xhr.responseText);
+            document.getElementById('update-reimb-warn').innerText = err.message;
         }
     }
 
@@ -1112,6 +1275,37 @@ function logout() {
     }
 }
 
+//---------------------------------------------------------------------------------
+
+function isUsernameAvailable() {
+
+    console.log('in isUsernameAvailable()');
+
+    let username = document.getElementById('reg-username').value;
+
+    if(!username) {
+        return;
+    }
+
+    let xhr = new XMLHttpRequest();
+
+    xhr.open('POST', 'username.validate');
+    xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.send(JSON.stringify(username));
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 204) {
+            document.getElementById('reg-success').innerText = 'Provided username is available!';
+            document.getElementById('reg-message').setAttribute('hidden', true);
+        } else if (xhr.readyState == 4 && xhr.status == 409 ) {
+            document.getElementById('reg-success').setAttribute('hidden', true);
+            document.getElementById('reg-message').removeAttribute('hidden')
+            document.getElementById('reg-message').innerText = 'The provided username is already taken!';
+            document.getElementById('register').setAttribute('disabled', true);
+        }
+    }
+
+}
 
 function isEmailAvailable() {
 
@@ -1131,15 +1325,18 @@ function isEmailAvailable() {
 
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 204) {
-            console.log('Provided email is available!');
+            document.getElementById('reg-success').innerText = 'Provided email is available!';
             document.getElementById('reg-message').setAttribute('hidden', true);
         } else if (xhr.readyState == 4 && xhr.status == 409) {
+            document.getElementById('reg-success').setAttribute('hidden', true);
             document.getElementById('reg-message').removeAttribute('hidden');
             document.getElementById('reg-message').innerText = 'The provided email address is already taken!';
             document.getElementById('register').setAttribute('disabled', true);
         }
     }
 }
+
+//---------------------------------------------------------------------------------
 
 function validateLoginForm() {
 
@@ -1177,6 +1374,7 @@ function validateRegisterForm() {
 
     if (!fn || !ln || !email || !un || !pw) {
         document.getElementById('reg-message').removeAttribute('hidden');
+        document.getElementById('reg-success').setAttribute('hidden', true);
         document.getElementById('reg-message').innerText = 'You must provided values for all fields in the form!'
         document.getElementById('register').setAttribute('disabled', true);
     } else {
@@ -1189,15 +1387,16 @@ function validateDeleteForm() {
 
     console.log('in validateDeleteForm()');
 
-    let id = document.getElementById('deleteForm').value;
+    let id = document.getElementById('id').value;
 
     if (!id) {
-        document.getElementById('reg-message').removeAttribute('hidden');
-        document.getElementById('reg-message').innerText = 'You must provide an Id!'
+        document.getElementById('delete-message').removeAttribute('hidden');
+        document.getElementById('delete-success').setAttribute('hidden', true);
+        document.getElementById('delete-message').innerText = 'You must provide an Id!'
         document.getElementById('deleteU').setAttribute('disabled', true);
     } else {
         document.getElementById('deleteU').removeAttribute('disabled');
-        document.getElementById('reg-message').setAttribute('hidden', true);
+        document.getElementById('delete-message').setAttribute('hidden', true);
     }
 }
 
@@ -1213,12 +1412,13 @@ function validateUpdateForm() {
 
 
     if (!fn || !ln || !email || !un || !pw) {
-        document.getElementById('reg-message').removeAttribute('hidden');
-        document.getElementById('reg-message').innerText = 'You must provide all values!'
+        document.getElementById('update-warn').removeAttribute('hidden');
+        document.getElementById('update-success').setAttribute('hidden', true);
+        document.getElementById('update-warn').innerText = 'You must provide all values!'
         document.getElementById('updateButton').setAttribute('disabled', true);
     } else {
         document.getElementById('updateButton').removeAttribute('disabled');
-        document.getElementById('reg-message').setAttribute('hidden', true);
+        document.getElementById('update-warn').setAttribute('hidden', true);
     }
 }
 
@@ -1231,12 +1431,55 @@ function validateReimbUpdateForm() {
 
 
     if (!id1 && !id2) {
-        document.getElementById('reg-message').removeAttribute('hidden');
-        document.getElementById('reg-message').innerText = 'You must check a status!'
+        document.getElementById('approve-warn').removeAttribute('hidden');
+        document.getElementById('approve-success').setAttribute('hidden', true);
+        document.getElementById('approve-warn').innerText = 'You must check a status!'
         document.getElementById('updateReimbButton').setAttribute('disabled', true);
     } else {
         document.getElementById('updateReimbButton').removeAttribute('disabled');
-        document.getElementById('reg-message').setAttribute('hidden', true);
+        document.getElementById('approve-warn').setAttribute('hidden', true);
     }
 }
 
+function validateReimbUpdateUserForm() {
+
+    let id = document.getElementById('id').value;
+    let amount = document.getElementById('amount').value;
+    let description = document.getElementById('description').value;
+    let lodging = document.getElementById('lodging');
+    let food = document.getElementById('food');
+    let travel = document.getElementById('travel');
+    let other = document.getElementById('other');
+
+
+    if (!lodging && !food && !travel && !other || !id || !amount || !description) {
+        document.getElementById('update-reimb-warn').removeAttribute('hidden');
+        document.getElementById('update-reimb-success').setAttribute('hidden', true);
+        document.getElementById('update-reimb-warn').innerText = 'You must fill in all fields!'
+        document.getElementById('updateReimbButton').setAttribute('disabled', true);
+    } else {
+        document.getElementById('updateReimbButton').removeAttribute('disabled');
+        document.getElementById('update-reimb-warn').setAttribute('hidden', true);
+    }
+}
+
+function validateCreateReimbForm() {
+
+    let amount = document.getElementById('amount').value;
+    let description = document.getElementById('description').value;
+    let lodging = document.getElementById('lodging');
+    let food = document.getElementById('food');
+    let travel = document.getElementById('travel');
+    let other = document.getElementById('other');
+
+
+    if (!lodging && !food && !travel && !other || !amount || !description) {
+        document.getElementById('create-reimb-warn').removeAttribute('hidden');
+        document.getElementById('create-reimb-success').setAttribute('hidden', true);
+        document.getElementById('create-reimb-warn').innerText = 'You must fill in all fields!'
+        document.getElementById('createReimbButton').setAttribute('disabled', true);
+    } else {
+        document.getElementById('createReimbButton').removeAttribute('disabled');
+        document.getElementById('create-reimb-warn').setAttribute('hidden', true);
+    }
+}

@@ -1,12 +1,9 @@
 package com.revature.servlets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.revature.dtos.ErrorResponse;
 import com.revature.exceptions.InvalidRequestException;
-import com.revature.models.AppUser;
 import com.revature.services.UserService;
-import com.sun.org.apache.xpath.internal.operations.Number;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,13 +26,19 @@ public class DeleteUserServlet extends HttpServlet {
         try {
 
             String deletedUserId = req.getParameter("id");
-            if (deletedUserId != null) {
+            System.out.println(deletedUserId);
+            if (deletedUserId != "null") {
                 int id = Integer.parseInt(deletedUserId);
                 userService.deleteUser(id);
+                resp.setStatus(204);
+            } else {
+                ErrorResponse err = new ErrorResponse(404, "No user with such id found.");
+                String errJSON = mapper.writeValueAsString(err);
+                respWriter.write(errJSON);
             }
 
 
-            resp.setStatus(204);
+
 
         } catch (NumberFormatException | InvalidRequestException mie) {
             mie.printStackTrace();

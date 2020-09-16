@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Set;
 
 
@@ -44,7 +45,7 @@ public class ReimbLodgingServlet extends HttpServlet {
 
 
         try {
-            Set<Reimb> reimbs = reimbService.getReimbsByType("Lodging");
+            ArrayList<Reimb> reimbs = reimbService.getReimbsByType("Lodging");
             String usersJSON = mapper.writeValueAsString(reimbs);
             respWriter.write(usersJSON);
             resp.setStatus(200); //not req, 200 by default if no exceptions /errors are thrown

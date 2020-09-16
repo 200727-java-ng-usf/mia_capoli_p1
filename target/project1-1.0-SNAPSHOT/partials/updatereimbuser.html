@@ -16,9 +16,10 @@
     </nav>
 </div>
 <div id="update-reimb-container">
+    <div class="table-responsive-lg">
     <h2>Expense Reimbursement</h2>
     <hr>
-    <h3>Approve or Deny a Reimbursement</h3>
+    <h3>Update a Reimbursement</h3>
         <table id="financeTable" class="table">
             <thead class="thead-dark">
             <tr>
@@ -40,34 +41,36 @@
             </tbody>
         </table>
     
-        <div>
-        
-        </div>
+
+    </div>
 
 
 
     <div class="form-group">
-        <label for="reg-username">Existing Reimbursement id to be updated</label> <input type="text" class="form-control" id="ide" placeholder="Enter the id of the reimbursement to be updated">
+        <label for="reg-username">Existing Reimbursement id to be updated</label> 
+        <input type="text" class="form-control" id="id" placeholder="Enter the id of the reimbursement to be updated">
     </div>
     <div class="form-group">
-        <label for="fn">First name</label> 
-        <input type="text" class="form-control" id="fn" placeholder="Enter your first name">
+        <label for="amount">Amount</label> 
+        <input type="text" class="form-control" id="amount" placeholder="Enter the new amount">
     </div>
     <div class="form-group">
-        <label for="ln">Last name</label> <input type="text"
-            class="form-control" id="ln" placeholder="Enter your last name">
+        <label for="description">Description</label> <input type="text"
+            class="form-control" id="description" placeholder="Enter the description">
     </div>
-    <div class="form-group">
-        <label for="email">Email Address</label> <input type="email" class="form-control" id="email" placeholder="Enter your email address">
-    </div>
-    
-    <div class="form-group">
-        <label for="pw">Password</label> <input type="password" class="form-control" id="reg-password" placeholder="Enter your password">
-    </div>
-    <div id="update-button-container">
-        <button type="submit" class="btn btn-primary" id="updateButton">Update</button>
+    <input type="radio" id="lodging" name="type" value="lodging">
+        <label for="lodging">Lodging</label><br>
+    <input type="radio" id="travel" name="type" value="travel">
+        <label for="travel">Travel</label><br>
+    <input type="radio" id="food" name="type" value="food">
+        <label for="food">Food</label><br>
+    <input type="radio" id="other" name="type" value="other">
+        <label for="other">Other</label><br>
+    <div id="update-reimb-button-container">
+        <button type="submit" class="btn btn-primary" id="updateReimbButton">Update</button>
     </div>
     <br> 
     <br>
-    <div class="alert alert-danger" id="reg-message"></div>
+    <div class="alert alert-danger" id="update-reimb-warn"></div>
+    <div class="alert alert-success" id="update-reimb-success"></div>
 </div>

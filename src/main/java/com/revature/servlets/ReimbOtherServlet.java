@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Set;
 
 
@@ -53,11 +54,10 @@ public class ReimbOtherServlet extends HttpServlet {
 
 
         try {
-                Set<Reimb> reimbs = reimbService.getReimbsByType("Other");
-                String usersJSON = mapper.writeValueAsString(reimbs);
-                respWriter.write(usersJSON);
-                resp.setStatus(200); //not req, 200 by default if no exceptions /errors are thrown
-//            }
+            ArrayList<Reimb> reimbs = reimbService.getReimbsByType("Other");
+            String usersJSON = mapper.writeValueAsString(reimbs);
+            respWriter.write(usersJSON);
+            resp.setStatus(200); //not req, 200 by default if no exceptions /errors are thrown
         } catch (ResourceNotFoundException rnfe) {
 
             resp.setStatus(404); //not found!!!
@@ -78,41 +78,4 @@ public class ReimbOtherServlet extends HttpServlet {
         }
     }
 
-    /**
-     * Used to handle incoming requests to register new users for the application.
-     *
-     * @param req
-     * @param resp
-     * @throws ServletException
-     * @throws IOException
-     */
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("application/json");
-        ObjectMapper mapper = new ObjectMapper();
-        PrintWriter respWriter = resp.getWriter();
-        try {
-            Reimb newReimb = mapper.readValue(req.getInputStream(), Reimb.class);
-            reimbService.addNewReimbursement(newReimb);
-            System.out.println(newReimb);
-            String newReimbJSON = mapper.writeValueAsString(newReimb);
-            respWriter.write(newReimbJSON);
-            resp.setStatus(201); // 201 = CREATED
-
-        } catch (MismatchedInputException | InvalidRequestException mie) {
-            mie.printStackTrace();
-            resp.setStatus(400);
-
-            ErrorResponse err = new ErrorResponse(400, "Bad Req: Malform reimb object found in request body");
-            String errJSON = mapper.writeValueAsString(err);
-            respWriter.write(errJSON);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            resp.setStatus(500); // 500 = INTERNAL SERVER ERROR
-
-            ErrorResponse err = new ErrorResponse(500, "it's not you it's us :(");
-            respWriter.write(mapper.writeValueAsString(err));
-        }
-    }
 }

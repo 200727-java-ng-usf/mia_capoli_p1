@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Set;
 
 
@@ -63,7 +64,8 @@ public class UserServlet extends HttpServlet {
 
 
             } else {
-                Set<AppUser> users = userService.getAllUsers();
+                ArrayList<AppUser> users = userService.getAllUsers();
+                System.out.println(users);
                 String usersJSON = mapper.writeValueAsString(users);
                 respWriter.write(usersJSON);
                 resp.setStatus(200); //not req, 200 by default if no exceptions /errors are thrown

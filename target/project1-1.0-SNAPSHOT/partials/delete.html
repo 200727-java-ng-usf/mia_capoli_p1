@@ -20,35 +20,38 @@
 
 <h1>Delete Users:</h1>
 <div id="home-admin-container">
-    <table id="adminTable" class="table">
-        <thead class="thead-dark">
-        <tr>
-            <th>Id</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>User Name</th>
-            <th>Email</th>
+    <div class="table-responsive-lg">
+        <table id="adminTable" class="table">
+            <thead class="thead-dark">
+            <tr>
+                <th>Id</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>User Name</th>
+                <th>Email</th>
 
-        </tr>
-        </thead>
-        <tbody id="list">
+            </tr>
+            </thead>
+            <tbody id="list">
 
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
 
     <div>
         <h3>Enter the user ID you wish to delete.</h3>
 
         <div class="form-group">
             <label for="id">ID</label> 
-            <input type="text" class="form-control" id="deleteForm" placeholder="Enter the user ID to delete...">
+            <input type="text" class="form-control" id="id" placeholder="Enter the user ID to delete...">
         </div>
         <div id="delete-button-container">
             <button type="submit" class="btn btn-primary" id="deleteU">Delete User</button>
         </div>
         <br> 
         <br>
-        <div class="alert alert-danger" id="reg-message"></div>
+        <div class="alert alert-danger" id="delete-message"></div>
+        <div class="alert alert-success" id="delete-success"></div>
     </div>
 
 </div>

@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Comparator;
 import java.util.Objects;
 
 /**
@@ -13,7 +14,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name="ers_users")
-public class AppUser {
+public class AppUser{
 
     //AppUser fields
     @Id
@@ -178,4 +179,7 @@ public class AppUser {
                 ", role=" + role +
                 '}';
     }
+
+
+
 }

@@ -16,9 +16,10 @@
     </nav>
 </div>
 <div id="update-reimb-container">
+    <div class="table-responsive-lg">
     <h2>Expense Reimbursement</h2>
     <hr>
-    <h3>Approve or Deny a Reimbursement</h3>
+    <h3>Update a Reimbursement</h3>
         <table id="financeTable" class="table">
             <thead class="thead-dark">
             <tr>
@@ -40,9 +41,8 @@
             </tbody>
         </table>
     
-        <div>
-        
-        </div>
+
+    </div>
 
 
 
@@ -52,11 +52,11 @@
     </div>
     <div class="form-group">
         <label for="amount">Amount</label> 
-        <input type="text" class="form-control" id="fn" placeholder="Enter the new amount">
+        <input type="text" class="form-control" id="amount" placeholder="Enter the new amount">
     </div>
     <div class="form-group">
         <label for="description">Description</label> <input type="text"
-            class="form-control" id="description" placeholder="Enterthe description">
+            class="form-control" id="description" placeholder="Enter the description">
     </div>
     <input type="radio" id="lodging" name="type" value="lodging">
         <label for="lodging">Lodging</label><br>
@@ -66,10 +66,11 @@
         <label for="food">Food</label><br>
     <input type="radio" id="other" name="type" value="other">
         <label for="other">Other</label><br>
-    <div id="update-button-container">
-        <button type="submit" class="btn btn-primary" id="updateButton">Update</button>
+    <div id="update-reimb-button-container">
+        <button type="submit" class="btn btn-primary" id="updateReimbButton">Update</button>
     </div>
     <br> 
     <br>
-    <div class="alert alert-danger" id="reg-message"></div>
+    <div class="alert alert-danger" id="update-reimb-warn"></div>
+    <div class="alert alert-success" id="update-reimb-success"></div>
 </div>

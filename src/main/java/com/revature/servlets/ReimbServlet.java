@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Set;
 
 
@@ -50,12 +51,17 @@ public class ReimbServlet extends HttpServlet {
 
 
         try {
-            System.out.println(principal.getRole().toLowerCase());
             if (principal.getRole().equalsIgnoreCase("employee")) {
-                int id = principal.getId();
-                Set<Reimb> reimbs = reimbService.getReimbsByUserId(id);
-                respWriter.write(mapper.writeValueAsString(reimbs));
-
+                if (req.getParameter("status") != null) {
+                    int id = principal.getId();
+                    String status = req.getParameter("status");
+                    ArrayList<Reimb> reimbs = reimbService.getReimbsByUserIdStatus(id, status);
+                    respWriter.write(mapper.writeValueAsString(reimbs));
+                } else {
+                    int id = principal.getId();
+                    ArrayList<Reimb> reimbs = reimbService.getReimbsByUserId(id);
+                    respWriter.write(mapper.writeValueAsString(reimbs));
+                }
             } else {
                 if (!principal.getRole().equalsIgnoreCase("FinanceMan")) {
                     ErrorResponse err = new ErrorResponse(403, "Forbidden: your role does not permit you to access this method.");
@@ -64,7 +70,7 @@ public class ReimbServlet extends HttpServlet {
                     return;
                 }
 
-                Set<Reimb> reimbs = reimbService.getAllReimbs();
+                ArrayList<Reimb> reimbs = reimbService.getAllReimbs();
                 String reimbsJSON = mapper.writeValueAsString(reimbs);
                 respWriter.write(reimbsJSON);
             }
@@ -102,15 +108,30 @@ public class ReimbServlet extends HttpServlet {
         resp.setContentType("application/json");
         ObjectMapper mapper = new ObjectMapper();
         PrintWriter respWriter = resp.getWriter();
+
+        String principalJSON = (String) req.getSession().getAttribute("principal");
+
+
+        if (principalJSON == null) {
+            ErrorResponse err = new ErrorResponse(401, "No principal object found on request.");
+            respWriter.write(mapper.writeValueAsString(err));
+            resp.setStatus(401);
+            return; //make sure it doesnt fall through
+        }
+
+        Principal principal = mapper.readValue(principalJSON, Principal.class);
+
         try {
-            Reimb newReimb = mapper.readValue(req.getInputStream(), Reimb.class);
-            reimbService.addNewReimbursement(newReimb);
-            System.out.println(newReimb);
-            String newReimbJSON = mapper.writeValueAsString(newReimb);
-            respWriter.write(newReimbJSON);
+            int id = principal.getId();
+            System.out.println(req.getParameter("amount"));
+            int amount = Integer.parseInt(req.getParameter("amount"));
+            String type = req.getParameter("type");
+            String description = req.getParameter("description");
+
+            reimbService.addNewReimbursement(amount, description, type, id);
             resp.setStatus(201); // 201 = CREATED
 
-        } catch (MismatchedInputException | InvalidRequestException mie) {
+        } catch (InvalidRequestException mie) {
             mie.printStackTrace();
             resp.setStatus(400);
 
