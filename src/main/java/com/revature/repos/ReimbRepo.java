@@ -75,9 +75,9 @@ public class ReimbRepo {
         return _reimb;
     }
 
-    public Set<Reimb> findReimbsByUser(int appUser_id) {
+    public ArrayList<Reimb> findReimbsByUser(int appUser_id) {
 
-        Set<Reimb> _reimbs = new HashSet<>();
+        ArrayList<Reimb> _reimbs = new ArrayList<>();
         try (Connection conn = ConnectionFactory.getConnFactory().getConnection()) {
 
             String sql = "SELECT * FROM project1.ers_reimbursments er JOIN project1.ers_reimbursement_types rt ON er.reimb_type_id = rt.reimb_type_id " +
@@ -86,7 +86,7 @@ public class ReimbRepo {
             pstmt.setInt(1, appUser_id);
             //if the returned user set contains a user that matches the username, return that user.
             ResultSet rs = pstmt.executeQuery();
-            _reimbs = new HashSet<>(mapResultSet(rs));
+            _reimbs = new ArrayList<>(mapResultSet(rs));
 
         } catch (SQLException sqle) {
             System.err.println("Database Error!");
@@ -95,9 +95,9 @@ public class ReimbRepo {
 
     }
 
-    public Set<Reimb> findReimbsByUserStatus(int appUser_id, String status) {
+    public ArrayList<Reimb> findReimbsByUserStatus(int appUser_id, String status) {
 
-        Set<Reimb> _reimbs = new HashSet<>();
+        ArrayList<Reimb> _reimbs = new ArrayList<>();
         int statusId = ReimbStatusTypes.getIDFromName(status);
 
         try (Connection conn = ConnectionFactory.getConnFactory().getConnection()) {
@@ -109,7 +109,7 @@ public class ReimbRepo {
             pstmt.setInt(1, statusId);
             //if the returned user set contains a user that matches the username, return that user.
             ResultSet rs = pstmt.executeQuery();
-            _reimbs = new HashSet<>(mapResultSet(rs));
+            _reimbs = new ArrayList<>(mapResultSet(rs));
 
         } catch (SQLException sqle) {
             System.err.println("Database Error!");
@@ -118,7 +118,7 @@ public class ReimbRepo {
 
     }
 
-    public void save(int amount, String description, int type, int id) {
+    public boolean save(int amount, String description, int type, int id) {
 
         try (Connection conn = ConnectionFactory.getConnFactory().getConnection()) {
             //insert the user into the table
@@ -136,10 +136,11 @@ public class ReimbRepo {
             pstmt.setInt(6, type);
 
             pstmt.executeUpdate();
-
+            return true;
         } catch (SQLException sqle) {
             sqle.printStackTrace();
             System.err.println("Database Error!");
+            return false;
         }
     }
     
@@ -221,7 +222,7 @@ public class ReimbRepo {
         }
     }
 
-    public void updateReimbStatus(Reimb reimb, String status, Principal currentFinMan) {
+    public boolean updateReimbStatus(Reimb reimb, String status, Principal currentFinMan) {
 
         try (Connection conn = ConnectionFactory.getConnFactory().getConnection()) {
 
@@ -235,11 +236,12 @@ public class ReimbRepo {
             pstmt.setInt(3, reimb.getReimb_id());
 
             pstmt.executeUpdate();
-
+            return true;
 
         } catch (SQLException sqle) {
             sqle.printStackTrace();
             System.err.println("Database Error!");
+            return false;
         }
     }
 

@@ -106,7 +106,7 @@ function loadHome() {
              }
     
         }
-    } else {
+    } else if (authUser.role == 'Employee' || authUser.role == 'employee'){
         xhr.open('GET', 'home.view', true);
         xhr.send();
 
