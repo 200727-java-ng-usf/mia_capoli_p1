@@ -4,25 +4,21 @@ import com.revature.dtos.Principal;
 import com.revature.exceptions.InvalidInputException;
 import com.revature.exceptions.InvalidRequestException;
 import com.revature.exceptions.ResourceNotFoundException;
-import com.revature.models.AppUser;
 import com.revature.models.Reimb;
 import com.revature.models.ReimbStatusTypes;
 import com.revature.models.ReimbTypes;
 import com.revature.repos.ReimbRepo;
-import com.revature.util.AppUserComparator;
 import com.revature.util.ReimbComparator;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class ReimbService {
 
-    private final ReimbRepo reimbRepo = new ReimbRepo();
+    public ReimbRepo reimbRepo = new ReimbRepo();
 
 
-    public void addNewReimbursement(int amount, String description, String type, int id) {
+    public boolean addNewReimbursement(int amount, String description, String type, int id) {
 
         if (id <= 0 || amount <= 0 || description == null || description.trim().equals("") || type == null || type.trim().equals("") )  {
             throw new InvalidInputException("Invalid credentials given for reimbursement.");
@@ -31,15 +27,14 @@ public class ReimbService {
         int reimbType = ReimbStatusTypes.getIDFromName("type");
 
         reimbRepo.save(amount, description, reimbType, id);
+        return true;
     }
 
     public Reimb updateReimb(int amount, String description, String reimb_type, int reimb_id) {
 
-
         Reimb reimb = reimbRepo.selectReimbursement(reimb_id);
 
         if (!isReimbValid(reimb)) {
-
             throw new InvalidInputException("Invalid credentials given for registration.");
         } else if (reimb.getReimb_status() != ReimbStatusTypes.PENDING) {
             throw new InvalidRequestException("This reimbursement is not pending and can no longer be updated. Please submit a new one.");
@@ -53,12 +48,11 @@ public class ReimbService {
 
     public Reimb updateReimbStatus(String status, int id, Principal currentFinMan) {
 
-
         Reimb reimb = reimbRepo.selectReimbursement(id);
 
         if (!isReimbValid(reimb)) {
 
-            throw new InvalidInputException("Invalid credentials given for registration.");
+            throw new InvalidInputException("Invalid credentials given for reimbursement.");
         }
 
 
@@ -101,9 +95,8 @@ public class ReimbService {
 
     public ArrayList<Reimb> getReimbByStatus(int id) {
 
-
         if (id <= 0) {
-            throw new InvalidRequestException("The provided Id cannot be less than or equal to 0!");
+            throw new InvalidInputException("The provided Id cannot be less than or equal to 0!");
         }
 
         ArrayList<Reimb> reimbs = reimbRepo.findReimbByStatus(id);
@@ -122,10 +115,13 @@ public class ReimbService {
     public ArrayList<Reimb> getReimbsByUserId(int id) {
 
         if (id <= 0) {
-            throw new InvalidRequestException("The provided Id cannot be less than or equal to 0!");
+            throw new InvalidInputException("The provided Id cannot be less than or equal to 0!");
         }
 
-        Set<Reimb> reimbs = reimbRepo.findReimbsByUser(id);
+        ArrayList<Reimb> reimbs = reimbRepo.findReimbsByUser(id);
+        if (reimbs == null) {
+            throw new ResourceNotFoundException();
+        }
 
         ArrayList<Reimb> list = new ArrayList<>(reimbs);
         list.sort(new ReimbComparator());
@@ -137,10 +133,14 @@ public class ReimbService {
     public ArrayList<Reimb> getReimbsByUserIdStatus(int id, String status) {
 
         if (id <= 0) {
-            throw new InvalidRequestException("The provided Id cannot be less than or equal to 0!");
+            throw new InvalidInputException("The provided Id cannot be less than or equal to 0!");
         }
 
-        Set<Reimb> reimbs = reimbRepo.findReimbsByUserStatus(id, status);
+        ArrayList<Reimb> reimbs = reimbRepo.findReimbsByUserStatus(id, status);
+
+        if (reimbs == null) {
+            throw new ResourceNotFoundException();
+        }
 
         ArrayList<Reimb> list = new ArrayList<>(reimbs);
         list.sort(new ReimbComparator());

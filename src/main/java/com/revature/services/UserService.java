@@ -17,11 +17,7 @@ import java.util.*;
  */
 public class UserService {
 
-    private AppUserRepo userRepo = new AppUserRepo();
-
-//    public UserService(AppUserRepo repo) {
-//        userRepo = repo;
-//    }
+    public AppUserRepo userRepo = new AppUserRepo();
 
 
     /**
@@ -77,7 +73,11 @@ public class UserService {
 
         Optional<AppUser> user = userRepo.findUserByUsername(employee.getUsername());
 
-        if (!isUserValid(user.get())) {
+        if (!user.isPresent()) {
+            throw new AuthenticatorException("This user does not exist, therefore cannot be updated.");
+        }
+
+        if (!isUserValid(employee)) {
             throw new InvalidInputException("Invalid credentials given for registration.");
         }
 
@@ -87,22 +87,21 @@ public class UserService {
 
     }
 
-    public void deleteUser(int id) {
+    public boolean deleteUser(int id) {
         //if the user isn't valid, invalidate them and throw an exception.
 
         Optional<AppUser> user = userRepo.findUserById(id);
 
-        if (!isUserValid(user.get())) {
+        if (!user.isPresent()) {
             throw new InvalidInputException("Invalid credentials given for deletion.");
         }
-
         userRepo.deleteEmployee(id);
-
+        return true;
     }
 
     public ArrayList<AppUser> getAllUsers() {
 
-        Set<AppUser> users = userRepo.findAllUsers();
+        ArrayList<AppUser> users = userRepo.findAllUsers();
 
         if (users.isEmpty()) {
             throw new ResourceNotFoundException();

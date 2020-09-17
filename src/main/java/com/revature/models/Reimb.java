@@ -69,6 +69,16 @@ public class Reimb {
 
     }
 
+    public Reimb(int id, int amount, Timestamp submitted, String description, int author_id, ReimbStatusTypes reimb_status, int reimb_type_id) {
+        this.reimb_id = id;
+        this.amount = amount;
+        this.submitted = submitted;
+        this.description = description;
+        this.author_id = author_id;
+        this.reimb_status = reimb_status;
+        this.reimb_type = ReimbTypes.getByID(reimb_type_id);
+    }
+
     public Integer getReimb_id() {
         return reimb_id;
     }
