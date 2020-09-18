@@ -69,6 +69,11 @@ public class UserService {
 
     }
 
+    /**
+     * Update an existing user and check if it's valid.
+     * @param employee
+     * @return
+     */
     public AppUser updateUser(AppUser employee) {
 
         Optional<AppUser> user = userRepo.findUserByUsername(employee.getUsername());
@@ -87,8 +92,12 @@ public class UserService {
 
     }
 
+    /**
+     * Delete an existing user.
+     * @param id
+     * @return
+     */
     public boolean deleteUser(int id) {
-        //if the user isn't valid, invalidate them and throw an exception.
 
         Optional<AppUser> user = userRepo.findUserById(id);
 
@@ -99,6 +108,10 @@ public class UserService {
         return true;
     }
 
+    /**
+     * Get all existing users.
+     * @return
+     */
     public ArrayList<AppUser> getAllUsers() {
 
         ArrayList<AppUser> users = userRepo.findAllUsers();
@@ -113,6 +126,11 @@ public class UserService {
         return list;
     }
 
+    /**
+     * Get a user by their id.
+     * @param id
+     * @return
+     */
     public AppUser getUserById(int id) {
 
         if (id <= 0) {
@@ -137,11 +155,21 @@ public class UserService {
         return true;
     }
 
+    /**
+     * Check if the provided username is available.
+     * @param username
+     * @return
+     */
     public boolean isUsernameAvailable(String username) {
         AppUser user = userRepo.findUserByUsername(username).orElse(null);
         return user == null;
     }
 
+    /**
+     * Check if the provided password is available.
+     * @param email
+     * @return
+     */
     public boolean isEmailAvailable(String email) {
         AppUser user = userRepo.findUserByEmail(email).orElse(null);
         return user == null;

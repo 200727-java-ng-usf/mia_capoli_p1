@@ -11,18 +11,20 @@ import org.postgresql.util.PSQLException;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
+
 
 /**
- * The class that accesses the Reimb Repository and contains methods to easily access users.
+ * The class that accesses the Reimb Repository and contains methods to easily access reimbursements.
  */
 
 public class ReimbRepo {
 
-
+    /**
+     * Find a reimbursement by it's type.
+     * @param reimb_type
+     * @return
+     */
     public ArrayList<Reimb> findReimbByType(ReimbTypes reimb_type) {
 
         ArrayList<Reimb> _reimb = new ArrayList<>();
@@ -51,6 +53,11 @@ public class ReimbRepo {
         return _reimb;
     }
 
+    /**
+     * Find a reimbursement by status.
+     * @param reimb_status_id
+     * @return
+     */
     public ArrayList<Reimb> findReimbByStatus(Integer reimb_status_id) {
 
         ArrayList<Reimb> _reimb = new ArrayList<>();
@@ -76,6 +83,11 @@ public class ReimbRepo {
         return _reimb;
     }
 
+    /**
+     * find reimbursements by an author's user id.
+     * @param appUser_id
+     * @return
+     */
     public ArrayList<Reimb> findReimbsByUser(int appUser_id) {
 
         ArrayList<Reimb> _reimbs = new ArrayList<>();
@@ -96,6 +108,12 @@ public class ReimbRepo {
 
     }
 
+    /**
+     * Finding a reimbursement by user and status.
+     * @param appUser_id
+     * @param status
+     * @return
+     */
     public ArrayList<Reimb> findReimbsByUserStatus(int appUser_id, String status) {
 
         ArrayList<Reimb> _reimbs = new ArrayList<>();
@@ -119,6 +137,14 @@ public class ReimbRepo {
 
     }
 
+    /**
+     * Saving a reimbursement in the database.
+     * @param amount
+     * @param description
+     * @param type
+     * @param id
+     * @return
+     */
     public boolean save(double amount, String description, int type, int id) {
 
         try (Connection conn = ConnectionFactory.getConnFactory().getConnection()) {
@@ -149,7 +175,12 @@ public class ReimbRepo {
         }
     }
 
-
+    /**
+     * Mapping a result set received by the API to a Java object.
+     * @param rs
+     * @return
+     * @throws SQLException
+     */
     private ArrayList<Reimb> mapResultSet(ResultSet rs) throws SQLException {
 
         ArrayList<Reimb> reimbs = new ArrayList<>();
@@ -173,7 +204,11 @@ public class ReimbRepo {
 
     }
 
-
+    /**
+     * selecting a reimbursement by it's id.
+     * @param reimb_id
+     * @return
+     */
     public Reimb selectReimbursement(int reimb_id) {
         Optional<Reimb> _reimb = Optional.empty();
         try (Connection conn = ConnectionFactory.getConnFactory().getConnection()) {
@@ -204,7 +239,13 @@ public class ReimbRepo {
 
     }
 
-
+    /**
+     * Updating a reimbursement.
+     * @param amount
+     * @param description
+     * @param reimb_type_id
+     * @param reimb_id
+     */
     public void updateReimb(double amount, String description, int reimb_type_id, int reimb_id) {
 
         try (Connection conn = ConnectionFactory.getConnFactory().getConnection()) {
@@ -232,6 +273,13 @@ public class ReimbRepo {
         }
     }
 
+    /**
+     * Updating a reimbursement's status and filling in auto-generated info.
+     * @param reimb
+     * @param status
+     * @param currentFinMan
+     * @return
+     */
     public boolean updateReimbStatus(Reimb reimb, String status, Principal currentFinMan) {
 
         try (Connection conn = ConnectionFactory.getConnFactory().getConnection()) {
@@ -255,7 +303,10 @@ public class ReimbRepo {
         }
     }
 
-
+    /**
+     * Finding all reimbursements in the repository.
+     * @return
+     */
     public ArrayList<Reimb> findAllReimbs() {
         ArrayList<Reimb> reimbs = new ArrayList<>();
         try (Connection conn = ConnectionFactory.getConnFactory().getConnection()) {

@@ -19,7 +19,14 @@ import java.io.PrintWriter;
 public class DeleteUserServlet extends HttpServlet {
     private final UserService userService = new UserService();
 
-
+    /**
+     * Delete a user.
+     *
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");

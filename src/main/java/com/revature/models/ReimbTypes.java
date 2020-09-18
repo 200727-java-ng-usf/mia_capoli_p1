@@ -1,5 +1,8 @@
 package com.revature.models;
 
+/**
+ * An enum for reimbursement types.
+ */
 public enum ReimbTypes {
 
     LODGING("Lodging"),

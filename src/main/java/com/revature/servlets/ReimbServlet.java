@@ -7,10 +7,8 @@ import com.revature.dtos.Principal;
 import com.revature.exceptions.InvalidInputException;
 import com.revature.exceptions.InvalidRequestException;
 import com.revature.exceptions.ResourceNotFoundException;
-import com.revature.models.AppUser;
 import com.revature.models.Reimb;
 import com.revature.services.ReimbService;
-import com.revature.services.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,13 +18,19 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Set;
 
 
 @WebServlet("/reimbs/*")
 public class ReimbServlet extends HttpServlet {
     private final ReimbService reimbService = new ReimbService();
 
+    /**
+     * Handles getting the reimbursements requested.
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -46,9 +50,6 @@ public class ReimbServlet extends HttpServlet {
         }
 
         Principal principal = mapper.readValue(principalJSON, Principal.class);
-
-
-
 
 
         try {
@@ -97,7 +98,7 @@ public class ReimbServlet extends HttpServlet {
     }
 
     /**
-     * Used to handle incoming requests to register new users for the application.
+     * Used to handle incoming requests to register new reimbursements for the application.
      *
      * @param req
      * @param resp

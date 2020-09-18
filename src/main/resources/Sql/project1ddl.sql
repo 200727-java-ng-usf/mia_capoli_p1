@@ -87,7 +87,8 @@ insert into ers_reimbursement_types values (1, 'Lodging'),
    
    
   insert into ers_reimbursments (amount, submitted, description, author_id, reimb_status_id, reimb_type_id) values 
-  (100, '2004-10-19 10:23:00', 'Dinner for a Client',  6, 1, 3),
+  (100, '
+', 'Dinner for a Client',  6, 1, 3),
   (100, '2004-10-19 10:23:00', 'Hotel Stay',  1, 1, 2),
   (2000, '2019-10-19 10:23:00', 'Moving expenses',  3, 1, 2);
  
@@ -99,4 +100,24 @@ add column is_active boolean;
 update ers_users set is_active = true;
 
 update ers_users set username = ? password = ? first_name = ? last_name = ? email = ? user_role_id = ? where username = ?;
+
+
+
+
+
+
+
+
+
+
+insert into app_users (first_name , last_name, username, "password", email, "role" ) values 
+('Alice', 'Anderson', 'aanderson', 'password', 'aanderson@gmail.com', 'ADMIN');
+
+SELECT id, email, first_name, last_name, "password", "role", username
+FROM public.app_users;
+
+
+commit;
+
+
 

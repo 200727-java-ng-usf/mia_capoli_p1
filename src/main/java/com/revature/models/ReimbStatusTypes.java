@@ -1,5 +1,8 @@
 package com.revature.models;
 
+/**
+ * An enum for different status types.
+ */
 public enum ReimbStatusTypes {
 
     PENDING("Pending"),

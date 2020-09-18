@@ -6,7 +6,6 @@ import com.revature.dtos.ErrorResponse;
 import com.revature.exceptions.AuthenticatorException;
 import com.revature.exceptions.InvalidRequestException;
 import com.revature.models.AppUser;
-import com.revature.models.Reimb;
 import com.revature.services.UserService;
 
 import javax.servlet.ServletException;
@@ -21,7 +20,13 @@ import java.io.PrintWriter;
 public class UpdateUserServlet extends HttpServlet {
     private final UserService userService = new UserService();
 
-
+    /**
+     * Handles requests to update a user.
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");

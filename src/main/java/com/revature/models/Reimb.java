@@ -1,44 +1,23 @@
 package com.revature.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-@Entity
-@Table(name = "ers_reimbursments")
+/**
+ * A POJO for employee Reimbursements.
+ */
+
 public class Reimb {
 
     //Reimb fields
-    @Id
-    @Column(name = "reimb_id")
     private Integer reimb_id;
-
-    @Column(name = "amount")
     private double amount;
-
-    @Column(name = "submitted")
     private Timestamp submitted;
-
-    @Column(name = "first_name")
     private Timestamp resolved;
-
-    @Column(name = "description")
     private String description;
-
-    @Column(name = "author_id")
     private int author_id;
-
-    @Column(name = "resolver_id")
     private int resolver_id;
-
-    @Column(name = "reimb_status_id")
     private ReimbStatusTypes reimb_status;
-
-    @Column(name = "reimb_type_id")
     private ReimbTypes reimb_type;
 
     public Reimb(Integer reimb_id, double amount, Timestamp submitted, Timestamp resolved, String description, int author_id, int resolver_id, ReimbStatusTypes reimb_status, int reimb_type_id) {

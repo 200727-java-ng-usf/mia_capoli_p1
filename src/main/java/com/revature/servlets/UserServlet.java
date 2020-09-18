@@ -18,14 +18,19 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Set;
 
 
 @WebServlet("/users/*")
 public class UserServlet extends HttpServlet {
     private final UserService userService = new UserService();
 
-
+    /**
+     * Get the requested users.
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 

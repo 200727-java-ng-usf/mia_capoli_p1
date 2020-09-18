@@ -5,6 +5,12 @@ import java.io.IOException;
 
 public class RequestViewHelper {
 
+    /**
+     * Handles requests for views and returns different templates.
+     * @param req
+     * @return
+     * @throws IOException
+     */
     public String process(HttpServletRequest req) throws IOException {
         switch (req.getRequestURI()) {
 

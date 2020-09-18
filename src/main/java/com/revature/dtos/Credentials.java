@@ -2,6 +2,9 @@ package com.revature.dtos;
 
 import java.util.Objects;
 
+/**
+ * A data transfer object for sending and receiving a provided username and password.
+ */
 public class Credentials {
 
     private String username;

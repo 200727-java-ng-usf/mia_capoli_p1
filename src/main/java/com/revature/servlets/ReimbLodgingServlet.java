@@ -24,6 +24,13 @@ import java.util.Set;
 public class ReimbLodgingServlet extends HttpServlet {
     private final ReimbService reimbService = new ReimbService();
 
+    /**
+     * Get the lodging reimbs.
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 

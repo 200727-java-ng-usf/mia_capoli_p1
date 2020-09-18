@@ -6,6 +6,9 @@ import com.revature.models.AppUser;
 
 import java.util.Objects;
 
+/**
+ *  A DTO for sending and interpreting a Principal object for the currently logged in user.
+ */
 public class Principal {
 
     private int id;

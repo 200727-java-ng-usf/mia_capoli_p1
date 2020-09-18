@@ -6,9 +6,7 @@ import com.revature.util.ConnectionFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * The class that accesses the AppUser Repository and contains methods to easily access users.
@@ -81,7 +79,7 @@ public class AppUserRepo {
     }
 
     /**
-     * Save an Appuser in the repository after registration.
+     * Save an Appuser in the repository after registration and updating.
      *
      * @param newUser
      */
@@ -111,6 +109,11 @@ public class AppUserRepo {
         }
     }
 
+    /**
+     * Deleting an employee by employee id.
+     * @param empDeleteId
+     * @return
+     */
     public boolean deleteEmployee(int empDeleteId) {
         try (Connection conn = ConnectionFactory.getConnFactory().getConnection()) {
             //insert the user into the table
@@ -134,6 +137,12 @@ public class AppUserRepo {
 
     }
 
+    /**
+     * Mapping a result set received by the API to a Java object.
+     * @param rs
+     * @return
+     * @throws SQLException
+     */
     private ArrayList<AppUser> mapResultSet(ResultSet rs) throws SQLException {
 
         ArrayList<AppUser> users = new ArrayList();
@@ -155,6 +164,11 @@ public class AppUserRepo {
 
     }
 
+    /**
+     * Getting a user by their id.
+     * @param id
+     * @return
+     */
     public Optional<AppUser> findUserById(int id) {
 
         Optional<AppUser> _user = Optional.empty();
@@ -179,7 +193,11 @@ public class AppUserRepo {
 
     }
 
-
+    /**
+     * Getting a user by their email.
+     * @param email
+     * @return
+     */
     public Optional<AppUser> findUserByEmail(String email) {
 
         Optional<AppUser> _user = Optional.empty();
@@ -202,6 +220,10 @@ public class AppUserRepo {
 
     }
 
+    /**
+     * Getting all users in the repository.
+     * @return
+     */
     public ArrayList<AppUser> findAllUsers() {
         ArrayList<AppUser> users = new ArrayList<>();
         try (Connection conn = ConnectionFactory.getConnFactory().getConnection()) {
@@ -221,6 +243,10 @@ public class AppUserRepo {
         return users;
     }
 
+    /**
+     * Updating an app user.
+     * @param updatedUser
+     */
     public void updateAppUser(AppUser updatedUser) {
         Optional<AppUser> _user = Optional.empty();
         try (Connection conn = ConnectionFactory.getConnFactory().getConnection()) {

@@ -1,5 +1,9 @@
 package com.revature.models;
 
+
+/**
+ * An enum for different role types.
+ */
 public enum Role {
 
 // values declared within enums are constants and are comma separated

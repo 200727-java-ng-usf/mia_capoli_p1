@@ -12,13 +12,23 @@ import com.revature.repos.ReimbRepo;
 import com.revature.util.ReimbComparator;
 
 import java.util.ArrayList;
-import java.util.Set;
 
+
+/**
+ * Service Classes for the reimbursements to check for errors in the inputs and communicate with the Repo class.
+ */
 public class ReimbService {
 
     public ReimbRepo reimbRepo = new ReimbRepo();
 
-
+    /**
+     * Add a new reimbursement and check if the input was valid.
+     * @param amount
+     * @param description
+     * @param type
+     * @param id
+     * @return
+     */
     public boolean addNewReimbursement(double amount, String description, String type, int id) {
 
         if (id <= 0 || amount <= 0 || description == null || description.trim().equals("") || type == null || type.trim().equals("")) {
@@ -33,6 +43,15 @@ public class ReimbService {
         return true;
     }
 
+    /**
+     * Update A reimbursement and check that the inputs are valid.
+     * @param amount
+     * @param description
+     * @param reimb_type
+     * @param reimb_id
+     * @param loggedUserId
+     * @return
+     */
     public Reimb updateReimb(double amount, String description, String reimb_type, int reimb_id, int loggedUserId) {
 
         Reimb reimb = reimbRepo.selectReimbursement(reimb_id);
@@ -53,6 +72,13 @@ public class ReimbService {
 
     }
 
+    /**
+     * Update a reimbursement's status and check for it's validity.
+     * @param status
+     * @param id
+     * @param currentFinMan
+     * @return
+     */
     public Reimb updateReimbStatus(String status, int id, Principal currentFinMan) {
 
         Reimb reimb = reimbRepo.selectReimbursement(id);
@@ -68,6 +94,10 @@ public class ReimbService {
 
     }
 
+    /**
+     * Get all reimbursements.
+     * @return
+     */
     public ArrayList<Reimb> getAllReimbs() {
 
         ArrayList<Reimb> reimbs = reimbRepo.findAllReimbs();
@@ -82,6 +112,11 @@ public class ReimbService {
         return list;
     }
 
+    /**
+     * Get all reimbursements by type.
+     * @param type
+     * @return
+     */
     public ArrayList<Reimb> getReimbsByType(String type) {
 
         ReimbTypes reimbType = ReimbTypes.getByName(type);
@@ -100,6 +135,11 @@ public class ReimbService {
 
     }
 
+    /**
+     * Get all reimbursements by status.
+     * @param id
+     * @return
+     */
     public ArrayList<Reimb> getReimbByStatus(int id) {
 
         if (id <= 0) {
@@ -119,6 +159,11 @@ public class ReimbService {
         return list;
     }
 
+    /**
+     * get all reimbursements by user id.
+     * @param id
+     * @return
+     */
     public ArrayList<Reimb> getReimbsByUserId(int id) {
 
         if (id <= 0) {
@@ -137,6 +182,12 @@ public class ReimbService {
         return list;
     }
 
+    /**
+     * get all reimbursements by user id and status.
+     * @param id
+     * @param status
+     * @return
+     */
     public ArrayList<Reimb> getReimbsByUserIdStatus(int id, String status) {
 
         if (id <= 0) {
@@ -155,6 +206,11 @@ public class ReimbService {
         return list;
     }
 
+    /**
+     * Check if the reimbursement is valid.
+     * @param reimb
+     * @return
+     */
     public boolean isReimbValid(Reimb reimb) {
         if (reimb == null) return false;
         if (reimb.getReimb_id() <= 0) return false;

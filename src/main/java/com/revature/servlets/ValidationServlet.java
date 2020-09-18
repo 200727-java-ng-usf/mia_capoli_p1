@@ -11,7 +11,13 @@ import java.io.IOException;
 
 @WebServlet("*.validate")
 public class ValidationServlet extends HttpServlet {
-
+    /**
+     * validates email and username checks requested by the client.
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 

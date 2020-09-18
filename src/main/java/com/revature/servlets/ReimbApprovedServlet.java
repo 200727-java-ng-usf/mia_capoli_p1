@@ -1,7 +1,6 @@
 package com.revature.servlets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.revature.dtos.ErrorResponse;
 import com.revature.dtos.Principal;
 import com.revature.exceptions.InvalidRequestException;
@@ -17,13 +16,19 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Set;
 
 
 @WebServlet("/reimbsapproved/*")
 public class ReimbApprovedServlet extends HttpServlet {
     private final ReimbService reimbService = new ReimbService();
 
+    /**
+     * Get the approved reimbs.
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -52,13 +57,11 @@ public class ReimbApprovedServlet extends HttpServlet {
         }
 
 
-
         try {
-                ArrayList<Reimb> reimbs = reimbService.getReimbByStatus(2);
-                String usersJSON = mapper.writeValueAsString(reimbs);
-                respWriter.write(usersJSON);
-                resp.setStatus(200); //not req, 200 by default if no exceptions /errors are thrown
-//            }
+            ArrayList<Reimb> reimbs = reimbService.getReimbByStatus(2);
+            String usersJSON = mapper.writeValueAsString(reimbs);
+            respWriter.write(usersJSON);
+            resp.setStatus(200); //not req, 200 by default if no exceptions /errors are thrown
         } catch (ResourceNotFoundException rnfe) {
 
             resp.setStatus(404); //not found!!!

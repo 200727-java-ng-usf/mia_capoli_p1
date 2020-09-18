@@ -3,6 +3,9 @@ package com.revature.dtos;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+/**
+ * A DTO for sending an error response to the Client.
+ */
 public class ErrorResponse {
 
     private int status;

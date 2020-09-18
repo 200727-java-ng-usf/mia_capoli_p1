@@ -10,6 +10,12 @@ public class ValidationHelper {
 
     private final UserService userService = new UserService();
 
+    /**
+     * Helps with validating emails and usernames.
+     * @param req
+     * @return
+     * @throws IOException
+     */
     public boolean process(HttpServletRequest req) throws IOException {
 
         ObjectMapper mapper = new ObjectMapper();

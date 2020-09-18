@@ -8,10 +8,8 @@ import com.revature.exceptions.AuthenticatorException;
 import com.revature.exceptions.InvalidInputException;
 import com.revature.exceptions.InvalidRequestException;
 import com.revature.exceptions.ResourceNotFoundException;
-import com.revature.models.AppUser;
 import com.revature.models.Reimb;
 import com.revature.services.ReimbService;
-import com.sun.org.apache.regexp.internal.RE;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,12 +18,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Set;
 
 @WebServlet("/updatereimb")
 public class UpdateReimbServlet extends HttpServlet {
     private final ReimbService reimbService = new ReimbService();
 
+    /**
+     * Handles requests to update a reimb.
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");

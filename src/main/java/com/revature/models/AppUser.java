@@ -1,10 +1,5 @@
 package com.revature.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import java.util.Comparator;
 import java.util.Objects;
 
 /**
@@ -12,31 +7,16 @@ import java.util.Objects;
  * An object created to hold users and their properties.
  */
 
-@Entity
-@Table(name="ers_users")
 public class AppUser{
 
     //AppUser fields
-    @Id
-    @Column(name="ers_user_id")
+
     private Integer id;
-
-    @Column(name="username")
     private String username;
-
-    @Column(name="password")
     private String password;
-
-    @Column(name="first_name")
     private String firstName;
-
-    @Column(name="last_name")
     private String lastName;
-
-    @Column(name="email")
     private String email;
-
-    @Column(name="user_role_id")
     private Role role;
 
 

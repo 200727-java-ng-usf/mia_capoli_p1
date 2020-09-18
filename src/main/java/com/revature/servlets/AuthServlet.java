@@ -23,18 +23,33 @@ import java.io.PrintWriter;
 public class AuthServlet extends HttpServlet {
     private final UserService userService = new UserService();
 
+    /**
+     * Log out a User.
+     *
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getSession().invalidate();
         resp.setStatus(204);
     }
 
+    /**
+     * Log in a user.
+     *
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
         ObjectMapper mapper = new ObjectMapper();
         PrintWriter respWriter = resp.getWriter();
-
 
 
         try {
