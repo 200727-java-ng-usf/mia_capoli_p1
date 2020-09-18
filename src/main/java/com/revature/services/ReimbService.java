@@ -39,6 +39,8 @@ public class ReimbService {
 
         if (!isReimbValid(reimb)) {
             throw new InvalidInputException("Invalid credentials given for registration.");
+        } else if (amount <= 0  || description == null || description.trim().equals("")) {
+            throw new InvalidInputException("Please enter a positive, nonzero value.");
         } else if (reimb.getAuthor_id() != loggedUserId) {
             throw new AuthenticatorException("This reimbursement does not belong to you.");
         } else if (reimb.getReimb_status() != ReimbStatusTypes.PENDING) {

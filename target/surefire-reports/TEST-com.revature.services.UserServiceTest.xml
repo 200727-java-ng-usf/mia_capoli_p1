@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="20" failures="0" name="com.revature.services.UserServiceTest" time="0.004" errors="0" skipped="0">
+<testsuite tests="20" failures="0" name="com.revature.services.UserServiceTest" time="0.009" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\AdoptOpenJDK\jdk-8.0.262.10-hotspot\jre\bin"/>
@@ -68,19 +68,19 @@
   <testcase classname="com.revature.services.UserServiceTest" name="authenticationWithInvalidCredentials" time="0.001"/>
   <testcase classname="com.revature.services.UserServiceTest" name="authenticationWithUnknownCredentials" time="0"/>
   <testcase classname="com.revature.services.UserServiceTest" name="getAllUsersTest" time="0.001"/>
-  <testcase classname="com.revature.services.UserServiceTest" name="updateUserFailNoUser" time="0"/>
+  <testcase classname="com.revature.services.UserServiceTest" name="updateUserFailNoUser" time="0.001"/>
   <testcase classname="com.revature.services.UserServiceTest" name="isUsernameAvailableTest" time="0"/>
   <testcase classname="com.revature.services.UserServiceTest" name="isEmailAvailableTest" time="0"/>
   <testcase classname="com.revature.services.UserServiceTest" name="registrationUserSuccess" time="0"/>
   <testcase classname="com.revature.services.UserServiceTest" name="authenticationWithValidCredentials" time="0.001"/>
   <testcase classname="com.revature.services.UserServiceTest" name="registrationUserExists" time="0"/>
-  <testcase classname="com.revature.services.UserServiceTest" name="registrationFaulty" time="0"/>
+  <testcase classname="com.revature.services.UserServiceTest" name="registrationFaulty" time="0.001"/>
   <testcase classname="com.revature.services.UserServiceTest" name="updateUserFail" time="0"/>
-  <testcase classname="com.revature.services.UserServiceTest" name="updateUserSuccess" time="0"/>
+  <testcase classname="com.revature.services.UserServiceTest" name="updateUserSuccess" time="0.001"/>
   <testcase classname="com.revature.services.UserServiceTest" name="getUserByIdBadIDTest" time="0"/>
-  <testcase classname="com.revature.services.UserServiceTest" name="deleteUser" time="0"/>
+  <testcase classname="com.revature.services.UserServiceTest" name="deleteUser" time="0.001"/>
   <testcase classname="com.revature.services.UserServiceTest" name="getAllUsersNoneTest" time="0"/>
-  <testcase classname="com.revature.services.UserServiceTest" name="isUserValidValidserFaulty" time="0"/>
+  <testcase classname="com.revature.services.UserServiceTest" name="isUserValidValidserFaulty" time="0.001"/>
   <testcase classname="com.revature.services.UserServiceTest" name="isUserValidValidser" time="0"/>
   <testcase classname="com.revature.services.UserServiceTest" name="deleteUserFail" time="0"/>
   <testcase classname="com.revature.services.UserServiceTest" name="getUserByIdNoIDTest" time="0.001"/>
