@@ -3,6 +3,7 @@ package com.revature.servlets;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.revature.dtos.ErrorResponse;
+import com.revature.exceptions.AuthenticatorException;
 import com.revature.exceptions.InvalidRequestException;
 import com.revature.models.AppUser;
 import com.revature.models.Reimb;
@@ -41,7 +42,13 @@ public class UpdateUserServlet extends HttpServlet {
             ErrorResponse err = new ErrorResponse(400, "Bad Req: Malform reimb object found in request body");
             String errJSON = mapper.writeValueAsString(err);
             respWriter.write(errJSON);
+        } catch (AuthenticatorException ae) {
+            ae.printStackTrace();
+            resp.setStatus(409);
 
+            ErrorResponse err = new ErrorResponse(409, "This user does not exist, therefore cannot be updated.");
+            String errJSON = mapper.writeValueAsString(err);
+            respWriter.write(errJSON);
         } catch (Exception e) {
             e.printStackTrace();
             resp.setStatus(500); // 500 = INTERNAL SERVER ERROR

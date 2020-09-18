@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.revature.dtos.ErrorResponse;
 import com.revature.dtos.Principal;
 import com.revature.exceptions.InvalidRequestException;
+import com.revature.exceptions.ResourceNotFoundException;
 import com.revature.models.AppUser;
 import com.revature.models.Reimb;
 import com.revature.services.ReimbService;
@@ -68,12 +69,18 @@ public class UpdateReimbServlet extends HttpServlet {
 
         } catch (InvalidRequestException ire) {
             ire.printStackTrace();
-            resp.setStatus(400);
+            resp.setStatus(403);
 
             ErrorResponse err = new ErrorResponse(403, "Bad Req: This reimbursement is not pending and can no longer be updated. ");
             String errJSON = mapper.writeValueAsString(err);
             respWriter.write(errJSON);
+        } catch (ResourceNotFoundException rnf) {
+            rnf.printStackTrace();
+            resp.setStatus(404);
 
+            ErrorResponse err = new ErrorResponse(404, "No user found using the specified id.");
+            String errJSON = mapper.writeValueAsString(err);
+            respWriter.write(errJSON);
         } catch (Exception e) {
             e.printStackTrace();
             resp.setStatus(500); // 500 = INTERNAL SERVER ERROR

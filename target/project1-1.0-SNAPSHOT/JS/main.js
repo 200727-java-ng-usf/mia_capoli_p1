@@ -106,7 +106,7 @@ function loadHome() {
              }
     
         }
-    } else {
+    } else if (authUser.role == 'Employee' || authUser.role == 'employee'){
         xhr.open('GET', 'home.view', true);
         xhr.send();
 
@@ -1022,7 +1022,7 @@ function login() {
             localStorage.setItem('authUser', xhr.responseText);
             loadHome();
 
-        } else if (xhr.readyState == 4 && xhr.status == 401) {
+        } else if (xhr.readyState == 4 && xhr.status != 200) {
             document.getElementById('login-message').removeAttribute('hidden');
 
             let err = JSON.parse(xhr.responseText);
@@ -1061,7 +1061,7 @@ function register() {
             document.getElementById('reg-success').innerText = "SUCCESS! User registered.";
 
 
-        } else if (xhr.readyState == 4 && xhr.status == 400) {
+        } else if (xhr.readyState == 4 && xhr.status != 201) {
             document.getElementById('reg-success').setAttribute('hidden', true);
             document.getElementById('reg-message').removeAttribute('hidden');
 
@@ -1103,7 +1103,7 @@ function createReimb() {
             document.getElementById('create-reimb-success').innerText = 'SUCCESS! Reimbursement created.';
 
 
-        } else if (xhr.readyState == 4 && xhr.status == 400) {
+        } else if (xhr.readyState == 4 && xhr.status != 201) {
             document.getElementById('create-reimb-success').setAttribute('hidden', true);
             document.getElementById('create-reimb-warn').removeAttribute('hidden');
 
@@ -1131,7 +1131,7 @@ function deleteUser() {
             document.getElementById('delete-success').innerText = 'SUCCESS! User deleted.';
 
 
-        } else if (xhr.readyState == 4 && xhr.status == 400) {
+        } else if (xhr.readyState == 4 && xhr.status != 204) {
             document.getElementById('delete-success').setAttribute('hidden', true);
             document.getElementById('delete-message').removeAttribute('hidden');
 
@@ -1169,7 +1169,7 @@ function updateUser() {
                 document.getElementById('update-success').innerText = "SUCCESS! User updated.";
     
     
-            } else if (xhr.readyState == 4 && xhr.status == 400) {
+            } else if (xhr.readyState == 4 && xhr.status != 201) {
                 document.getElementById('update-success').setAttribute('hidden', true);
                 document.getElementById('update-warn').removeAttribute('hidden');
     
@@ -1205,7 +1205,7 @@ function approveReimb() {
             document.getElementById('approve-success').innerText = text;
 
 
-        } else if (xhr.readyState == 4 && xhr.status == 400) {
+        } else if (xhr.readyState == 4 && xhr.status != 200) {
             document.getElementById('approve-warn').removeAttribute('hidden');
             document.getElementById('approve-success').setAttribute('hidden', true);
             let err = JSON.parse(xhr.responseText);
@@ -1247,7 +1247,7 @@ function updateReimb() {
             document.getElementById('update-reimb-success').innerText = "SUCCESS! Reimbursement updated.";
 
 
-        } else if (xhr.readyState == 4 && xhr.status == 400) {
+        } else if (xhr.readyState == 4 && xhr.status != 201) {
             document.getElementById('update-reimb-warn').removeAttribute('hidden');
 
             let err = JSON.parse(xhr.responseText);
@@ -1297,13 +1297,16 @@ function isUsernameAvailable() {
         if (xhr.readyState == 4 && xhr.status == 204) {
             document.getElementById('reg-success').innerText = 'Provided username is available!';
             document.getElementById('reg-message').setAttribute('hidden', true);
+            return true;
         } else if (xhr.readyState == 4 && xhr.status == 409 ) {
             document.getElementById('reg-success').setAttribute('hidden', true);
             document.getElementById('reg-message').removeAttribute('hidden')
             document.getElementById('reg-message').innerText = 'The provided username is already taken!';
             document.getElementById('register').setAttribute('disabled', true);
+            return false;
+            }
+            
         }
-    }
 
 }
 
@@ -1327,13 +1330,16 @@ function isEmailAvailable() {
         if (xhr.readyState == 4 && xhr.status == 204) {
             document.getElementById('reg-success').innerText = 'Provided email is available!';
             document.getElementById('reg-message').setAttribute('hidden', true);
+            return true;
         } else if (xhr.readyState == 4 && xhr.status == 409) {
             document.getElementById('reg-success').setAttribute('hidden', true);
-            document.getElementById('reg-message').removeAttribute('hidden');
-            document.getElementById('reg-message').innerText = 'The provided email address is already taken!';
+            document.getElementById('reg-message').removeAttribute('hidden')
+            document.getElementById('reg-message').innerText = 'The provided email is already taken!';
             document.getElementById('register').setAttribute('disabled', true);
+            return false;
         }
     }
+
 }
 
 //---------------------------------------------------------------------------------
@@ -1371,6 +1377,7 @@ function validateRegisterForm() {
     let email = document.getElementById('email').value;
     let un = document.getElementById('reg-username').value;
     let pw = document.getElementById('reg-password').value;
+
 
     if (!fn || !ln || !email || !un || !pw) {
         document.getElementById('reg-message').removeAttribute('hidden');

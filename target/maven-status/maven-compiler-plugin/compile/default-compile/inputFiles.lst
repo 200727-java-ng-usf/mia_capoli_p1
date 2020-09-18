@@ -1,6 +1,7 @@
 C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\revature\exceptions\ResourceNotFoundException.java
 C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\revature\servlets\ReimbLodgingServlet.java
 C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\revature\services\ReimbService.java
+C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\revature\util\AppUserComparator.java
 C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\revature\repos\AppUserRepo.java
 C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\revature\util\ConnectionFactory.java
 C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\revature\dtos\ErrorResponse.java
@@ -35,6 +36,7 @@ C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\
 C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\revature\services\UserService.java
 C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\revature\exceptions\InvalidInputException.java
 C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\revature\servlets\ReimbPendingServlet.java
+C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\revature\util\ReimbComparator.java
 C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\revature\servlets\DeleteUserServlet.java
 C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\revature\servlets\ReimbApprovedServlet.java
 C:\Users\Mia\Documents\GitHub\RevatureJavaRepos\mia_capoli_p1\src\main\java\com\revature\controllers\LoginController.java
