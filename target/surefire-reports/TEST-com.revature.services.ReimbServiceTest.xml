@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="20" failures="0" name="com.revature.services.ReimbServiceTest" time="0.09" errors="0" skipped="0">
+<testsuite tests="20" failures="0" name="com.revature.services.ReimbServiceTest" time="0.088" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\AdoptOpenJDK\jdk-8.0.262.10-hotspot\jre\bin"/>
@@ -67,22 +67,22 @@
   </properties>
   <testcase classname="com.revature.services.ReimbServiceTest" name="getAllUserReimbsbyIDStatusZeroTest" time="0.019"/>
   <testcase classname="com.revature.services.ReimbServiceTest" name="getAllUSerReimbsbyIDStatusNoneTest" time="0.002"/>
-  <testcase classname="com.revature.services.ReimbServiceTest" name="getAllReimbsbyStatusZeroTest" time="0"/>
-  <testcase classname="com.revature.services.ReimbServiceTest" name="getAllReimbsTest" time="0.002"/>
-  <testcase classname="com.revature.services.ReimbServiceTest" name="updateReimbTest" time="0.059"/>
-  <testcase classname="com.revature.services.ReimbServiceTest" name="getAllReimbsbyStatusNoneTest" time="0.001"/>
-  <testcase classname="com.revature.services.ReimbServiceTest" name="addNewReimbursementTest" time="0"/>
-  <testcase classname="com.revature.services.ReimbServiceTest" name="getAllUSerReimbsbyStatusNoneTest" time="0"/>
-  <testcase classname="com.revature.services.ReimbServiceTest" name="getAllReimbsbyTypeNoneTest" time="0.001"/>
-  <testcase classname="com.revature.services.ReimbServiceTest" name="updateReimbInvalidStatus" time="0.001"/>
+  <testcase classname="com.revature.services.ReimbServiceTest" name="getAllReimbsbyStatusZeroTest" time="0.001"/>
+  <testcase classname="com.revature.services.ReimbServiceTest" name="getAllReimbsTest" time="0.001"/>
+  <testcase classname="com.revature.services.ReimbServiceTest" name="updateReimbTest" time="0.055"/>
+  <testcase classname="com.revature.services.ReimbServiceTest" name="getAllReimbsbyStatusNoneTest" time="0"/>
+  <testcase classname="com.revature.services.ReimbServiceTest" name="addNewReimbursementTest" time="0.001"/>
+  <testcase classname="com.revature.services.ReimbServiceTest" name="getAllUSerReimbsbyStatusNoneTest" time="0.001"/>
+  <testcase classname="com.revature.services.ReimbServiceTest" name="getAllReimbsbyTypeNoneTest" time="0.002"/>
+  <testcase classname="com.revature.services.ReimbServiceTest" name="updateReimbInvalidStatus" time="0.002"/>
   <testcase classname="com.revature.services.ReimbServiceTest" name="addNewReimbursementFailTest" time="0"/>
-  <testcase classname="com.revature.services.ReimbServiceTest" name="getAllReimbsbyUSerIdTest" time="0.001"/>
-  <testcase classname="com.revature.services.ReimbServiceTest" name="getAllReimbsbyIdStatusTest" time="0"/>
-  <testcase classname="com.revature.services.ReimbServiceTest" name="getAllUserReimbsbyStatusZeroTest" time="0.001"/>
+  <testcase classname="com.revature.services.ReimbServiceTest" name="getAllReimbsbyUSerIdTest" time="0"/>
+  <testcase classname="com.revature.services.ReimbServiceTest" name="getAllReimbsbyIdStatusTest" time="0.001"/>
+  <testcase classname="com.revature.services.ReimbServiceTest" name="getAllUserReimbsbyStatusZeroTest" time="0"/>
   <testcase classname="com.revature.services.ReimbServiceTest" name="updateReimbInvalidInputTest" time="0"/>
   <testcase classname="com.revature.services.ReimbServiceTest" name="updateReimbStatus" time="0.001"/>
   <testcase classname="com.revature.services.ReimbServiceTest" name="updateReimbInvalidTest" time="0"/>
   <testcase classname="com.revature.services.ReimbServiceTest" name="getAllReimbsbyStatusTest" time="0.001"/>
-  <testcase classname="com.revature.services.ReimbServiceTest" name="getAllReimbsbyTypeTest" time="0"/>
-  <testcase classname="com.revature.services.ReimbServiceTest" name="getAllReimbsNoneTest" time="0.001"/>
+  <testcase classname="com.revature.services.ReimbServiceTest" name="getAllReimbsbyTypeTest" time="0.001"/>
+  <testcase classname="com.revature.services.ReimbServiceTest" name="getAllReimbsNoneTest" time="0"/>
 </testsuite>

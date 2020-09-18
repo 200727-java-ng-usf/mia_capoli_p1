@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.revature.dtos.ErrorResponse;
 import com.revature.dtos.Principal;
+import com.revature.exceptions.InvalidInputException;
 import com.revature.exceptions.InvalidRequestException;
 import com.revature.exceptions.ResourceNotFoundException;
 import com.revature.models.AppUser;
@@ -124,7 +125,7 @@ public class ReimbServlet extends HttpServlet {
         try {
             int id = principal.getId();
             System.out.println(req.getParameter("amount"));
-            int amount = Integer.parseInt(req.getParameter("amount"));
+            double amount = Double.parseDouble(req.getParameter("amount"));
             String type = req.getParameter("type");
             String description = req.getParameter("description");
 
@@ -133,6 +134,13 @@ public class ReimbServlet extends HttpServlet {
 
         } catch (InvalidRequestException mie) {
             mie.printStackTrace();
+            resp.setStatus(403);
+
+            ErrorResponse err = new ErrorResponse(403, "Please keep your request between $0.01 and $9,999.99.");
+            String errJSON = mapper.writeValueAsString(err);
+            respWriter.write(errJSON);
+        } catch (InvalidInputException iie) {
+            iie.printStackTrace();
             resp.setStatus(400);
 
             ErrorResponse err = new ErrorResponse(400, "Bad Req: Malform reimb object found in request body");

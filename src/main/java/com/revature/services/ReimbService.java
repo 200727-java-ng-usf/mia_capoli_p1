@@ -1,6 +1,7 @@
 package com.revature.services;
 
 import com.revature.dtos.Principal;
+import com.revature.exceptions.AuthenticatorException;
 import com.revature.exceptions.InvalidInputException;
 import com.revature.exceptions.InvalidRequestException;
 import com.revature.exceptions.ResourceNotFoundException;
@@ -18,10 +19,12 @@ public class ReimbService {
     public ReimbRepo reimbRepo = new ReimbRepo();
 
 
-    public boolean addNewReimbursement(int amount, String description, String type, int id) {
+    public boolean addNewReimbursement(double amount, String description, String type, int id) {
 
-        if (id <= 0 || amount <= 0 || description == null || description.trim().equals("") || type == null || type.trim().equals("") )  {
+        if (id <= 0 || amount <= 0 || description == null || description.trim().equals("") || type == null || type.trim().equals("")) {
             throw new InvalidInputException("Invalid credentials given for reimbursement.");
+        } else if (amount > 99999.99) {
+            throw new InvalidRequestException("Please keep your request between $0.01 and $99,999.99.");
         }
 
         int reimbType = ReimbStatusTypes.getIDFromName("type");
@@ -30,12 +33,14 @@ public class ReimbService {
         return true;
     }
 
-    public Reimb updateReimb(int amount, String description, String reimb_type, int reimb_id) {
+    public Reimb updateReimb(double amount, String description, String reimb_type, int reimb_id, int loggedUserId) {
 
         Reimb reimb = reimbRepo.selectReimbursement(reimb_id);
 
         if (!isReimbValid(reimb)) {
             throw new InvalidInputException("Invalid credentials given for registration.");
+        } else if (reimb.getAuthor_id() != loggedUserId) {
+            throw new AuthenticatorException("This reimbursement does not belong to you.");
         } else if (reimb.getReimb_status() != ReimbStatusTypes.PENDING) {
             throw new InvalidRequestException("This reimbursement is not pending and can no longer be updated. Please submit a new one.");
         }
@@ -79,7 +84,7 @@ public class ReimbService {
 
         ReimbTypes reimbType = ReimbTypes.getByName(type);
 
-        ArrayList<Reimb> reimbs =  reimbRepo.findReimbByType(reimbType);
+        ArrayList<Reimb> reimbs = reimbRepo.findReimbByType(reimbType);
 
         if (reimbs == null) {
             throw new ResourceNotFoundException();
@@ -101,9 +106,9 @@ public class ReimbService {
 
         ArrayList<Reimb> reimbs = reimbRepo.findReimbByStatus(id);
 
-             if (reimbs == null) {
-                 throw new ResourceNotFoundException();
-             }
+        if (reimbs == null) {
+            throw new ResourceNotFoundException();
+        }
 
         ArrayList<Reimb> list = new ArrayList<>(reimbs);
         list.sort(new ReimbComparator());
@@ -150,12 +155,12 @@ public class ReimbService {
 
     public boolean isReimbValid(Reimb reimb) {
         if (reimb == null) return false;
-        if (reimb.getReimb_id() <= 0 ) return false;
+        if (reimb.getReimb_id() <= 0) return false;
         if (reimb.getAmount() <= 0) return false;
         if (reimb.getDescription() == null || reimb.getDescription().trim().equals("")) return false;
-        if (reimb.getAuthor_id() <= 0 ) return false;
+        if (reimb.getAuthor_id() <= 0) return false;
         if (reimb.getReimb_status() == null) return false;
-        if (reimb.getReimb_type() == null ) return false;
+        if (reimb.getReimb_type() == null) return false;
         return true;
     }
 

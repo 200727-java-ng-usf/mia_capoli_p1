@@ -73,7 +73,7 @@ public class ReimbServiceTest {
         Reimb expectedResult = new Reimb(2, 100, Timestamp.valueOf(LocalDateTime.now()), "what", 2, ReimbStatusTypes.PENDING, 1);
         Mockito.when(mockedRepo.selectReimbursement(2)).thenReturn(expectedResult);
         doNothing().when(mockedRepo).updateReimb(1000, "what", 4, 2);
-        Reimb actualResult = reimbService.updateReimb(1000, "what", "other", 2);
+        Reimb actualResult = reimbService.updateReimb(1000, "what", "other", 2, 2);
         Assert.assertEquals(expectedResult, actualResult);
 
     }
@@ -83,14 +83,14 @@ public class ReimbServiceTest {
         Reimb expectedResult = new Reimb(2, 100, Timestamp.valueOf(LocalDateTime.now()), "what", 2, ReimbStatusTypes.APPROVED, 1);
         Mockito.when(mockedRepo.selectReimbursement(2)).thenReturn(expectedResult);
         doNothing().when(mockedRepo).updateReimb(1000, "what", 4, 2);
-        reimbService.updateReimb(1000, "what", "other", 2);
+        reimbService.updateReimb(1000, "what", "other", 2, 2);
 
     }
 
     @Test(expected = InvalidInputException.class)
     public void updateReimbInvalidInputTest() {
 
-        reimbService.updateReimb(0, "what", "", 2);
+        reimbService.updateReimb(0, "what", "", 2, 2);
 
     }
 

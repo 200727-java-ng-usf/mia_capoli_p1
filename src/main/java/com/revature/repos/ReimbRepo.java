@@ -6,6 +6,7 @@ import com.revature.models.Reimb;
 import com.revature.models.ReimbStatusTypes;
 import com.revature.models.ReimbTypes;
 import com.revature.util.ConnectionFactory;
+import org.postgresql.util.PSQLException;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -118,7 +119,7 @@ public class ReimbRepo {
 
     }
 
-    public boolean save(int amount, String description, int type, int id) {
+    public boolean save(double amount, String description, int type, int id) {
 
         try (Connection conn = ConnectionFactory.getConnFactory().getConnection()) {
             //insert the user into the table
@@ -137,17 +138,21 @@ public class ReimbRepo {
 
             pstmt.executeUpdate();
             return true;
+        } catch (PSQLException sqle) {
+            sqle.printStackTrace();
+            System.err.println("Database Error!");
+            return false;
         } catch (SQLException sqle) {
             sqle.printStackTrace();
             System.err.println("Database Error!");
             return false;
         }
     }
-    
+
 
     private ArrayList<Reimb> mapResultSet(ResultSet rs) throws SQLException {
 
-        ArrayList<Reimb> reimbs = new ArrayList<> ();
+        ArrayList<Reimb> reimbs = new ArrayList<>();
 
         //Add the returned users to a hashset so the program can interpret it.
         while (rs.next()) {
@@ -169,7 +174,6 @@ public class ReimbRepo {
     }
 
 
-
     public Reimb selectReimbursement(int reimb_id) {
         Optional<Reimb> _reimb = Optional.empty();
         try (Connection conn = ConnectionFactory.getConnFactory().getConnection()) {
@@ -188,17 +192,20 @@ public class ReimbRepo {
             return _reimb.get();
 
 
+        } catch (PSQLException sqle) {
+            sqle.printStackTrace();
+            System.err.println("Database Error!");
         } catch (SQLException sqle) {
             sqle.printStackTrace();
             System.err.println("Database Error!");
         }
 
-        return  _reimb.get();
+        return _reimb.get();
 
     }
 
 
-    public void updateReimb(int amount, String description, int reimb_type_id, int reimb_id) {
+    public void updateReimb(double amount, String description, int reimb_type_id, int reimb_id) {
 
         try (Connection conn = ConnectionFactory.getConnFactory().getConnection()) {
 
@@ -216,6 +223,9 @@ public class ReimbRepo {
             pstmt.executeUpdate();
 
 
+        } catch (PSQLException sqle) {
+            sqle.printStackTrace();
+            System.err.println("Database Error!");
         } catch (SQLException sqle) {
             sqle.printStackTrace();
             System.err.println("Database Error!");

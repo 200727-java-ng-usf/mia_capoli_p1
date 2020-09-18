@@ -474,7 +474,7 @@ function configureUpdateReimbUserView() {
     document.getElementById('update-reimb-warn').setAttribute('hidden', true);
     document.getElementById('update-reimb-success').setAttribute('hidden', true);
 
-    document.getElementById("update-reimb-button-container").addEventListener('mouseover', validateReimbUpdateForm);
+    document.getElementById("update-reimb-button-container").addEventListener('mouseover', validateReimbUpdateUserForm);
     document.getElementById('updateReimbButton').addEventListener('click', updateReimb)
     let authUser = JSON.parse(localStorage.getItem('authUser'));
 
@@ -1435,9 +1435,9 @@ function validateReimbUpdateForm() {
 
     let id1 = document.getElementById('approve').checked;
     let id2 = document.getElementById('deny').checked;
+    let idInput = document.getElementById('id').value;
 
-
-    if (!id1 && !id2) {
+    if (!id1 && !id2 || !idInput) {
         document.getElementById('approve-warn').removeAttribute('hidden');
         document.getElementById('approve-success').setAttribute('hidden', true);
         document.getElementById('approve-warn').innerText = 'You must check a status!'
